@@ -1,50 +1,32 @@
-# Welcome to your Expo app 👋
+1: Cài đặt visual studio
+	https://code.visualstudio.com/
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+2: create expo project (for testing) / (react native for web) 
+	
+	npx create-expo-app@latest
+	npx expo install react-dom react-native-web @expo/metro-runtime 
 
-## Get started
 
-1. Install dependencies
+    BlurView : 
+    npx expo install expo-blur
+    navigation/stack :
+    npm install @react-navigation/stack
+    npx expo install react-native-gesture-handler
+    npx expo install expo-secure-store
+    npm install @clerk/clerk-expo
 
-   ```bash
-   npm install
-   ```
 
-2. Start the app
+* Cần làm: Vào github SangNguyenSVN dowload hoặc clone code 
+=> ae sẽ có 2 project 
+1 là cái tạo ở bước 2 (phụ)
+2 là cái clone từ github (chính)
 
-   ```bash
-    npx expo start
-   ```
 
-In the output, you'll find options to open the app in a
+* Note:
+- Anh/Em có thể sử dụng mọi phương thức hỗ trợ như AI, GPT, Youtube ... trong bài làm.
+- Ưu tiên chạy cài đặt ứng dụng từ nguồn github SangNguyenSVN
+- Anh/Em nào biết cách sử dụng branch trong git có thể tạo để review cho tôi trong tuần thử 3-4
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+link document: https://docs.expo.dev/
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Chúc anh em làm dự án vui vẻ.
