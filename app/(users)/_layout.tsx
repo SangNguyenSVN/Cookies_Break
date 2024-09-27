@@ -11,13 +11,16 @@ export default function TabLayout() {
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
-            borderRadius: 90,
-            width: '95%',
-            height: '7%',
-            backgroundColor: '#00B2BF',
-            marginBottom: 10,
-            alignSelf: 'center',
+            width: '100%',
+            height: 60, 
+            backgroundColor: 'white',
+            flexDirection: 'row', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            
           },
+          
+          
         }}>
         <Tabs.Screen
           name="index"
@@ -27,10 +30,8 @@ export default function TabLayout() {
               <View style={styles.tabBar_Item}>
                 <FontAwesome name="hospital-o"
                   size={24}
-                  color={focused ? "black" : "white"} />
-                <Text style={[focused ? styles.onFocused_Title : styles.unFocused_Title]}>
-                  Home
-                </Text>
+                  color={focused ? "#489458" : "#9C9696"} />
+               
               </View>
             ),
           }}
@@ -45,10 +46,8 @@ export default function TabLayout() {
                 <FontAwesome
                   name="search"
                   size={24}
-                  color={focused ? "black" : "white"} />
-                <Text style={[focused ? styles.onFocused_Title : styles.unFocused_Title]}>
-                  Explore
-                </Text>
+                  color={focused ? "#489458" : "#9C9696"} />
+              
               </View>
             ),
           }}
@@ -58,11 +57,11 @@ export default function TabLayout() {
           options={{
             title: '',
             tabBarIcon: ({ color, focused }) => (
-              <View style={styles.tabBar_Item_Booking}>
-                <FontAwesome
+              <View style={styles.tabBar_Item}>
+                  <FontAwesome
                   name="plus"
                   size={24}
-                  color={focused ? "black" : "white"} />
+                  color={focused ? "#489458" : "#9C9696"} />
               </View>
             ),
           }}
@@ -76,10 +75,8 @@ export default function TabLayout() {
                 <FontAwesome
                   name="clock-o"
                   size={24}
-                  color={focused ? "black" : "white"} />
-                <Text style={[focused ? styles.onFocused_Title : styles.unFocused_Title]}>
-                  History
-                </Text>
+                  color={focused ? "#489458" : "#9C9696"} />
+              
               </View>
 
             ),
@@ -94,10 +91,10 @@ export default function TabLayout() {
                 <FontAwesome
                   name="product-hunt"
                   size={24}
-                  color={focused ? "black" : "white"} />
-                <Text style={[focused ? styles.onFocused_Title : styles.unFocused_Title]}>
+                  color={focused ? "#489458" : "#9C9696"} />
+                {/* <Text style={[focused ? styles.onFocused_Title : styles.unFocused_Title]}>
                   Profile
-                </Text>
+                </Text> */}
               </View>
             ),
           }}
@@ -108,38 +105,16 @@ export default function TabLayout() {
 
 
 const styles = StyleSheet.create({
-
   tabBar_Item: {
     alignItems: 'center',
-    marginBottom: -40,
-
-  },
-  onFocused_Item: {
-    // alignItems: 'center',
-    // borderRadius: 90,
-    // height: 65,
-    // width: 65,
-    // justifyContent: 'center',
-    // backgroundColor: 'white'
-
+    justifyContent:'center',
   },
   onFocused_Title: {
-    color: "black",
+    
   },
   unFocused_Title: {
-    color: 'white',
-    fontSize: 12,
-
+    
   },
-  tabBar_Item_Booking: {
-    alignItems: 'center',
-    borderRadius: 90,
-    borderWidth: 2,
-    height: 65,
-    width: 65,
-    justifyContent: 'center',
-    borderColor: 'white',
-    backgroundColor: '#00B2BF',
-    position: 'absolute'
-  }
-})
+ 
+});
+
