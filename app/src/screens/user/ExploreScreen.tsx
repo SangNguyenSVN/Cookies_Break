@@ -18,7 +18,7 @@ const ExploreScreen = () => {
     return (
         <View style={styles.container}>
           <Header title={'sang xau qua'}/>
-            <Hospital_Doctor_Tab activeTab={(value: any) => setActiveTab(value)} />
+            <Hospital_Doctor_Tab activeTab={(value: String) => setActiveTab(value)} />
             {
                 activeTab === 'doctor' ? (
                     !doctorLst?.length

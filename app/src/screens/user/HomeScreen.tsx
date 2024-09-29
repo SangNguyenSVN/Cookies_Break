@@ -15,12 +15,12 @@ const HomeScreen = () => {
       desciptions: "abc",
     },
     {
-      id: 1,
+      id: 2,
       name: 'Mau 1',
       price: 10000
     },
     {
-      id: 1,
+      id: 3,
       name: 'Mau 1',
       price: 10000
     }
