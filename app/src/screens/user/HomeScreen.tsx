@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../shared/Header'
-import Item_List_View from '../../shared/Item_List_View'
+import Item_List_View from '../../components/homescreen/Item_List_View'
 import { FlatList } from 'react-native-gesture-handler'
+import { useUser } from '@clerk/clerk-expo'
 
 const HomeScreen = () => {
-  
+
+
   const datamau: any = [
     {
       id: 1,
@@ -19,12 +21,6 @@ const HomeScreen = () => {
       name: 'Mau 1',
       price: 10000
     },
-    {
-      id: 3,
-      name: 'Mau 1',
-      price: 10000
-    }
-
   ]
   return (
     <View>
