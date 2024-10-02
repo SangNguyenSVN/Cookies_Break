@@ -17,31 +17,11 @@ const index = () => {
 
 
   const handleLogin = async () => {
-    router.replace("../(users)");
-    // try {
-    //   const response = await auth.loginWithAuth({ identifier, password });
-    //   if (response && response.data) {
-    //     console.log('Đăng nhập thành công:', response.data);
-
-    //     setTimeout(() => {
-    //       router.replace("../(screen)");
-    //     }, 300)
-
-    //   } else {
-    //     Alert.alert('Lỗi', 'Thông tin đăng nhập không đúng');
-    //   }
-    // } catch (error) {
-    //   console.error('Lỗi khi đăng nhập:', error);
-    //   Alert.alert('Lỗi', 'Có lỗi xảy ra khi đăng nhập');
-    // }
+    router.replace("/(doctor)"); // Điều hướng tới doctor bằng đường dẫn tuyệt đối
   };
+  
 
-  // if (!data) {
-  //   Alert.alert('Thông tin đăng nhập không đúng');
-  //   return false;
-  // } else{
-  //   router.replace("../(screen)")
-  // }
+
 
   return (
     <View style={styles.container} >

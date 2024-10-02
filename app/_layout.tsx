@@ -1,56 +1,62 @@
-import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
-import { Slot, useRouter, useSegments } from 'expo-router';
-import { useEffect, useState } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+import DoctorLogin from './src/DoctorLogin';
 
-const CLERK_PUBLISHABLE_KEY = "pk_test_bW92ZWQtbWVlcmthdC05My5jbGVyay5hY2NvdW50cy5kZXYk";
+const _layout = () => {
+  const router = useRouter(); // Sử dụng useRouter để lấy router
 
-const InitialLayout = () => {
-  const { isLoaded, isSignedIn } = useAuth();
-  const segments = useSegments();
-  const router = useRouter();
+  const handlePatientClick = () => {
+    // Navigate to patient login
+  };
 
-  useEffect(() => {
-    if (!isLoaded) return;
+  const handleDoctorClick = () => {
+    router.push("./(publicd)")
+  };
 
-    const inTabsGroup = segments[0] === '(users)';
-
-    console.log('User changed: ', isSignedIn);
-
-    if (isSignedIn && !inTabsGroup) {
-      router.replace('/(users)');
-    } else if (!isSignedIn) {
-      router.replace('/(publics)');
-    }
-  }, [isLoaded, isSignedIn, segments, router]);
-
-  return <Slot />;
-};
-
-const tokenCache = {
-  async getToken(key: string) {
-    try {
-      return await SecureStore.getItemAsync(key);
-    } catch (err) {
-      console.error("Failed to get token:", err);
-      return null;
-    }
-  },
-  async saveToken(key: string, value: string) {
-    try {
-      await SecureStore.setItemAsync(key, value);
-    } catch (err) {
-      console.error("Failed to save token:", err);
-    }
-  },
-};
-
-const RootLayout = () => {
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
-      <InitialLayout />
-    </ClerkProvider>
+    <DoctorLogin/>
+    // <View style={styles.container}>
+    //   <Text style={styles.title}>Chọn đối tượng</Text>
+    //   <TouchableOpacity style={styles.btn} onPress={handlePatientClick}>
+    //     <Text style={styles.btnText}>Bệnh nhân</Text>
+    //   </TouchableOpacity>
+    //   <TouchableOpacity style={styles.btn} onPress={handleDoctorClick}>
+    //     <Text style={styles.btnText}>Bác sĩ</Text>
+    //   </TouchableOpacity>
+    // </View>
   );
 };
 
-export default RootLayout;
+export default _layout;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f4f8', // Light background color
+  },
+  title: {
+    fontSize: 28,
+    marginBottom: 40,
+    color: '#333', // Darker text color
+    fontWeight: 'bold', // Make title bold
+  },
+  btn: {
+    backgroundColor: '#007BFF', // Primary button color
+    padding: 15, // Padding for the button
+    borderRadius: 5, // Rounded corners
+    marginVertical: 10, // Margin between buttons
+    width: '80%', // Button width
+    alignItems: 'center', // Center text in the button
+  },
+  btnText: {
+    color: '#fff', // White text color
+    fontSize: 18, // Font size for button text
+    fontWeight: '600', // Semi-bold text
+  },
+  btnHover: {
+    opacity: 0.8, // Slightly dim the button on hover
+  },
+});

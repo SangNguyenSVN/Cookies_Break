@@ -22,12 +22,12 @@ const ExploreScreen = () => {
             id: 1,
             name: "Bác sĩ Nguyễn Văn A",
             image: "https://i.pravatar.cc/150?img=1",
-            address: "Số 1, Đường 1, Phường 1, Quận1, TP.HCM",
+            address: "Số 1, Đường 1, Phường 1, Quận1, TP.HCM", 
         }
     ]
     return (
         <View style={styles.container}>
-            <Header title={'sang xau qua'} />
+            <Header title={'sang xau qua'} showBackButton={false}/>
             <Hospital_Doctor_Tab activeTab={(value: any) => setActiveTab(value)} />
             {
                 // dieu kien neu tab la bac si
