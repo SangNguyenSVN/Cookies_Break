@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert } from 'react-native'
-import { BlurView } from 'expo-blur';
-import { Link, useRouter } from 'expo-router';
-import { CheckBox } from 'react-native-elements';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native'
+import { useRouter } from 'expo-router';
+import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 
 
 
@@ -17,7 +16,7 @@ const index = () => {
 
 
   const handleLogin = async () => {
-    router.replace("/(doctor)");
+    router.replace("/(users)");
   };
 
 
@@ -55,12 +54,7 @@ const index = () => {
           <View style={styles.viewIcon}>
             <View style={{ width: '100%', flexDirection: "row", justifyContent: "space-between", alignItems: 'center' }}>
               <View >
-                <CheckBox
-                  title="Nhớ đăng nhập"
-                  checked={rememberMe}
-                  onPress={() => setRememberMe(!rememberMe)}
-                  containerStyle={styles.checkbox}
-                />
+                {/* checkbox */}
               </View>
               <TouchableOpacity>
                 <Text>
@@ -74,6 +68,7 @@ const index = () => {
               <Text style={styles.txtLogin}>Login</Text>
             </TouchableOpacity>
           </View>
+          <SignInWithGoogle />
         </View>
       </View>
     </View>
@@ -84,12 +79,12 @@ export default index
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   form: {
-    
+
   },
   viewBox: {
     margin: 10
@@ -104,7 +99,7 @@ const styles = StyleSheet.create({
   checkbox: {
     backgroundColor: 'transparent', // No background for checkbox
     borderWidth: 0, // No border
-   
+
   },
   txtHeader: {
     alignSelf: 'center',
@@ -131,12 +126,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#489458',
     borderRadius: 20,
     alignItems: "center",
-    justifyContent:'center',
-    alignSelf:'center'
+    justifyContent: 'center',
+    alignSelf: 'center'
   },
   txtLogin: {
     color: 'white',
-    
+
   },
   img: {
     alignSelf: 'center',

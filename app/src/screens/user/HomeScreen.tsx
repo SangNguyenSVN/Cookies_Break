@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Header from '../../shared/Header'
 import Item_List_View from '../../components/homescreen/Item_List_View'
 import { FlatList } from 'react-native-gesture-handler'
-import { useUser } from '@clerk/clerk-expo'
+import ButtonLogout from '../../shared/ButtonLogout'
 
 const HomeScreen = () => {
 
@@ -24,13 +24,14 @@ const HomeScreen = () => {
   ]
   return (
     <View>
-      <Header title={"Sang dejo trai"} />
+      <Header title={"Sang dejo trai"} showBackButton={false}/>
       <FlatList // list view 
        data={datamau} // data => item phu hop voi list => item = datamau
        keyExtractor={(item) => item.id.toString()} // Ensure you provide a unique key for each item
        renderItem={({ item }) => (
            <Item_List_View data={item}/>
        )}/>
+       <ButtonLogout/>
     </View>
   )
 }
