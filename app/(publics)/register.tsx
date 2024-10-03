@@ -1,84 +1,68 @@
-import { Button, TextInput, View, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native'
 import { useSignUp } from '@clerk/clerk-expo';
 import { useState } from 'react';
 import { Stack } from 'expo-router';
 
 const Register = () => {
-  const { isLoaded, signUp, setActive } = useSignUp();
-
-  const [emailAddress, setEmailAddress] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [code, setCode] = useState('');
-  const [loading, setLoading] = useState(false);
 
   // Create the user and send the verification email
-  const onSignUpPress = async () => {
-    if (!isLoaded) {
-      return;
-    }
-    setLoading(true);
-
-    try {
-      // Create the user on Clerk
-      await signUp.create({
-        emailAddress,
-        password,
-      });
-
-      // Send verification Email
-      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
-
-      // change the UI to verify the email address
-      setPendingVerification(true);
-    } catch (err: any) {
-      alert(err.errors[0].message);
-    } finally {
-      setLoading(false);
-    }
+  const handleRegister = async () => {
+   
   };
 
   // Verify the email address
-  const onPressVerify = async () => {
-    if (!isLoaded) {
-      return;
-    }
-    setLoading(true);
 
-    try {
-      const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code,
-      });
-
-      await setActive({ session: completeSignUp.createdSessionId });
-    } catch (err: any) {
-      alert(err.errors[0].message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+// giao dien o day
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ headerBackVisible: !pendingVerification }} />
-
-      {!pendingVerification && (
-        <>
-          <TextInput autoCapitalize="none" placeholder="simon@galaxies.dev" value={emailAddress} onChangeText={setEmailAddress} style={styles.inputField} />
-          <TextInput placeholder="password" value={password} onChangeText={setPassword} secureTextEntry style={styles.inputField} />
-
-          <Button onPress={onSignUpPress} title="Sign up" color={'#6c47ff'}></Button>
-        </>
-      )}
-
-      {pendingVerification && (
-        <>
-          <View>
-            <TextInput value={code} placeholder="Code..." style={styles.inputField} onChangeText={setCode} />
+    <View style={styles.container} >
+      <View style={styles.form}>
+        <View>
+          <Text style={styles.txtHeader}>Wellcome Back Doctor</Text>
+          <Text style={styles.txtTitle}>Simplity your workflow and boost your productivity with </Text>
+          <Text style={styles.txtTitle}>Cookies Break App. Get started for  free.</Text>
+          <Image style={styles.img} source={require("../src/assets/public/login_img_1.png")} />
+          <View style={styles.viewBox}>
+            <TextInput
+              placeholderTextColor={"gray"}
+              value={username}
+              onChangeText={setUsername}
+              numberOfLines={1}
+              editable
+              style={styles.viewInput} placeholder='Tên người dùng' />
           </View>
-          <Button onPress={onPressVerify} title="Verify Email" color={'#6c47ff'}></Button>
-        </>
-      )}
+          <View style={styles.viewBox}>
+            <TextInput
+              placeholderTextColor={"gray"}
+              value={password}
+              onChangeText={setPassword}
+              numberOfLines={1}
+              editable
+              secureTextEntry
+              style={styles.viewInput} placeholder='Mật khẩukhẩu' />
+          </View>
+        </View>
+        <View>
+          <View style={styles.viewIcon}>
+            <View style={{ width: '100%', flexDirection: "row", justifyContent: "space-between", alignItems: 'center' }}>
+              <View >
+                {/* checkbox */}
+              </View>
+              <TouchableOpacity>
+                <Text>
+                  Forgot Password?
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <TouchableOpacity style={styles.btnLogin} onPress={handleRegister}>
+              <Text style={styles.txtLogin}>Register</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
@@ -87,21 +71,63 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
-  },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#6c47ff',
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  button: {
-    margin: 8,
     alignItems: 'center',
   },
+  form: {
+
+  },
+  viewBox: {
+    margin: 10
+  },
+  viewInput: {
+    justifyContent: 'center',
+    padding: 10,
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 2,
+  },
+  checkbox: {
+    backgroundColor: 'transparent', // No background for checkbox
+    borderWidth: 0, // No border
+
+  },
+  txtHeader: {
+    alignSelf: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
+    letterSpacing: 1.2,
+    marginBottom: 10,
+    color: 'black',
+
+  },
+  txtTitle: {
+    alignSelf: 'center',
+
+  },
+  viewIcon: {
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+  },
+  btnLogin: {
+    height: 40,
+    width: 250,
+    backgroundColor: '#489458',
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  txtLogin: {
+    color: 'white',
+
+  },
+  img: {
+    alignSelf: 'center',
+    margin: 10,
+  }
+
 });
 
 export default Register;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native'
-import { useRouter } from 'expo-router';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, } from 'react-native'
+import { Link, useRouter } from 'expo-router';
 import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 
 
@@ -56,11 +56,7 @@ const index = () => {
               <View >
                 {/* checkbox */}
               </View>
-              <TouchableOpacity>
-                <Text>
-                  Forgot Password?
-                </Text>
-              </TouchableOpacity>
+              <Link href={"/(publics)/forgot"}>Forgot password</Link>
             </View>
           </View>
           <View>
@@ -70,6 +66,10 @@ const index = () => {
           </View>
           <SignInWithGoogle />
         </View>
+      </View>
+      <View style={styles.viewRegister}>
+        <Text>You don`t have any account ? </Text>
+        <Link href={"/(publics)/register"}>Register</Link>
       </View>
     </View>
   )
@@ -136,6 +136,9 @@ const styles = StyleSheet.create({
   img: {
     alignSelf: 'center',
     margin: 10,
+  },
+  viewRegister: {
+    flexDirection: 'row',
   }
 
 })
