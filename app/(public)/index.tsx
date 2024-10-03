@@ -56,7 +56,7 @@ const index = () => {
               <View >
                 {/* checkbox */}
               </View>
-              <Link href={"/(publics)/forgot"}>Forgot password</Link>
+              <Link href={"/(public)/forgot"}>Forgot password</Link>
             </View>
           </View>
           <View>
@@ -69,7 +69,7 @@ const index = () => {
       </View>
       <View style={styles.viewRegister}>
         <Text>You don`t have any account ? </Text>
-        <Link href={"/(publics)/register"}>Register</Link>
+        <Link href={"/(public)/register"}>Register</Link>
       </View>
     </View>
   )
