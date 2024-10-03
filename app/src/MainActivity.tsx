@@ -5,7 +5,7 @@ const MainActivity = () => {
     return (
         <Stack initialRouteName='(publics)' >
             <Stack.Screen name="(publics)" options={{ headerShown: false }} />
-            {/* <Stack.Screen name="(doctors)" options={{ headerShown: false }} /> */}
+            <Stack.Screen name="(doctors)" options={{ headerShown: false }} />
             <Stack.Screen name="(users)" options={{ headerShown: false }} />
         </Stack>
     )
