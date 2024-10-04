@@ -17,5 +17,7 @@ const Item_List_View = ({data}: any) => {
 export default Item_List_View
 
 const styles = StyleSheet.create({
-  
+  container:{
+
+  }
 })

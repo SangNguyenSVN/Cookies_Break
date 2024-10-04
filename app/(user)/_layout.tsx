@@ -3,9 +3,11 @@ import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { StyleSheet, Text, View } from 'react-native'
+import { useAuth } from '../src/hooks/AuthContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
   return (
       <Tabs
         screenOptions={{

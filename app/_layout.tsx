@@ -1,31 +1,11 @@
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
-import { Slot, useRouter, useSegments } from 'expo-router';
-import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { Stack, useRouter  } from 'expo-router';
+import { useEffect } from 'react';
 
 const CLERK_PUBLISHABLE_KEY = "pk_test_bW92ZWQtbWVlcmthdC05My5jbGVyay5hY2NvdW50cy5kZXYk";
 
-const InitialLayout = () => {
-  const { isLoaded, isSignedIn } = useAuth();
-  const segments = useSegments();
-  const router = useRouter();
 
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    const inTabsGroup = segments[0] === '(users)';
-
-    console.log('User changed: ', isSignedIn);
-
-    if (isSignedIn && !inTabsGroup) {
-      router.replace('/(users)');
-    } else if (!isSignedIn) {
-      router.replace('/(publics)');
-    }
-  }, [isLoaded, isSignedIn, segments, router]);
-
-  return <Slot />;
-};
 
 const tokenCache = {
   async getToken(key: string) {
@@ -45,12 +25,23 @@ const tokenCache = {
   },
 };
 
-const RootLayout = () => {
+const _layout = () => {
+  const router = useRouter(); // Sử dụng useRouter để điều hướng
+
+  useEffect(() => {
+    // Điều hướng đến màn hình (public) khi ứng dụng khởi động
+    router.replace('/(public)'); 
+  }, []);
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
-      <InitialLayout />
+      <Stack initialRouteName='(public)'>
+        <Stack.Screen name="(public)" options={{ headerShown: false }} />
+        <Stack.Screen name="(doctor)" options={{ headerShown: false }} />
+        <Stack.Screen name="(user)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
     </ClerkProvider>
   );
 };
 
-export default RootLayout;
+export default _layout;

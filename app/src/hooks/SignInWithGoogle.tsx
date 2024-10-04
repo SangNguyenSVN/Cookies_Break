@@ -2,12 +2,14 @@ import React from "react";
 import * as WebBrowser from "expo-web-browser";
 import { Pressable, StyleSheet, Image, Alert, ActivityIndicator } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router"; // Import useRouter
 
 WebBrowser.maybeCompleteAuthSession();
 
 const SignInWithGoogle = () => {
   const googleAuth = useOAuth({ strategy: "oauth_google" });
   const [loading, setLoading] = React.useState(false);
+  const router = useRouter(); // Khởi tạo router
 
   const onGoogleSignIn = React.useCallback(async () => {
     setLoading(true);
@@ -19,6 +21,9 @@ const SignInWithGoogle = () => {
           await oAuthFlow.setActive({
             session: oAuthFlow.createdSessionId
           });
+
+          // Điều hướng đến màn hình (user) sau khi đăng nhập thành công
+          router.replace('/(users)');
         } else {
           Alert.alert("Error", "Could not set active session.");
         }
@@ -31,7 +36,7 @@ const SignInWithGoogle = () => {
     } finally {
       setLoading(false);
     }
-  }, [googleAuth]);
+  }, [googleAuth, router]); // Thêm router vào dependency array
 
   return (
     <Pressable onPress={onGoogleSignIn} style={styles.pressLog} disabled={loading}>
