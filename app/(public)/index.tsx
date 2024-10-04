@@ -16,7 +16,7 @@ const index = () => {
 
 
   const handleLogin = async () => {
-    router.replace("/(users)");
+    router.replace("/(doctor)");
   };
 
 
