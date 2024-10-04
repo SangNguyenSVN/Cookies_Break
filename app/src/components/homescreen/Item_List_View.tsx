@@ -8,6 +8,8 @@ const Item_List_View = ({data}: any) => {
       <Text>{data.id}</Text>
       <Text>{data.name}</Text>
       <Text>{data.price}</Text>
+    
+      <Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text>
     </View>
   )
 }
