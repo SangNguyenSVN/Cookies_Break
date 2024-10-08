@@ -1,66 +1,63 @@
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native'
-import { useSignUp } from '@clerk/clerk-expo';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert  } from 'react-native';
 import { useState } from 'react';
-import { Stack } from 'expo-router';
+import { Picker } from '@react-native-picker/picker';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [gender, setGender] = useState('Other'); // Giá trị mặc định
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   // Create the user and send the verification email
   const handleRegister = async () => {
-   
+    
   };
 
-  // Verify the email address
-
-// giao dien o day
+  // Giao diện đăng ký
   return (
-    <View style={styles.container} >
+    <View style={styles.container}>
       <View style={styles.form}>
         <View>
-          <Text style={styles.txtHeader}>Wellcome Back Doctor</Text>
-          <Text style={styles.txtTitle}>Simplity your workflow and boost your productivity with </Text>
-          <Text style={styles.txtTitle}>Cookies Break App. Get started for  free.</Text>
+          <Text style={styles.txtHeader}>Welcome to Cookies Break</Text>
+          <Text style={styles.txtTitle}>Simplify your health management with us.</Text>
           <Image style={styles.img} source={require("../src/assets/public/login_img_1.png")} />
+          
           <View style={styles.viewBox}>
             <TextInput
               placeholderTextColor={"gray"}
               value={username}
               onChangeText={setUsername}
-              numberOfLines={1}
-              editable
-              style={styles.viewInput} placeholder='Tên người dùng' />
+              style={styles.viewInput} 
+              placeholder='Tên người dùng' 
+            />
           </View>
+          
           <View style={styles.viewBox}>
             <TextInput
               placeholderTextColor={"gray"}
               value={password}
               onChangeText={setPassword}
-              numberOfLines={1}
-              editable
               secureTextEntry
-              style={styles.viewInput} placeholder='Mật khẩukhẩu' />
+              style={styles.viewInput} 
+              placeholder='Mật khẩu' 
+            />
+          </View>
+          <View style={styles.viewBox}>
+            <TextInput
+              placeholderTextColor={"gray"}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              style={styles.viewInput} 
+              placeholder='Số điện thoại' 
+            />
           </View>
         </View>
+
         <View>
-          <View style={styles.viewIcon}>
-            <View style={{ width: '100%', flexDirection: "row", justifyContent: "space-between", alignItems: 'center' }}>
-              <View >
-                {/* checkbox */}
-              </View>
-              <TouchableOpacity>
-                <Text>
-                  Forgot Password?
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View>
-            <TouchableOpacity style={styles.btnLogin} onPress={handleRegister}>
-              <Text style={styles.txtLogin}>Register</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.btnLogin} onPress={handleRegister}>
+            <Text style={styles.txtLogin}>Đăng ký</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -74,22 +71,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   form: {
-
+    width: '90%', // Tăng độ rộng cho form
   },
   viewBox: {
-    margin: 10
+    margin: 10,
   },
   viewInput: {
+    height:50,
     justifyContent: 'center',
     padding: 10,
     borderRadius: 10,
     borderColor: 'black',
     borderWidth: 2,
-  },
-  checkbox: {
-    backgroundColor: 'transparent', // No background for checkbox
-    borderWidth: 0, // No border
-
   },
   txtHeader: {
     alignSelf: 'center',
@@ -98,17 +91,9 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
     marginBottom: 10,
     color: 'black',
-
   },
   txtTitle: {
     alignSelf: 'center',
-
-  },
-  viewIcon: {
-    marginHorizontal: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
   },
   btnLogin: {
     height: 40,
@@ -117,17 +102,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginTop: 20,
   },
   txtLogin: {
     color: 'white',
-
   },
   img: {
     alignSelf: 'center',
     margin: 10,
   }
-
 });
 
 export default Register;

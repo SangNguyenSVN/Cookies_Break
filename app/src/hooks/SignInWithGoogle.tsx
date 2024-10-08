@@ -1,6 +1,6 @@
 import React from "react";
 import * as WebBrowser from "expo-web-browser";
-import { Pressable, StyleSheet, Image, Alert, ActivityIndicator } from "react-native";
+import { Pressable, StyleSheet, Image, Alert, ActivityIndicator, Text } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router"; // Import useRouter
 
@@ -23,7 +23,7 @@ const SignInWithGoogle = () => {
           });
 
           // Điều hướng đến màn hình (user) sau khi đăng nhập thành công
-          router.replace('/(users)');
+          router.replace('/(user)');
         } else {
           Alert.alert("Error", "Could not set active session.");
         }
@@ -39,11 +39,14 @@ const SignInWithGoogle = () => {
   }, [googleAuth, router]); // Thêm router vào dependency array
 
   return (
-    <Pressable onPress={onGoogleSignIn} style={styles.pressLog} disabled={loading}>
+    <Pressable onPress={onGoogleSignIn} style={styles.button} disabled={loading}>
       {loading ? (
-        <ActivityIndicator size="small" color="#0000ff" />
+        <ActivityIndicator size="small" color="#ffffff" />
       ) : (
-        <Image style={styles.img_icon} source={require("../assets/icon/google_icon.png")} />
+        <>
+          <Image style={styles.img_icon} source={require("../assets/icon/google_icon.png")} />
+          <Text style={styles.buttonText}>Google</Text>
+        </>
       )}
     </Pressable>
   );
@@ -52,16 +55,22 @@ const SignInWithGoogle = () => {
 export default SignInWithGoogle;
 
 const styles = StyleSheet.create({
-  pressLog: {
-    width: 40,
+  button: {
+    flexDirection:'row',
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 250,
     borderRadius: 20,
+    alignItems: "center",
+    justifyContent: 'center',
   },
   img_icon: {
-    width: 40,
-    height: 40,
+    width: 20,
+    height: 20,
     resizeMode: 'contain',
+    marginRight: 10, // Khoảng cách giữa biểu tượng và chữ
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 16,
   },
 });
