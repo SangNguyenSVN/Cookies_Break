@@ -36,7 +36,7 @@ const HomeScreen = () => {
   
 
   const handlePress = (item:any) => {
-    navigation.navigate('PatientDetailScreen', { patientData: item });
+    navigation.navigate('patient_detail_screen', { patientData: item }); 
   };
 
   return (

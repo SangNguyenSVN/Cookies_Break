@@ -4,15 +4,12 @@ import Header from '../../shared/Header';
 
 const PatientDetailScreen = ({ route, navigation }: any) => {
     const { patientData } = route.params; // Nhận dữ liệu bệnh nhân từ tham số điều hướng
-
+ 
     const [note, setNote] = useState(patientData.note); // Trạng thái cho thông tin khám
     const [reason, setReason] = useState(patientData.reason); // Trạng thái cho lý do
     const [status, setStatus] = useState(patientData.status); // Trạng thái cho đơn khám
-
-    const handleSave = () => {
-        // Thực hiện lưu lại thông tin đã chỉnh sửa ở đây
-        console.log('Đã lưu:', { note, reason });
-        navigation.goBack(); // Quay lại màn hình trước
+    const handlePress = () => {
+      navigation.navigate('medicine_selection_screen', {}); 
     };
 
     const handleConfirm = () => {
@@ -71,6 +68,9 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleCancel}>
                     <Text style={styles.buttonText}>Hủy đơn khám</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handlePress}>
+                    <Text style={styles.buttonText}>Chon thuoc</Text>
                 </TouchableOpacity>
             </View>
         </View></>

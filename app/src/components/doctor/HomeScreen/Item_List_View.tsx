@@ -2,19 +2,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
 const Item_List_View = ({ data }: any) => {
+
   return (
     <View style={styles.itemContainer}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>ID: {data.id}</Text>
-      </View>
-
-
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>Thông Tin Bệnh Nhân:</Text>
-        <Text style={styles.infoDetailText}>- Tên: {data.patientName}</Text>
-        <Text style={styles.infoDetailText}>- Trạng Thái: {data.status}</Text>
-        <Text style={styles.infoDetailText}>- Thời Gian Hẹn: {data.appointmentTime}</Text>
-      </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>ID: {data.id}</Text>
+        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoText}>Thông Tin Bệnh Nhân:</Text>
+          <Text style={styles.infoDetailText}>- Tên: {data.patientName}</Text>
+          <Text style={styles.infoDetailText}>- Trạng Thái: {data.status}</Text>
+          <Text style={styles.infoDetailText}>- Thời Gian Hẹn: {data.appointmentTime}</Text>
+        </View>
     </View>
   );
 };
