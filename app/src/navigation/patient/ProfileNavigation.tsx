@@ -3,7 +3,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import ProfileScreen from '../../screens/patient/ProfileScreen';
 import ProfileSetting from '../../shared/screens/ProfileSetting';
-
+ 
 
 const ProfileNavigation = () => {
     const Stack = createStackNavigator();

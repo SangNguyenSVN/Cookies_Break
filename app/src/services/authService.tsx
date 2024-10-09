@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Định nghĩa kiểu cho dữ liệu phản hồi
 interface RegisterResponse {
@@ -22,6 +23,10 @@ interface LoginResponse {
         id: string;
         username: string;
         phoneNumber: string;
+        email: string;          // Thêm trường email
+        gender: string;         // Thêm trường gender
+        dateOfBirth: Date;    // Thêm trường dateOfBirth
+        fullname: string;       // Thêm trường fullname
         role: {
             id: string;
             name: string;
@@ -62,6 +67,11 @@ const login = async (username: string, password: string): Promise<LoginResponse 
             password,
             // Không cần role ở đây
         });
+        
+        // Lưu user và token vào AsyncStorage
+        await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
+        await AsyncStorage.setItem('token', response.data.token);
+
         return response.data; // Trả về phản hồi
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -74,42 +84,26 @@ const login = async (username: string, password: string): Promise<LoginResponse 
     return undefined; // Trả về undefined nếu có lỗi
 };
 
-// Hàm để đăng nhập cho mọi người dùng thử api
-const loginUser = async () => {
-    try {
-        const loginResponse = await login("test", "1"); // Không cần truyền role
-        console.log("Login Response:", loginResponse); // In toàn bộ phản hồi từ API
-
-        if (loginResponse && loginResponse.user) {
-            console.log("User role:", loginResponse.user.role); // Truy cập role từ user
-        } else {
-            console.error("Login response hoặc user là null hoặc undefined");
-        }
-    } catch (error) {
-        console.error("Login error:", error);
-    }
-};
-
 // logout
 const logout = async () => {
     try {
-        const token = localStorage.getItem('token'); // Hoặc sử dụng AsyncStorage trong React Native
+        const token = await AsyncStorage.getItem('token'); // Sử dụng AsyncStorage
         await axios.post(`${API_URL}/logout`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
-        localStorage.removeItem('token'); // Xóa token khỏi local storage
-        // Thực hiện thêm các hành động khác như chuyển hướng người dùng về trang đăng nhập
+        await AsyncStorage.removeItem('token'); // Xóa token khỏi AsyncStorage
+        await AsyncStorage.removeItem('user'); // Xóa user khỏi AsyncStorage
     } catch (error) {
         console.error('Lỗi đăng xuất:', error);
         throw error; // Ném lỗi để xử lý ở nơi gọi hàm này
     }
 };
+
 export default {
     registerPatient,
     registerDoctor,
     login,
     logout,
-    loginUser
 };

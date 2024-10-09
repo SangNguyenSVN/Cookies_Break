@@ -1,11 +1,13 @@
-import { StyleSheet, View, Text, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Header from '../../shared/Header';
-import { useAuth } from '../../hooks/useAuth'; // Import the useAuth hook
+import { useAuth } from '../../hooks/useAuth'; 
+import Item_View_Profile_1 from '../../components/patient/profile/Item_View_Profile_1';
 
-const ProfileScreen = () => {
-    const { user, logout } = useAuth(); // Get the authenticated user and logout function from useAuth
-
+const ProfileScreen = () => { 
+    const { user, logout } = useAuth(); 
+    console.log(user)// Get the authenticated user and logout function from useAuth
+    console.log(user)
     // This function will handle logout
     const handleLogout = async () => {
         try {
@@ -19,22 +21,10 @@ const ProfileScreen = () => {
     return (
         <View style={styles.container}>
             <Header title="Thông tin tài khoản" showBackButton={false} />
-            
-            {/* <View style={styles.profileContainer}>
-                {user ? (
-                    <>
-                        <Text style={styles.label}>Tên người dùng: {user.username}</Text>
-                        <Text style={styles.label}>Số điện thoại: {user.phoneNumber}</Text>
-                        <Text style={styles.label}>Vai trò: {user.role?.name}</Text>
-                        
-                        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-                            <Text style={styles.logoutButtonText}>Đăng xuất</Text>
-                        </TouchableOpacity>
-                    </>
-                ) : (
-                    <Text style={styles.label}>Đang tải thông tin người dùng...</Text>
-                )}
-            </View> */}
+            <View style={styles.item}>
+                {/* Truyền user vào Item_View_Profile_1 */}
+                <Item_View_Profile_1 data={user} />
+            </View>
         </View>
     );
 };
@@ -46,26 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#489458',
     },
-    profileContainer: {
-        padding: 20,
-        backgroundColor: '#fff',
-        margin: 10,
-        borderRadius: 10,
-    },
-    label: {
-        fontSize: 18,
-        color: '#333',
-        marginVertical: 5,
-    },
-    logoutButton: {
-        marginTop: 20,
-        paddingVertical: 10,
-        backgroundColor: '#d9534f',
-        borderRadius: 5,
-        alignItems: 'center',
-    },
-    logoutButtonText: {
-        color: '#fff',
-        fontSize: 16,
+    item: {
+        marginHorizontal: 10,
     },
 });
