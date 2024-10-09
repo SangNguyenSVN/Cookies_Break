@@ -9,15 +9,7 @@ interface CardProps{
 const Item_List_View: React.FC<CardProps> = ({Name,Description,Price,ImgSource})=> {
     
   return (
-<<<<<<< HEAD
-    <View>
-      <Image source={require('../../../../assets/images/icon.png')} style={{width: 50, height:50}}/>
-      <Text>{data.id}</Text>
-      <Text>{data.name}</Text>
-      <Text>{data.price}</Text>
-    
-      <Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text><Text> Nhựt </Text>
-=======
+
     <View style={{padding:8}}>
       <View style={[styles.container]}>
         <View style={[styles.box]}>
@@ -40,7 +32,7 @@ const Item_List_View: React.FC<CardProps> = ({Name,Description,Price,ImgSource})
             </View>
         </View>
       </View>
->>>>>>> origin
+
     </View>
   )
 }
