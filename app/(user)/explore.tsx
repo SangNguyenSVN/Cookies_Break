@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import ExploreNavigation from '../src/navigation/ExploreNavigation';
+import ExploreNavigation from '../src/navigation/patient/ExploreNavigation';
 
 const Explore = () => { // Capitalize the component name
   return (

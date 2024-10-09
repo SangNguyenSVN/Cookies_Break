@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, TextInput, Button, TouchableOpacity, ScrollView
 import React, { useState } from 'react';
 import Header from '../../shared/Header';
 
-const ProfileScreen = () => {
+const ProfileSetting = () => {
     const [name, setName] = useState('');
     const [dob, setDob] = useState('');
     const [gender, setGender] = useState('Nam');
@@ -93,7 +93,7 @@ const ProfileScreen = () => {
     );
 };
 
-export default ProfileScreen;
+export default ProfileSetting;
 
 const styles = StyleSheet.create({
     container: {

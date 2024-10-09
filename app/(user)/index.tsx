@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-import HomeNavigation from '../src/navigation/HomeNavigation'
+import HomeNavigation from '../src/navigation/patient/HomeNavigation'
 
 const Home = () => {
   return (

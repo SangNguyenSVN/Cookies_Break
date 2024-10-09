@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import AppointmentScreen from '../screens/user/AppointmentScreen'
+import AppointmentScreen from '../../screens/patient/AppointmentScreen'
 const AppointmentNavigation = () => {
     const Stack = createStackNavigator();
   return (

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import AppointmentNavigation from '../src/navigation/AppointmentNavigation'
+import AppointmentNavigation from '../src/navigation/patient/AppointmentNavigation'
 
 
 const booking = () => {

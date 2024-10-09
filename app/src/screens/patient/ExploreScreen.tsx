@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ActivityIndicator, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { useRoute } from '@react-navigation/native'
-import Hospital_Doctor_Tab from '../../components/explore/Hospital_Doctor_Tab'
+import Hospital_Doctor_Tab from '../../components/patient/explore/Hospital_Doctor_Tab'
 import Header from '../../shared/Header'
 import { useNavigation } from '@react-navigation/native';
 const ExploreScreen = () => {

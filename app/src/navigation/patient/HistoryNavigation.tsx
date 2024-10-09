@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import HistoryScreen from '../screens/user/HistoryScreen';
+import HistoryScreen from '../../screens/patient/HistoryScreen';
 
 const HistoryNavigation = () => {
     const Stack = createStackNavigator();
