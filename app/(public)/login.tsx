@@ -4,10 +4,10 @@ import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 import authService from '../src/services/authService';
 
-const Login = () => {
+const login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { userType }: any = useLocalSearchParams();
+  const { userType }: any = useLocalSearchParams(); // Lấy userType từ tham số đường dẫn
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -30,17 +30,18 @@ const Login = () => {
 
       // Bắt đầu loading
       setLoading(true);
-      const response = await authService.login(trimmedUsername, trimmedPassword, userType);
+      const response = await authService.login(trimmedUsername, trimmedPassword);
 
       // Kết thúc loading
       setLoading(false);
       console.log(response);
       if (response) {
-        const userRole = response.user.role;
+        // Kiểm tra vai trò người dùng từ phản hồi
+        const userRole = response.user.role.name;
         if (userRole === 'doctor') {
-          router.replace('/(doctor)');
+          router.replace('/(doctor)'); // Chuyển đến trang của bác sĩ
         } else if (userRole === 'patient') {
-          router.replace('/(user)');
+          router.replace('/(user)'); // Chuyển đến trang của bệnh nhân
         } else {
           Alert.alert("Lỗi", "Vai trò người dùng không hợp lệ.");
         }
@@ -94,12 +95,12 @@ const Login = () => {
                   <View>
                     {/* Checkbox for Remember me can be added here */}
                   </View>
-                  <Link href={"/(public)/forgot"}>Forgot password</Link>
+                  <Link href={"/(public)/forgot"}>Quên mật khẩu</Link>
                 </View>
               </View>
               <View>
                 <TouchableOpacity style={styles.btnLogin} onPress={handleLogin} disabled={loading}>
-                  {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Login</Text>}
+                  {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Đăng nhập</Text>}
                 </TouchableOpacity>
               </View>
             </View>
@@ -108,8 +109,8 @@ const Login = () => {
             <View style={styles.viewbot}>
               <SignInWithGoogle />
               <View style={styles.viewRegister}>
-                <Text>You don’t have an account? </Text>
-                <Link style={{ color: 'green' }} href={"/(public)/register"}>Register</Link>
+                <Text>Bạn chưa có tài khoản? </Text>
+                <Link style={{ color: 'green' }} href={"/(public)/register"}>Đăng ký</Link>
               </View>
             </View>
           }
@@ -119,7 +120,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default login;
 
 const styles = StyleSheet.create({
   container: {
@@ -188,4 +189,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-    
