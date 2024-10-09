@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-import HistoryNavigation from '../src/navigation/HistoryNavigation'
+import HistoryNavigation from '../src/navigation/patient/HistoryNavigation'
 const History = () => {
   return (
     <View style={styles.container}>

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useState } from 'react'
 import Header from '../../shared/Header'
-import Item_List_View from '../../components/homescreen/Item_List_View'
+import Item_List_View from '../../components/patient/homescreen/Item_List_View'
 import { FlatList } from 'react-native-gesture-handler'
 import ButtonLogout from '../../shared/ButtonLogout'
 

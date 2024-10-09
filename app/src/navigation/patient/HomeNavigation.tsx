@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import HomeScreen from '../screens/user/HomeScreen';
+import HomeScreen from '../../screens/patient/HomeScreen';
 
 const Stack = createStackNavigator();
 const HomeNavigation = () => {
