@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import apiClient from './apiClient';
 
 // Định nghĩa kiểu cho dữ liệu phản hồi
 interface RegisterResponse {
@@ -23,10 +24,11 @@ interface LoginResponse {
         id: string;
         username: string;
         phoneNumber: string;
-        email: string;          // Thêm trường email
-        gender: string;         // Thêm trường gender
-        dateOfBirth: Date;    // Thêm trường dateOfBirth
-        fullname: string;       // Thêm trường fullname
+        email: string;
+        gender: string;
+        dateOfBirth: Date;
+        fullname: string;
+        address: string;
         role: {
             id: string;
             name: string;
@@ -35,69 +37,63 @@ interface LoginResponse {
     };
 }
 
-const API_URL = 'http://192.168.1.3:3000/auth'; // Đổi thành URL thực tế của bạn
+const API_URL = 'http://192.168.1.4:3000/api/auth'; // Đổi thành URL thực tế của bạn
 
-// Đăng ký bệnh nhân
-const registerPatient = async (username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
-    const response: AxiosResponse<RegisterResponse> = await axios.post(`${API_URL}/register/patient`, {
+// Hàm đăng ký chung
+const registerUser = async (type: 'patient' | 'doctor', username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
+    const response: AxiosResponse<RegisterResponse> = await axios.post(`${API_URL}/register/${type}`, {
         username,
         password,
         phoneNumber,
-        roleId, // Thêm roleId vào body
+        roleId,
     });
     return response.data;
 };
 
-// Đăng ký bác sĩ
-const registerDoctor = async (username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
-    const response: AxiosResponse<RegisterResponse> = await axios.post(`${API_URL}/register/doctor`, {
-        username,
-        password,
-        phoneNumber,
-        roleId, // Thêm roleId vào body
-    });
-    return response.data;
-};
+// Đăng ký bệnh nhân và bác sĩ
+const registerPatient = (username: string, password: string, phoneNumber: string, roleId: string) =>
+    registerUser('patient', username, password, phoneNumber, roleId);
+
+const registerDoctor = (username: string, password: string, phoneNumber: string, roleId: string) =>
+    registerUser('doctor', username, password, phoneNumber, roleId);
 
 // Đăng nhập
 const login = async (username: string, password: string): Promise<LoginResponse | undefined> => {
     try {
-        const response: AxiosResponse<LoginResponse> = await axios.post(`${API_URL}/login`, {
-            username,
-            password,
-            // Không cần role ở đây
-        });
-        
+        const response: AxiosResponse<LoginResponse> = await axios.post(`${API_URL}/login`, { username, password });
+
         // Lưu user và token vào AsyncStorage
-        await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
-        await AsyncStorage.setItem('token', response.data.token);
+        await AsyncStorage.multiSet([
+            ['user', JSON.stringify(response.data.user)],
+            ['token', response.data.token],
+        ]);
 
-        return response.data; // Trả về phản hồi
+        return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            console.error('Lỗi đăng nhập:', error.response.data);
-        } else {
-            console.error('Lỗi không xác định:', error);
-        }
+        console.error('Lỗi đăng nhập:', axios.isAxiosError(error) ? error.response?.data : error);
     }
-
-    return undefined; // Trả về undefined nếu có lỗi
+    return undefined;
 };
 
-// logout
+const updateAccount = async (username: string, password?: string): Promise<{ message: string }> => {
+    const data = { username, ...(password && { password }) }; // Chỉ thêm password nếu có
+    try {
+        const response = await apiClient.put('/auth/account/update', data);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi thay đổi tài khoản:', axios.isAxiosError(error) ? error.response?.data : error);
+        throw new Error('Không thể thay đổi tài khoản');
+    }
+};
+
+// Đăng xuất
 const logout = async () => {
     try {
-        const token = await AsyncStorage.getItem('token'); // Sử dụng AsyncStorage
-        await axios.post(`${API_URL}/logout`, {}, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        await AsyncStorage.removeItem('token'); // Xóa token khỏi AsyncStorage
-        await AsyncStorage.removeItem('user'); // Xóa user khỏi AsyncStorage
+        await apiClient.post('/auth/logout', {});
+        await AsyncStorage.multiRemove(['token', 'user']);
     } catch (error) {
         console.error('Lỗi đăng xuất:', error);
-        throw error; // Ném lỗi để xử lý ở nơi gọi hàm này
+        throw error;
     }
 };
 
@@ -106,4 +102,5 @@ export default {
     registerDoctor,
     login,
     logout,
+    updateAccount,
 };

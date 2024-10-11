@@ -24,7 +24,6 @@ interface AuthContextType {
     user: User | null;
     token: string | null;
     login: (username: string, password: string) => Promise<void>;
-    logout: () => Promise<void>;
     error: string | null; // Thêm thuộc tính error để lưu trữ thông báo lỗi
 }
 
@@ -68,20 +67,11 @@ export const useAuth = (): AuthContextType => {
     };
 
     // Hàm đăng xuất
-    const logout = async (): Promise<void> => {
-        await authAPI.logout();
-        setUser(null);
-        setToken(null);
-        await AsyncStorage.removeItem('user'); // Xóa dữ liệu user từ AsyncStorage
-        await AsyncStorage.removeItem('token'); // Xóa dữ liệu token từ AsyncStorage
-        setError(null); // Reset error khi đăng xuất
-    };
 
     return {
         user,
         token,
         login,
-        logout,
         error, // Trả về thông báo lỗi
     };
 };

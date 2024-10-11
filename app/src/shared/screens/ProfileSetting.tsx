@@ -1,11 +1,10 @@
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity,Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import Header from '../../shared/Header';
 import DOB_Picker from '../DOB_Picker';
-
+import { useNavigation } from '@react-navigation/native';
 import apiPatient from '../../services/apiPatient';
-import { useAuth } from '../../hooks/useAuth';
 
 const ProfileSetting = () => {
     const [name, setName] = useState('');
@@ -15,7 +14,8 @@ const ProfileSetting = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const route = useRoute();
-    const { token }: any = useAuth(); // Lấy token từ useAuth
+    const navigation = useNavigation();
+
 
     const [error, setError] = useState({
         name: false,
@@ -24,22 +24,23 @@ const ProfileSetting = () => {
         phoneNumber: false,
         email: false,
     });
-    const { dataUser }: any = route.params || {}; // Accessing dataUser
-    const data = dataUser?.data; // Accessing data
+    const { dataUser }: any = route.params || {};
+    const data = dataUser?.data;
 
-    console.log('Dữ liệu người dùng:', dataUser); // Log toàn bộ dataUser
-    console.log('Dữ liệu:', data); // Log dữ liệu bên trong data
+
+    // console.log('Dữ liệu người dùng:', dataUser); // Log toàn bộ dataUser
+    // console.log('Dữ liệu:', data); // Log dữ liệu bên trong data
 
     if (data) {
-        console.log('User:', data.user); // Log thông tin người dùng
-        console.log('Role:', data.role);   // Log thông tin vai trò
+        // console.log('User:', data.user); // Log thông tin người dùng
+        // console.log('Role:', data.role);   // Log thông tin vai trò
     }
 
     // Initialize fields with user data
     useEffect(() => {
         if (data) {
             setName(data.user.fullname || '');
-            setDob(new Date(data.user.dateOfBirth) || new Date()); // Chuyển đổi thành Date
+            setDob(new Date(data.user.dateOfBirth) || new Date());
             setGender(data.user.gender || '');
             setAddress(data.user.address || '');
             setPhoneNumber(data.user.phoneNumber || '');
@@ -50,17 +51,17 @@ const ProfileSetting = () => {
     // Handle name change
     const handleNameChange = (text: string) => {
         setName(text);
-        setError(prev => ({ ...prev, name: !text })); // Kiểm tra nếu trống
+        setError(prev => ({ ...prev, name: !text }));
     };
 
     const handleAddressChange = (text: string) => {
         setAddress(text);
-        setError(prev => ({ ...prev, address: !text })); // Kiểm tra nếu trống
+        setError(prev => ({ ...prev, address: !text }));
     };
 
     const handlePhoneChange = (text: string) => {
         setPhoneNumber(text);
-        setError(prev => ({ ...prev, phoneNumber: !text })); // Kiểm tra nếu trống
+        setError(prev => ({ ...prev, phoneNumber: !text }));
     };
 
     const handleEmailChange = (text: string) => {
@@ -88,16 +89,18 @@ const ProfileSetting = () => {
         try {
             // Gọi hàm cập nhật với dữ liệu mới
             const updatedData = {
-                fullname: name,
-                dateOfBirth: dob,
-                gender: gender,
-                address: address,
                 phoneNumber: phoneNumber,
                 email: email,
+                gender: gender,
+                dateOfBirth: dob,
+                fullname: name,
+                address: address,
             };
-
-            const response = await apiPatient.updatePatient(data.user._id, updatedData, token);
+            const response = await apiPatient.updatePatient(updatedData);
             console.log('Cập nhật thành công:', response.message);
+            Alert.alert('Cập nhật thành công thành công');
+            navigation.goBack();
+
             // Bạn có thể hiển thị thông báo cho người dùng tại đây
 
         } catch (error: any) {
@@ -139,7 +142,7 @@ const ProfileSetting = () => {
                             <Text style={styles.label}>Giới tính:</Text>
                             <View style={styles.genderContainer}>
                                 <TouchableOpacity
-                                    style={[styles.genderOption, (gender === 'Male' || data.gender === 'Nam') && styles.activeGender]}
+                                    style={[styles.genderOption, (gender === 'Nam' || data.gender === 'Nam') && styles.activeGender]}
                                     onPress={() => setGender('Nam')}
                                 >
                                     <Text style={styles.genderText}>Nam</Text>

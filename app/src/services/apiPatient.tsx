@@ -1,4 +1,6 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import apiClient from './apiClient';
 
 // Định nghĩa kiểu dữ liệu cho thông tin cập nhật
 interface UpdatePatientInput {
@@ -7,37 +9,33 @@ interface UpdatePatientInput {
     email?: string;       // Có thể không có (optional)
     gender?: string;      // Có thể không có (optional)
     dateOfBirth?: Date;   // Có thể không có (optional)
-    fullname?: string;    // Có thể không có (optional)
+    fullname?: string;
+    address?: string;     // Có thể không có (optional)
 }
 
-const API_URL = 'http://localhost:3000/api/patients';
 
-// Hàm để tạo headers với token
-const createHeaders = (token: string) => ({
-    headers: {
-        Authorization: `Bearer ${token}`, // Thêm token vào header
-        'Content-Type': 'application/json', // Đặt kiểu content type nếu cần
-    },
-});
 
-// 1. Cập nhật thông tin bệnh nhân
 const updatePatient = async (
-    patientId: string,
     updatedData: UpdatePatientInput,
-    token: string
 ): Promise<{ message: string }> => {
     try {
-        const response = await axios.put<{ message: string }>(
-            `${API_URL}/update-info/${patientId}`,
-            updatedData,
-            createHeaders(token) // Gửi token trong header
+        const url = '/patients/update'; // Chỉ cần đường dẫn tương đối
+
+        console.log('URL:', url);
+        console.log("Data", updatedData);
+
+        const response = await apiClient.put<{ message: string }>(
+            url,
+            { ...updatedData }
         );
+
         return response.data;
     } catch (error) {
-        console.error('Lỗi khi cập nhật thông tin bệnh nhân:', error); // Log lỗi chi tiết
+        console.error('Lỗi khi cập nhật bệnh nhân:', error);
 
+        // Xử lý lỗi
         if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.message || 'Cập nhật thông tin thất bại');
+            throw new Error(error.response.data.message || 'Cập nhật bệnh nhân thất bại');
         } else {
             throw new Error('Đã xảy ra lỗi không xác định');
         }
@@ -45,19 +43,16 @@ const updatePatient = async (
 };
 
 // 2. Xóa người dùng
-const deleteUser = async (
-    userId: string,
-    token: string
-): Promise<{ message: string }> => {
+const deleteUser = async (userId: string): Promise<{ message: string }> => {
     try {
-        const response = await axios.delete<{ message: string }>(
-            `${API_URL}/${userId}`,
-            createHeaders(token) // Gửi token trong header
+        const response = await apiClient.delete<{ message: string }>(
+            `/${userId}` // Địa chỉ API xóa
         );
-        return response.data;
+        return response.data; // Trả về thông báo từ server
     } catch (error) {
-        console.error('Lỗi khi xóa bệnh nhân:', error); // Log lỗi
+        console.error('Lỗi khi xóa bệnh nhân:', error);
 
+        // Xử lý lỗi
         if (axios.isAxiosError(error) && error.response) {
             throw new Error(error.response.data.message || 'Xóa bệnh nhân thất bại');
         } else {
