@@ -70,10 +70,15 @@ const login = async (username: string, password: string): Promise<LoginResponse 
 
         return response.data;
     } catch (error) {
-        console.error('Lỗi đăng nhập:', axios.isAxiosError(error) ? error.response?.data : error);
+        if (axios.isAxiosError(error)) {
+            console.error('Lỗi đăng nhập:', error.response?.data);
+        } else {
+            console.error('Lỗi không xác định:', error);
+        }
     }
     return undefined;
 };
+
 
 const updateAccount = async (username: string, password?: string): Promise<{ message: string }> => {
     const data = { username, ...(password && { password }) }; // Chỉ thêm password nếu có

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from './apiClient';
 
 // Định nghĩa kiểu dữ liệu cho thông tin cập nhật

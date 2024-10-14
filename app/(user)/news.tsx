@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import NewsNavigation from '../src/navigation/patient/NewsNavigation'
 
-import HistoryNavigation from '../src/navigation/patient/HistoryNavigation'
-const History = () => {
+const News = () => {
   return (
     <View style={styles.container}>
-      <HistoryNavigation/>
+      <NewsNavigation/>
     </View>
   )
 }
 
-export default History
+export default News
 
 const styles = StyleSheet.create({
   container: {

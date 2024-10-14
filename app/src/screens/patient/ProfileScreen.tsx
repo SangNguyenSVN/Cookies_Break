@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import Item_View_Profile_1 from '../../components/patient/profile/Item_View_Profile_1';
 import Item_View_Profile_2 from '../../components/patient/profile/Item_View_Profile_2';
 import Item_View_Profile_3 from '../../components/patient/profile/Item_View_Profile_3';
+import DateTimeForm from '../../shared/DateTime';
 
 const ProfileScreen = () => {
     const { user } = useAuth();
@@ -17,6 +18,7 @@ const ProfileScreen = () => {
                 <View style={styles.item}>
                     <Item_View_Profile_1 data={user} />
                     <Item_View_Profile_2 data={user} />
+                    <DateTimeForm/>
                     <Item_View_Profile_3 />
                 </View>
             </ScrollView>
