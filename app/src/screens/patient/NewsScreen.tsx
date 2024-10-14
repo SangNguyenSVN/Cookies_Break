@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import { Search, Menu } from 'react-native-feather';
 
-const NewsFeedScreen = ({ navigation }:any) => {
+const NewsFeedScreen = ({ navigation }: any) => {
     const [newsData, setNewsData] = useState([]);
 
     useEffect(() => {
         // Mô phỏng việc tải dữ liệu từ API
         const fetchNewsData = async () => {
             // Trong ứng dụng thực tế, bạn sẽ gọi API ở đây
-            const data:any = [
-                { id: 1, title: '8 dấu hiệu cảnh báo bệnh tim mạch...', description: 'Bệnh viện Nhi Đồng 1 Phần 1', image: 'https://example.com/image1.jpg' },
+            const data: any = [
+                { id: 1, title: '8 dấu hiệu cảnh báo bệnh tim mạch...', description: 'Bệnh viện Nhi Đồng 1 Phần 1', image: 'https://via.placeholder.com/100' },
+                { id: 2, title: 'Cách chăm sóc trẻ sơ sinh đúng cách', description: 'Bệnh viện Nhi Đồng 2', image: 'https://via.placeholder.com/100' },
+                { id: 3, title: 'Những dấu hiệu bệnh lý cần lưu ý', description: 'Bệnh viện Chợ Rẫy', image: 'https://via.placeholder.com/100' },
+                { id: 4, title: 'Lời khuyên cho bệnh nhân tim mạch', description: 'Bệnh viện Tim Tâm Đức', image: 'https://via.placeholder.com/100' },
                 // Thêm các mục tin tức khác ở đây
             ];
             setNewsData(data);
@@ -52,7 +55,7 @@ const NewsFeedScreen = ({ navigation }:any) => {
                 {/* Featured Image */}
                 <View style={styles.featuredImageContainer}>
                     <Image
-                        source={{ uri: 'https://example.com/featured.jpg' }}
+                        source={{ uri: 'https://via.placeholder.com/400x200' }} // URL hình ảnh nổi bật
                         style={styles.featuredImage}
                     />
                     <View style={styles.featuredTextOverlay}>
@@ -70,7 +73,7 @@ const NewsFeedScreen = ({ navigation }:any) => {
                 </ScrollView>
 
                 {/* News List */}
-                {newsData.map(({item}:any) => (
+                {newsData.map((item: any) => (
                     <TouchableOpacity
                         key={item.id}
                         style={styles.newsItem}
@@ -84,7 +87,7 @@ const NewsFeedScreen = ({ navigation }:any) => {
                     </TouchableOpacity>
                 ))}
             </ScrollView>
-        </View >
+        </View>
     );
 };
 
