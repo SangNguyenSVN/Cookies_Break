@@ -16,25 +16,7 @@ interface RegisterResponse {
     };
 }
 
-interface LoginResponse {
-    message: string;
-    token: string;
-    user: {
-        id: string;
-        username: string;
-        phoneNumber: string;
-        email: string;
-        gender: string;
-        dateOfBirth: Date;
-        fullname: string;
-        address: string;
-        role: {
-            id: string;
-            name: string;
-            permissions: string[];
-        };
-    };
-}
+
 
 // Hàm đăng ký chung
 const registerUser = async (type: 'patient' | 'doctor', username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
@@ -55,9 +37,9 @@ const registerDoctor = (username: string, password: string, phoneNumber: string,
     registerUser('doctor', username, password, phoneNumber, roleId);
 
 // Đăng nhập
-const login = async (username: string, password: string): Promise<LoginResponse | undefined> => {
+const login = async (username: string, password: string, userType: string) => {
     try {
-        const response = await apiClient.post('/auth/login', { username, password });
+        const response = await apiClient.post('/auth/login', { username, password, userType });
 
         // Lưu user và token vào AsyncStorage
         await AsyncStorage.multiSet([

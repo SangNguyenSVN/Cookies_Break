@@ -9,19 +9,10 @@ interface Role {
     permissions: string[];
 }
 
-interface User {
-    id: string;
-    username: string;
-    phoneNumber: string;
-    email: string;        // Thêm trường email
-    gender: string;       // Thêm trường gender
-    dateOfBirth: Date;    // Thêm trường dateOfBirth
-    fullname: string;     // Thêm trường fullname
-    role: Role;           // Định nghĩa kiểu Role
-}
+
 
 interface AuthContextType {
-    user: User | null;
+    user: any | null;
     token: string | null;
     login: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>; // Thêm hàm logout
@@ -29,7 +20,7 @@ interface AuthContextType {
 }
 
 export const useAuth = (): AuthContextType => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<any | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null); // Khởi tạo trạng thái lỗi
 
@@ -48,7 +39,7 @@ export const useAuth = (): AuthContextType => {
     }, []);
 
     // Hàm đăng nhập
-    const login = async (username: string, password: string): Promise<void> => {
+    const login = async (username: string, password: string) => {
         try {
             const response: any = await authAPI.login(username, password);
             if (response) {

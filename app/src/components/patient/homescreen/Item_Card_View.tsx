@@ -12,7 +12,7 @@ const Item_Card_View: React.FC<CardProps> = ({Name,Description,Price,ImgSource})
     <View style={{padding:8}}>
       <View style={[styles.container]}>
         <View style={[styles.box]}>
-        <Image style={{width:"100%",height:"100%"}} source={ImgSource} />
+        {/* <Image style={{width:"100%",height:"100%"}} source={ImgSource} /> */}
         </View>
         <View style={{flexDirection:"column", justifyContent:"space-between",width:200}}>
         <Text style={[styles.TextStyle,{color:"black"}]}>{Name}</Text>
@@ -20,14 +20,14 @@ const Item_Card_View: React.FC<CardProps> = ({Name,Description,Price,ImgSource})
         <Text style={[styles.TextStyle,{color:"red"}]}>{`${Price}`} VND</Text>
             
             <View style={{flexDirection:"row",justifyContent:"space-between",width:170 ,marginTop:11 }}>
-                <Pressable style={[styles.button1]}>
+                {/* <Pressable style={[styles.button1]}>
                 <Image style={{width:21,height:21}} source={require('../../assets/icon/Date_range.png')} />
                     <Text style={[styles.TextStyle,{color:"white"}]}> Đặt lịch</Text>
-                </Pressable>
+                </Pressable> */}
             
-                <Pressable style={[styles.button1,{width:24,height:24,backgroundColor:"#EBEAEA"}]}>
+                {/* <Pressable style={[styles.button1,{width:24,height:24,backgroundColor:"#EBEAEA"}]}>
                 <Image style={{width:"100%",height:"100%"}} source={require('../../assets/icon/Message_alt_fill.png')} />
-                </Pressable>
+                </Pressable> */}
             </View>
         </View>
       </View>

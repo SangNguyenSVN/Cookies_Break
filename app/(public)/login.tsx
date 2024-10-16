@@ -5,7 +5,7 @@ import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 import authService from '../src/services/authService';
 
 const login = () => {
-  const [username, setUsername] = useState('test');
+  const [username, setUsername] = useState('doctor1');
   const [password, setPassword] = useState('1');
   const { userType }: any = useLocalSearchParams(); // Lấy userType từ tham số đường dẫn
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ const login = () => {
 
       // Bắt đầu loading
       setLoading(true);
-      const response = await authService.login(trimmedUsername, trimmedPassword);
+      const response = await authService.login(trimmedUsername, trimmedPassword, userType);
 
       // Kết thúc loading
       setLoading(false);

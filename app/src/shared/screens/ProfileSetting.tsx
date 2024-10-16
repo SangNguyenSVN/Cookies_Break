@@ -25,26 +25,20 @@ const ProfileSetting = () => {
         email: false,
     });
     const { dataUser }: any = route.params ||{} ;
-    const data:any = dataUser?.data;
 
 
     console.log('Dữ liệu người dùng:', dataUser); // Log toàn bộ dataUser
-    console.log('Dữ liệu:', data); // Log dữ liệu bên trong data
 
-    if (data) {
-        // console.log('User:', data.user); // Log thông tin người dùng
-        // console.log('Role:', data.role);   // Log thông tin vai trò
-    }
 
     // Initialize fields with user data
     useEffect(() => {
-        if (data) {
-            setName(data.user.fullname || '');
-            setDob(new Date(data.user.dateOfBirth) || new Date());
-            setGender(data.user.gender || '');
-            setAddress(data.user.address || '');
-            setPhoneNumber(data.user.phoneNumber || '');
-            setEmail(data.user.email || '');
+        if (dataUser) {
+            setName(dataUser.user.fullname || '');
+            setDob(new Date(dataUser.user.dateOfBirth) || new Date());
+            setGender(dataUser.user.gender || '');
+            setAddress(dataUser.user.address || '');
+            setPhoneNumber(dataUser.user.phoneNumber || '');
+            setEmail(dataUser.user.email || '');
         }
     }, [route.params]);
 
