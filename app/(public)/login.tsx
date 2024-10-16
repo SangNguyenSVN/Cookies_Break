@@ -102,7 +102,7 @@ const login = () => {
                 </View>
               </View>
               <View>
-                <TouchableOpacity style={styles.btnLogin} onPress={changeScreen} disabled={loading}>
+                <TouchableOpacity style={styles.btnLogin} onPress={handleLogin} disabled={loading}>
                   {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Đăng nhập</Text>}
                 </TouchableOpacity>
               </View>

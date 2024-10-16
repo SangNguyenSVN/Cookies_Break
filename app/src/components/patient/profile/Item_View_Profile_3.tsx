@@ -53,6 +53,7 @@ const Item_View_Profile_3 = (data: any) => {
                     </TouchableOpacity>
                 ) : (
                     <View style={styles.option}>
+                        <FontAwesome name="user-times" size={20} color="black" style={styles.icon} />
                         <Logout />
                     </View>
                 )}

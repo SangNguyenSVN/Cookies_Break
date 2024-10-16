@@ -24,12 +24,12 @@ const ProfileSetting = () => {
         phoneNumber: false,
         email: false,
     });
-    const { dataUser }: any = route.params || {};
-    const data = dataUser?.data;
+    const { dataUser }: any = route.params ||{} ;
+    const data:any = dataUser?.data;
 
 
-    // console.log('Dữ liệu người dùng:', dataUser); // Log toàn bộ dataUser
-    // console.log('Dữ liệu:', data); // Log dữ liệu bên trong data
+    console.log('Dữ liệu người dùng:', dataUser); // Log toàn bộ dataUser
+    console.log('Dữ liệu:', data); // Log dữ liệu bên trong data
 
     if (data) {
         // console.log('User:', data.user); // Log thông tin người dùng
@@ -142,13 +142,13 @@ const ProfileSetting = () => {
                             <Text style={styles.label}>Giới tính:</Text>
                             <View style={styles.genderContainer}>
                                 <TouchableOpacity
-                                    style={[styles.genderOption, (gender === 'Nam' || data.gender === 'Nam') && styles.activeGender]}
+                                    style={[styles.genderOption, (gender === 'Nam') && styles.activeGender]}
                                     onPress={() => setGender('Nam')}
                                 >
                                     <Text style={styles.genderText}>Nam</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    style={[styles.genderOption, (gender === 'Nữ' || data.gender === 'Nữ') && styles.activeGender]}
+                                    style={[styles.genderOption, (gender === 'Nữ') && styles.activeGender]}
                                     onPress={() => setGender('Nữ')}
                                 >
                                     <Text style={styles.genderText}>Nữ</Text>

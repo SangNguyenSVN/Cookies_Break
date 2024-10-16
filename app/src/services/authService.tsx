@@ -1,6 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import apiClient from './apiClient';
+import apiClient from './apiClient'; // Đảm bảo đường dẫn đúng
 
 // Định nghĩa kiểu cho dữ liệu phản hồi
 interface RegisterResponse {
@@ -37,11 +36,9 @@ interface LoginResponse {
     };
 }
 
-const API_URL = 'http://192.168.1.4:3000/api/auth'; // Đổi thành URL thực tế của bạn
-
 // Hàm đăng ký chung
 const registerUser = async (type: 'patient' | 'doctor', username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
-    const response: AxiosResponse<RegisterResponse> = await axios.post(`${API_URL}/register/${type}`, {
+    const response = await apiClient.post(`/auth/register/${type}`, {
         username,
         password,
         phoneNumber,
@@ -60,7 +57,7 @@ const registerDoctor = (username: string, password: string, phoneNumber: string,
 // Đăng nhập
 const login = async (username: string, password: string): Promise<LoginResponse | undefined> => {
     try {
-        const response: AxiosResponse<LoginResponse> = await axios.post(`${API_URL}/login`, { username, password });
+        const response = await apiClient.post('/auth/login', { username, password });
 
         // Lưu user và token vào AsyncStorage
         await AsyncStorage.multiSet([
@@ -70,15 +67,10 @@ const login = async (username: string, password: string): Promise<LoginResponse 
 
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            console.error('Lỗi đăng nhập:', error.response?.data);
-        } else {
-            console.error('Lỗi không xác định:', error);
-        }
+        console.error('Lỗi đăng nhập:', error.response?.data);
     }
     return undefined;
 };
-
 
 const updateAccount = async (username: string, password?: string): Promise<{ message: string }> => {
     const data = { username, ...(password && { password }) }; // Chỉ thêm password nếu có
@@ -86,7 +78,7 @@ const updateAccount = async (username: string, password?: string): Promise<{ mes
         const response = await apiClient.put('/auth/account/update', data);
         return response.data;
     } catch (error) {
-        console.error('Lỗi thay đổi tài khoản:', axios.isAxiosError(error) ? error.response?.data : error);
+        console.error('Lỗi thay đổi tài khoản:', error.response?.data);
         throw new Error('Không thể thay đổi tài khoản');
     }
 };
