@@ -6,10 +6,9 @@ interface CardProps{
     Price: Number,
     ImgSource: any;
 }
-const Item_List_View: React.FC<CardProps> = ({Name,Description,Price,ImgSource})=> {
+const Item_Card_View: React.FC<CardProps> = ({Name,Description,Price,ImgSource})=> {
     
   return (
-
     <View style={{padding:8}}>
       <View style={[styles.container]}>
         <View style={[styles.box]}>
@@ -22,22 +21,21 @@ const Item_List_View: React.FC<CardProps> = ({Name,Description,Price,ImgSource})
             
             <View style={{flexDirection:"row",justifyContent:"space-between",width:170 ,marginTop:11 }}>
                 <Pressable style={[styles.button1]}>
-                {/* <Image style={{width:21,height:21}} source={require('../../assets/icon/Date_range.png')} /> */}
+                <Image style={{width:21,height:21}} source={require('../../assets/icon/Date_range.png')} />
                     <Text style={[styles.TextStyle,{color:"white"}]}> Đặt lịch</Text>
                 </Pressable>
             
                 <Pressable style={[styles.button1,{width:24,height:24,backgroundColor:"#EBEAEA"}]}>
-                {/* <Image style={{width:"100%",height:"100%"}} source={require('../../assets/icon/Message_alt_fill.png')} /> */}
+                <Image style={{width:"100%",height:"100%"}} source={require('../../assets/icon/Message_alt_fill.png')} />
                 </Pressable>
             </View>
         </View>
       </View>
-
     </View>
   )
 }
 
-export default Item_List_View
+export default Item_Card_View
 
 const styles = StyleSheet.create({
     container:{
