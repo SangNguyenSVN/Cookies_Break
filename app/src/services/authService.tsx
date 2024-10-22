@@ -54,16 +54,33 @@ const login = async (username: string, password: string, userType: string) => {
     return undefined;
 };
 
-const updateAccount = async (username: string, password?: string): Promise<{ message: string }> => {
-    const data = { username, ...(password && { password }) }; // Chỉ thêm password nếu có
+const updateAccount = async (password?: string, userType?: string): Promise<{ message: string }> => {
+    const data: any = {}; // Tạo đối tượng rỗng để chứa dữ liệu
+
+    // Chỉ thêm password nếu có
+    if (password) {
+        data.password = password;
+    }
+
+    // Thêm userType nếu có
+    if (userType) {
+        data.userType = userType;
+    }
+
     try {
-        const response = await apiClient.put('/auth/account/update', data);
+        // Gửi yêu cầu PUT tới endpoint cập nhật tài khoản
+        const response = await apiClient.put('/change/password', data);
+
+        // Trả về phản hồi từ server
         return response.data;
     } catch (error: any) {
-        console.error('Lỗi thay đổi tài khoản:', error.response?.data);
+        console.error('Lỗi thay đổi tài khoản:', error.response?.data || error.message);
+
+        // Ném lỗi với thông điệp phù hợp
         throw new Error('Không thể thay đổi tài khoản');
     }
 };
+
 
 // Đăng xuất
 const logout = async () => {

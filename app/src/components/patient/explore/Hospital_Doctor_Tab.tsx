@@ -11,7 +11,7 @@ const Hospital_Doctor_Tab = ({ activeTab }: any) => {
                 style={[activeIndex === 0 ? styles.activeTab : styles.inActiveTab]}
             >
                 <Text style={[activeIndex === 0 ? styles.activeText : styles.inActiveText]}>
-                    Hospital
+                    Bệnh viện
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -19,7 +19,7 @@ const Hospital_Doctor_Tab = ({ activeTab }: any) => {
                 style={[activeIndex === 1 ? styles.activeTab : styles.inActiveTab]}
             >
                 <Text style={[activeIndex === 1 ? styles.activeText : styles.inActiveText]}>
-                    Doctor
+                    Bác sĩ
                 </Text>
             </TouchableOpacity>
         </View>

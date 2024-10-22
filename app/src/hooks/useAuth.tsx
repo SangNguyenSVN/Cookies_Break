@@ -20,7 +20,7 @@ interface AuthContextType {
 }
 
 export const useAuth = (): AuthContextType => {
-    const [user, setUser] = useState<any | null>(null);
+    const [user, setUser] = useState<any | null>();
     const [token, setToken] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null); // Khởi tạo trạng thái lỗi
 

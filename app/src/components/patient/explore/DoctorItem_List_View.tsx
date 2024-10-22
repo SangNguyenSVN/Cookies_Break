@@ -7,7 +7,8 @@ const DoctorItem_List_View = ({ data }: any) => {
     return (
         <View style={styles.container}>
             <Image source={{ uri: data.image }} style={styles.image} />
-            <Text style={styles.name}>{data.name}</Text>
+            <Text style={styles.name}>{data.fullname}</Text>
+            {/* <Text style={styles.name}>{data.fullname}</Text> */}
         </View>
     );
 };

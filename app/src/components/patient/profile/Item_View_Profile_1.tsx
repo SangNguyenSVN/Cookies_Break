@@ -1,60 +1,59 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation for navigation
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { useUser } from '@clerk/clerk-expo';
 
-
-
 const Item_View_Profile_1 = ({ data }: any) => {
-  const { user } = useUser(); // Get user information from Clerk
-  const userData = data;
+  const { user } = useUser();
+  const [userData, setUserData] = useState<any>(user);
+  useEffect(() => {
+    setUserData(data);
+  }, [data]);
 
   const navigation = useNavigation<any>();
 
   const handleEditProfile = () => {
-    console.log("userData: ", userData);
-    navigation.navigate('user_profile_setting_screen', { dataUser: userData });
+    if (userData) {
+      console.log("userData: ", userData);
+      navigation.navigate('user_profile_setting_screen', { dataUser: userData });
+    }
   };
+  const handleChangePassword = () =>{
+    if (userData) {
+      console.log("userData: ", userData);
+      navigation.navigate('user_change_password_screen', { dataUser: userData });
+    }
+  }
 
-  const isUserFromClerk = Boolean(userData?.imageUrl);
+  // Set a default avatar if userData or image is not available
 
   return (
     <View style={styles.container}>
       <View style={styles.item_container}>
         <View style={styles.options}>
-          {isUserFromClerk ? (
+          {user ? (
             <>
               <View style={styles.infomationSocial}>
-                <Text style={styles.text1}>{userData.fullName}</Text>
-                <Text style={styles.text1}>{userData.primaryEmailAddress?.emailAddress}</Text>
+                <Text style={styles.text1}>{user?.fullName || 'Tên người dùng'}</Text>
+                <Text style={styles.text1}>{user?.primaryEmailAddress?.emailAddress || 'Email của bạn'}</Text>
               </View>
-              <TouchableOpacity onPress={handleEditProfile}>
-                <Text style={styles.text1}>Sửa thông tin của bạn</Text>
-              </TouchableOpacity>
             </>
           ) : (
             <>
               <TouchableOpacity onPress={handleEditProfile}>
                 <Text style={styles.text1}>Sửa thông tin của bạn</Text>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleChangePassword}>
                 <Text style={styles.text2}>Đổi mật khẩu</Text>
               </TouchableOpacity>
             </>
           )}
         </View>
         <View style={styles.profilePicture}>
-          {isUserFromClerk ? (
-            <Image
-              source={{ uri: userData.image }} // Use URI from userData
-              style={styles.avatar}
-            />
-          ) : (
-            <Image
-              source={{ uri: userData.user.image }} // Use URI from userData
-              style={styles.avatar}
-            />
-          )}
+          <Image
+            source={{ uri:userData?.user?.image || user?.imageUrl }} // Use URI from userData or default avatar
+            style={styles.avatar}
+          />
         </View>
       </View>
     </View>
@@ -85,12 +84,6 @@ const styles = StyleSheet.create({
   },
   profilePicture: {
     justifyContent: 'center',
-  },
-  avatarPlaceholder: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#ccc',
-    borderRadius: 30, // Make it circular
   },
   avatar: {
     width: 60,
