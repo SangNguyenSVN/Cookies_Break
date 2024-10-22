@@ -14,7 +14,7 @@ interface Role {
 interface AuthContextType {
     user: any | null;
     token: string | null;
-    login: (username: string, password: string) => Promise<void>;
+    login: (username: string, password: string, userType: string) => Promise<void>;
     logout: () => Promise<void>; // Thêm hàm logout
     error: string | null; // Thêm thuộc tính error để lưu trữ thông báo lỗi
 }
@@ -39,9 +39,9 @@ export const useAuth = (): AuthContextType => {
     }, []);
 
     // Hàm đăng nhập
-    const login = async (username: string, password: string) => {
+    const login = async (username: string, password: string, userType: string) => {
         try {
-            const response: any = await authAPI.login(username, password);
+            const response: any = await authAPI.login(username, password, userType);
             if (response) {
                 // Lưu toàn bộ dữ liệu user và token vào state
                 setUser(response.user);

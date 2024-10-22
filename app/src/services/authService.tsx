@@ -28,7 +28,7 @@ const registerUser = async (type: 'patient' | 'doctor', username: string, passwo
     });
     return response.data;
 };
-
+ 
 // Đăng ký bệnh nhân và bác sĩ
 const registerPatient = (username: string, password: string, phoneNumber: string, roleId: string) =>
     registerUser('patient', username, password, phoneNumber, roleId);
@@ -48,7 +48,7 @@ const login = async (username: string, password: string, userType: string) => {
         ]);
 
         return response.data;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Lỗi đăng nhập:', error.response?.data);
     }
     return undefined;
@@ -59,7 +59,7 @@ const updateAccount = async (username: string, password?: string): Promise<{ mes
     try {
         const response = await apiClient.put('/auth/account/update', data);
         return response.data;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Lỗi thay đổi tài khoản:', error.response?.data);
         throw new Error('Không thể thay đổi tài khoản');
     }

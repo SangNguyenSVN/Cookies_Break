@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { getTimes, getDays } from '../services/dayTime'; // Ensure correct import path
+import SubHeading from './SubHeading';
 
 const DateTimeForm = ({ onDaySelected, onHourSelected }: any) => {
     const [nextSevenDays, setNextSevenDays] = useState([]);
@@ -61,6 +62,7 @@ const DateTimeForm = ({ onDaySelected, onHourSelected }: any) => {
     return (
         <View>
             <View style={styles.viewItem_Form}>
+                <SubHeading title={"Ngày: "}/>
                 <FlatList
                     horizontal
                     scrollEnabled
@@ -70,6 +72,7 @@ const DateTimeForm = ({ onDaySelected, onHourSelected }: any) => {
                 />
             </View>
             <View style={styles.viewItem_Form}>
+            <SubHeading title={"Giờ: "}/>
                 <FlatList
                     horizontal
                     scrollEnabled

@@ -1,10 +1,24 @@
-import { StyleSheet, View, Text, TextInput, TouchableOpacity,Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import Header from '../../shared/Header';
 import DOB_Picker from '../DOB_Picker';
 import { useNavigation } from '@react-navigation/native';
 import apiPatient from '../../services/apiPatient';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Định nghĩa kiểu UpdatePatientInput
+interface UpdatePatientInput {
+    username?: string;
+    phoneNumber?: string;
+    email?: string;
+    gender?: string;
+    dateOfBirth?: string ;
+    fullname?: string;
+    address?: string;
+    imageUrl?: string ;
+}
 
 const ProfileSetting = () => {
     const [name, setName] = useState('');
@@ -13,9 +27,9 @@ const ProfileSetting = () => {
     const [address, setAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
+    const [imageUri, setImageUri] = useState<string>();
     const route = useRoute();
     const navigation = useNavigation();
-
 
     const [error, setError] = useState({
         name: false,
@@ -24,11 +38,7 @@ const ProfileSetting = () => {
         phoneNumber: false,
         email: false,
     });
-    const { dataUser }: any = route.params ||{} ;
-
-
-    console.log('Dữ liệu người dùng:', dataUser); // Log toàn bộ dataUser
-
+    const { dataUser }: any = route.params || {};
 
     // Initialize fields with user data
     useEffect(() => {
@@ -39,10 +49,36 @@ const ProfileSetting = () => {
             setAddress(dataUser.user.address || '');
             setPhoneNumber(dataUser.user.phoneNumber || '');
             setEmail(dataUser.user.email || '');
+            setImageUri(dataUser.user.imageUri || null);
         }
     }, [route.params]);
 
-    // Handle name change
+    // Handle image selection
+    const handleImageSelect = async () => {
+        try {
+            const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+            if (!permissionResult.granted) {
+                Alert.alert('Permission to access camera roll is required!');
+                return;
+            }
+
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+
+            if (!result.canceled && result.assets && result.assets.length > 0) {
+                setImageUri(result.assets[0].uri);
+            }
+        } catch (error) {
+            console.error("Error selecting image:", error);
+        }
+    };
+
+    // Handle input changes
     const handleNameChange = (text: string) => {
         setName(text);
         setError(prev => ({ ...prev, name: !text }));
@@ -60,7 +96,7 @@ const ProfileSetting = () => {
 
     const handleEmailChange = (text: string) => {
         setEmail(text);
-        setError(prev => ({ ...prev, email: !text })); // Kiểm tra nếu trống
+        setError(prev => ({ ...prev, email: !text }));
     };
 
     const handleUpdate = async () => {
@@ -72,52 +108,52 @@ const ProfileSetting = () => {
             email: !email,
         };
 
-        setError(newError); // Cập nhật trạng thái lỗi
+        setError(newError);
 
-        // Kiểm tra xem có lỗi nào không
         if (Object.values(newError).some(error => error)) {
             console.log('Có lỗi trong các trường nhập.');
-            return; // Dừng thực hiện nếu có lỗi
+            return;
         }
 
         try {
-            // Gọi hàm cập nhật với dữ liệu mới
-            const updatedData = {
-                phoneNumber: phoneNumber,
-                email: email,
-                gender: gender,
-                dateOfBirth: dob,
+            const updatedData: UpdatePatientInput = {
+                phoneNumber,
+                email,
+                gender,
+                dateOfBirth: dob ? dob.toISOString() : undefined,
                 fullname: name,
-                address: address,
+                address,
+                imageUrl: imageUri || undefined,
             };
-            const response = await apiPatient.updatePatient(updatedData);
+            const response = await apiPatient.updatePatient(updatedData, imageUri);
             console.log('Cập nhật thành công:', response.message);
-            Alert.alert('Cập nhật thành công thành công');
+            Alert.alert('Cập nhật thành công');
+            await AsyncStorage.setItem('userData', JSON.stringify(updatedData));
             navigation.goBack();
-
-            // Bạn có thể hiển thị thông báo cho người dùng tại đây
-
         } catch (error: any) {
             console.error('Cập nhật thất bại:', error.message);
-            // Bạn có thể hiển thị thông báo lỗi cho người dùng tại đây
+            Alert.alert('Cập nhật thất bại', error.message);
         }
     };
-
 
     return (
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0} // Adjust behavior for iOS and Android
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View>
-                    <View>
-                        <Header title="Thông tin tài khoản" showBackButton={false} />
-                    </View>
+                    <Header title="Thông tin tài khoản" showBackButton={false} />
                     <ScrollView contentContainerStyle={styles.scrollContainer}>
                         <View style={styles.profilePicture}>
-                            <View style={styles.avatarPlaceholder} />
+                            <TouchableOpacity onPress={handleImageSelect}>
+                                {imageUri ? (
+                                    <Image source={{ uri: imageUri }} style={styles.avatar} />
+                                ) : (
+                                    <View style={styles.avatarPlaceholder} />
+                                )}
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.form}>
@@ -131,7 +167,6 @@ const ProfileSetting = () => {
 
                             <Text style={styles.label}>Ngày sinh:</Text>
                             <DOB_Picker dob={dob} setDob={setDob} />
-
 
                             <Text style={styles.label}>Giới tính:</Text>
                             <View style={styles.genderContainer}>
@@ -176,7 +211,6 @@ const ProfileSetting = () => {
                         </View>
                     </ScrollView>
                 </View>
-
             </TouchableWithoutFeedback>
 
             <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
@@ -207,6 +241,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
         borderRadius: 40,
     },
+    avatar: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+    },
     form: {
         marginBottom: 20,
     },
@@ -224,7 +263,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     errorInput: {
-        borderColor: 'red', // Màu viền đỏ khi có lỗi
+        borderColor: 'red',
     },
     genderContainer: {
         flexDirection: 'row',
@@ -249,13 +288,10 @@ const styles = StyleSheet.create({
     },
     updateButton: {
         backgroundColor: '#4CAF50',
+        paddingVertical: 15,
+        margin: 20,
         borderRadius: 8,
-        padding: 15,
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 20,
-        left: 20,
-        right: 20,
     },
     updateButtonText: {
         color: '#fff',

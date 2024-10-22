@@ -5,12 +5,16 @@ import AppointmentNavigation from '../src/navigation/patient/AppointmentNavigati
 
 const booking = () => {
   return (
-    <View>
-      <AppointmentNavigation/>
+    <View style={styles.container}>
+      <AppointmentNavigation />
     </View>
   )
 }
 
 export default booking
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})

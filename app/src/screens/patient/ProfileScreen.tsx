@@ -8,7 +8,7 @@ import Item_View_Profile_3 from '../../components/patient/profile/Item_View_Prof
 
 const ProfileScreen = () => {
     const { user } = useAuth();
-
+    
     console.log(user)
     return (
         <View style={styles.container}>

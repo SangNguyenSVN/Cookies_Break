@@ -5,8 +5,8 @@ import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 import authService from '../src/services/authService';
 
 const login = () => {
-  const [username, setUsername] = useState('doctor1');
-  const [password, setPassword] = useState('1');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const { userType }: any = useLocalSearchParams(); // Lấy userType từ tham số đường dẫn
   const [loading, setLoading] = useState(false);
   const router = useRouter();
