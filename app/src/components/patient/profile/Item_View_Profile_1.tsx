@@ -9,10 +9,10 @@ const Item_View_Profile_1 = ({ data }: any) => {
   const { user } = useUser(); // Get user information from Clerk
   const userData = data;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handleEditProfile = () => {
-    console.log(userData);
+    console.log("userData: ", userData);
     navigation.navigate('user_profile_setting_screen', { dataUser: userData });
   };
 
@@ -46,11 +46,14 @@ const Item_View_Profile_1 = ({ data }: any) => {
         <View style={styles.profilePicture}>
           {isUserFromClerk ? (
             <Image
-              source={{ uri: userData.imageUrl }} // Use URI from userData
+              source={{ uri: userData.image }} // Use URI from userData
               style={styles.avatar}
             />
           ) : (
-            <View style={styles.avatarPlaceholder} />
+            <Image
+              source={{ uri: userData.user.image }} // Use URI from userData
+              style={styles.avatar}
+            />
           )}
         </View>
       </View>

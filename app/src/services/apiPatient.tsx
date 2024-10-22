@@ -10,7 +10,7 @@ interface UpdatePatientInput {
     dateOfBirth?: string;
     fullname?: string;
     address?: string;
-    imageUrl?: string;
+    image?: string;
 }
 
 const updatePatient = async (
@@ -26,11 +26,16 @@ const updatePatient = async (
 
         const formData = new FormData();
 
+        console.log('FormData:', formData); // Log FormData trước khi gửi yêu cầu
+        console.log('imageUri:', imageUri);
+        console.log('imageType:', imageType);
+        
         if (imageUri && imageType) {
+            const imageName = imageUri.split('/').pop() || 'image.jpg'; // Lấy tên file từ đường dẫn
             formData.append('image', {
-                uri: imageUri,
-                type: imageType,
-                name: imageUri.split('/').pop() || 'image.jpg',
+                uri: imageUri,          // Đường dẫn tệp hình ảnh trên thiết bị
+                type: imageType,        // Loại MIME của ảnh, ví dụ: 'image/jpeg'
+                name: imageName,        // Tên của tệp ảnh
             } as any);
         }
 
@@ -57,26 +62,9 @@ const updatePatient = async (
 };
 
 
-// Xóa người dùng
-const deleteUser = async (userId: string): Promise<{ message: string }> => {
-    try {
-        const response = await apiClient.delete<{ message: string }>(
-            `/user/patients/${userId}`
-        );
-        return response.data;
-    } catch (error) {
-        console.error('Lỗi khi xóa bệnh nhân:', error);
 
-        if (axios.isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.message || 'Xóa bệnh nhân thất bại');
-        } else {
-            throw new Error('Đã xảy ra lỗi không xác định');
-        }
-    }
-};
 
 // Xuất các hàm
 export default {
     updatePatient,
-    deleteUser,
 };

@@ -7,17 +7,17 @@ import { useNavigation } from '@react-navigation/native';
 import apiPatient from '../../services/apiPatient';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { getMimeType } from '../../services/mime';
 // Định nghĩa kiểu UpdatePatientInput
 interface UpdatePatientInput {
     username?: string;
     phoneNumber?: string;
     email?: string;
     gender?: string;
-    dateOfBirth?: string ;
+    dateOfBirth?: string;
     fullname?: string;
     address?: string;
-    imageUrl?: string ;
+    image?: string;
 }
 
 const ProfileSetting = () => {
@@ -27,7 +27,7 @@ const ProfileSetting = () => {
     const [address, setAddress] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
-    const [imageUri, setImageUri] = useState<string>();
+    const [imageUri, setImageUri] = useState<any>();
     const route = useRoute();
     const navigation = useNavigation();
 
@@ -49,7 +49,7 @@ const ProfileSetting = () => {
             setAddress(dataUser.user.address || '');
             setPhoneNumber(dataUser.user.phoneNumber || '');
             setEmail(dataUser.user.email || '');
-            setImageUri(dataUser.user.imageUri || null);
+            setImageUri(dataUser.user.image || null);
         }
     }, [route.params]);
 
@@ -57,26 +57,36 @@ const ProfileSetting = () => {
     const handleImageSelect = async () => {
         try {
             const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
+    
             if (!permissionResult.granted) {
                 Alert.alert('Permission to access camera roll is required!');
                 return;
             }
-
+    
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 1,
             });
-
+    
             if (!result.canceled && result.assets && result.assets.length > 0) {
-                setImageUri(result.assets[0].uri);
+                const selectedImageUri = result.assets[0].uri;
+                setImageUri(selectedImageUri);
+    
+                // Sử dụng getMimeType để lấy loại MIME từ URI
+                const imageType = getMimeType(selectedImageUri);
+    
+                console.log("Hình ảnh đã chọn:", selectedImageUri);
+                console.log("Loại MIME của hình ảnh:", imageType);
+    
+                // Sau đó có thể sử dụng imageType khi gửi dữ liệu đến API
             }
         } catch (error) {
             console.error("Error selecting image:", error);
         }
     };
+    
 
     // Handle input changes
     const handleNameChange = (text: string) => {
@@ -107,27 +117,35 @@ const ProfileSetting = () => {
             phoneNumber: !phoneNumber,
             email: !email,
         };
-
+    
         setError(newError);
-
+    
         if (Object.values(newError).some(error => error)) {
             console.log('Có lỗi trong các trường nhập.');
             return;
         }
-
+    
         try {
+            // Kiểm tra và lấy loại MIME cho imageUri nếu có
+            let imageType;
+            if (imageUri) {
+                imageType = getMimeType(imageUri);
+            }
+    
             const updatedData: UpdatePatientInput = {
                 phoneNumber,
                 email,
                 gender,
-                dateOfBirth: dob ? dob.toISOString() : undefined,
+                dateOfBirth: dob.toISOString(),
                 fullname: name,
                 address,
-                imageUrl: imageUri || undefined,
             };
-            const response = await apiPatient.updatePatient(updatedData, imageUri);
-            console.log('Cập nhật thành công:', response.message);
+    
+            // Gọi API update với dữ liệu cần thiết, bao gồm cả hình ảnh
+            const response = await apiPatient.updatePatient(updatedData, imageUri, imageType);
+            console.log('Cập nhật thành công:', response);
             Alert.alert('Cập nhật thành công');
+            
             await AsyncStorage.setItem('userData', JSON.stringify(updatedData));
             navigation.goBack();
         } catch (error: any) {
@@ -229,7 +247,6 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         padding: 20,
-        paddingBottom: 80,
     },
     profilePicture: {
         alignItems: 'center',
@@ -289,12 +306,12 @@ const styles = StyleSheet.create({
     updateButton: {
         backgroundColor: '#4CAF50',
         paddingVertical: 15,
-        margin: 20,
         borderRadius: 8,
-        alignItems: 'center',
+        margin: 20,
     },
     updateButtonText: {
         color: '#fff',
+        textAlign: 'center',
         fontSize: 16,
     },
 });
