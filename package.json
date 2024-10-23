@@ -18,8 +18,12 @@
     "@clerk/clerk-expo": "^2.2.21",
     "@expo/vector-icons": "^14.0.3",
     "@react-native-async-storage/async-storage": "1.23.1",
+<<<<<<< HEAD
+    "@react-native-picker/picker": "^2.8.1",
+=======
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-native-picker/picker": "2.7.5",
+>>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/stack": "^6.4.1",
