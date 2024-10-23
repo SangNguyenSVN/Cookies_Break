@@ -12,7 +12,7 @@ const Item_Card_View: React.FC<CardProps> = ({Name,Description,ImgSource})=> {
     <View style={{padding:8}}>
       <View style={[styles.container]}>
         <View style={[styles.box]}>
-        <Image style={{width:"100%",height:"100%"}} source={ImgSource} />
+        {/* <Image style={{width:"100%",height:"100%"}} source={ImgSource} /> */}
         </View>
         <View style={{flexDirection:"column", justifyContent:"space-between",width:200}}>
         <Text style={[styles.TextStyle,{color:"black"}]}>{Name}</Text>
@@ -20,14 +20,25 @@ const Item_Card_View: React.FC<CardProps> = ({Name,Description,ImgSource})=> {
         
             
             <View style={{flexDirection:"row",justifyContent:"space-between",width:170 ,marginTop:11 }}>
+<<<<<<< HEAD
                 <Pressable style={[styles.button1]}>
                 <Image style={{width:21,height:21}} source={require('../../../assets/icon/Date_range.png')} />
+=======
+                {/* <Pressable style={[styles.button1]}>
+                <Image style={{width:21,height:21}} source={require('../../assets/icon/Date_range.png')} />
+>>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
                     <Text style={[styles.TextStyle,{color:"white"}]}> Đặt lịch</Text>
-                </Pressable>
+                </Pressable> */}
             
+<<<<<<< HEAD
                 <Pressable style={[styles.button1,{width:24,height:24,backgroundColor:"#EBEAEA"}]}>
                 <Image style={{width:"100%",height:"100%"}} source={require('../../../assets/icon/Message_alt_fill.png')} />
                 </Pressable>
+=======
+                {/* <Pressable style={[styles.button1,{width:24,height:24,backgroundColor:"#EBEAEA"}]}>
+                <Image style={{width:"100%",height:"100%"}} source={require('../../assets/icon/Message_alt_fill.png')} />
+                </Pressable> */}
+>>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
             </View>
         </View>
       </View>

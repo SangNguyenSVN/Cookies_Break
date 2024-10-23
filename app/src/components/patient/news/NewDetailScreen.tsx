@@ -1,55 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
-import { ArrowLeft, Share2 } from 'react-native-feather';
+import React from 'react';
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import Header from '../../../shared/Header'
+const NewsDetailScreen = ({ route }: any) => {
+    const { newsItem } = route.params;
 
-const NewsDetailScreen = ({ route, navigation }: any) => {
-    const { id } = route.params;
-    const [newsItem, setNewsItem] = useState(null);
-
-    useEffect(() => {
-        const fetchNewsItem = async () => {
-            // Mô phỏng việc tải dữ liệu từ API
-            const data: any = {
-                id: id,
-                title: '8 dấu hiệu cảnh báo bệnh tim mạch cần chú ý',
-                content: 'Nội dung chi tiết về các dấu hiệu cảnh báo bệnh tim mạch...',
-                image: 'https://example.com/image1.jpg',
-                source: 'Bệnh viện Nhi Đồng 1',
-                publishedAt: '2 giờ trước'
-            };
-            setNewsItem(data);
-        };
-
-        fetchNewsItem();
-    }, [id]);
-
-    if (!newsItem) {
-        return (
-            <View style={styles.loadingContainer}>
-                <Text>Đang tải...</Text>
-            </View>
-        );
-    }
+    // Kiểm tra dữ liệu
+    const sections = newsItem.sections || []; // Sử dụng mảng rỗng nếu sections undefined
 
     return (
         <View style={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <ArrowLeft stroke="green" width={24} height={24} />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Chi tiết tin tức</Text>
-                <TouchableOpacity>
-                    <Share2 stroke="green" width={24} height={24} />
-                </TouchableOpacity>
-            </View>
-
-            <ScrollView style={styles.content}>
-                <Image source={{ uri: newsItem.image }} style={styles.image} />
+            <Header title='Thông tin' showBackButton={true} />
+            <View style={styles.detailContainer}>
                 <Text style={styles.title}>{newsItem.title}</Text>
-                <Text style={styles.metadata}>{newsItem.source} • {newsItem.publishedAt}</Text>
-                <Text style={styles.body}>{newsItem.content}</Text>
-            </ScrollView>
+                {sections.length > 0 ? (
+                    <FlatList
+                        data={sections}
+                        keyExtractor={(item, index) => index.toString()} // Sử dụng chỉ số như key
+                        renderItem={({ item }) => {
+                            // Kiểm tra nếu item có giá trị
+                            if (item) {
+                                if (item.type === 'text') {
+                                    return (
+                                        <Text style={styles.textContent}>
+                                            {item.content}
+                                        </Text>
+                                    );
+                                } else if (item.type === 'image' && item.url) {
+                                    return (
+                                        <Image
+                                            source={{ uri: item.url }}
+                                            style={styles.imageContent}
+                                        />
+                                    );
+                                }
+                            }
+                            return null; // Trả về null nếu không hợp lệ
+                        }}
+                    />
+                ) : (
+                    <Text style={styles.noData}>Không có dữ liệu để hiển thị</Text>
+                )}
+            </View>
         </View>
     );
 };
@@ -59,44 +50,28 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#E0E0E0',
-    },
-    headerTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    content: {
-        padding: 16,
-    },
-    image: {
-        width: '100%',
-        height: 200,
-        marginBottom: 16,
+    detailContainer:{
+        padding: 10
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    metadata: {
-        fontSize: 14,
-        color: '#666',
         marginBottom: 16,
     },
-    body: {
+    textContent: {
         fontSize: 16,
-        lineHeight: 24,
+        marginBottom: 12,
+    },
+    imageContent: {
+        width: '100%',
+        height: 200,
+        marginBottom: 12,
+        resizeMode: 'cover',
+    },
+    noData: {
+        fontSize: 16,
+        color: 'gray',
+        textAlign: 'center',
     },
 });
 

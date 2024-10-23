@@ -9,26 +9,18 @@ interface Role {
     permissions: string[];
 }
 
-interface User {
-    id: string;
-    username: string;
-    phoneNumber: string;
-    email: string;        // Thêm trường email
-    gender: string;       // Thêm trường gender
-    dateOfBirth: Date;    // Thêm trường dateOfBirth
-    fullname: string;     // Thêm trường fullname
-    role: Role;           // Định nghĩa kiểu Role
-}
+
 
 interface AuthContextType {
-    user: User | null;
+    user: any | null;
     token: string | null;
-    login: (username: string, password: string) => Promise<void>;
+    login: (username: string, password: string, userType: string) => Promise<void>;
+    logout: () => Promise<void>; // Thêm hàm logout
     error: string | null; // Thêm thuộc tính error để lưu trữ thông báo lỗi
 }
 
 export const useAuth = (): AuthContextType => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<any | null>();
     const [token, setToken] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null); // Khởi tạo trạng thái lỗi
 
@@ -47,9 +39,9 @@ export const useAuth = (): AuthContextType => {
     }, []);
 
     // Hàm đăng nhập
-    const login = async (username: string, password: string): Promise<void> => {
+    const login = async (username: string, password: string, userType: string) => {
         try {
-            const response: any = await authAPI.login(username, password);
+            const response: any = await authAPI.login(username, password, userType);
             if (response) {
                 // Lưu toàn bộ dữ liệu user và token vào state
                 setUser(response.user);
@@ -67,11 +59,23 @@ export const useAuth = (): AuthContextType => {
     };
 
     // Hàm đăng xuất
+    const logout = async (): Promise<void> => {
+        try {
+            setUser(null); // Xóa user khỏi state
+            setToken(null); // Xóa token khỏi state
+
+            // Xóa thông tin khỏi AsyncStorage
+            await AsyncStorage.multiRemove(['user', 'token']);
+        } catch (err) {
+            console.error('Lỗi đăng xuất:', err);
+        }
+    };
 
     return {
         user,
         token,
         login,
+        logout, // Trả về hàm logout
         error, // Trả về thông báo lỗi
     };
 };

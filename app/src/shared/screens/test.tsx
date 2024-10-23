@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import Header from '../../shared/Header';
@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import apiPatient from '../../services/apiPatient';
 import apiDoctor from '../../services/apiDoctor';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getMimeType } from '../../services/mime';
 import { validateName, validateEmail, validatePhoneNumber } from '../../services/Validated'; // Import các hàm xác thực
 
@@ -42,8 +43,6 @@ const ProfileSetting = () => {
     const [email, setEmail] = useState('');
     const [specialty, setSpecialty] = useState('')
     const [imageUri, setImageUri] = useState<any>();
-    const [loading, setLoading] = useState(false);
-
     const route = useRoute();
     const navigation = useNavigation();
 
@@ -53,12 +52,9 @@ const ProfileSetting = () => {
         address: false,
         phoneNumber: false,
         email: false,
-        specialty: false, // Thêm trường lỗi cho specialty
     });
-
     const { dataUser }: any = route.params || {};
     const roleName = dataUser.role.name;
-
     // Initialize fields with user data
     useEffect(() => {
         if (dataUser) {
@@ -67,7 +63,7 @@ const ProfileSetting = () => {
             setGender(dataUser.user.gender || '');
             setAddress(dataUser.user.address || '');
             setPhoneNumber(dataUser.user.phoneNumber || '');
-            setSpecialty(dataUser.user.specialty || ''); // Cập nhật specialty
+            setSpecialty(dataUser.user.specialty || '');
             setEmail(dataUser.user.email || '');
             setImageUri(dataUser.user.image || null);
         }
@@ -93,18 +89,25 @@ const ProfileSetting = () => {
             if (!result.canceled && result.assets && result.assets.length > 0) {
                 const selectedImageUri = result.assets[0].uri;
                 setImageUri(selectedImageUri);
+
                 // Sử dụng getMimeType để lấy loại MIME từ URI
-                // const imageType = getMimeType(selectedImageUri);
+                const imageType = getMimeType(selectedImageUri);
 
-                // console.log("Hình ảnh đã chọn:", selectedImageUri);
-                // console.log("Loại MIME của hình ảnh:", imageType);
+                console.log("Hình ảnh đã chọn:", selectedImageUri);
+                console.log("Loại MIME của hình ảnh:", imageType);
 
+                // Sau đó có thể sử dụng imageType khi gửi dữ liệu đến API
             }
         } catch (error) {
             console.error("Error selecting image:", error);
         }
     };
 
+    const handleSpecialty = (text: string) => {
+        setSpecialty(text);
+        setError(prev => ({ ...prev, name: !text }));
+
+    }
     // Handle input changes
     const handleNameChange = (text: string) => {
         setName(text);
@@ -126,21 +129,13 @@ const ProfileSetting = () => {
         setError(prev => ({ ...prev, email: !text }));
     };
 
-    const handleSpecialtyChange = (text: string) => {
-        setSpecialty(text);
-        setError(prev => ({ ...prev, specialty: !text }));
-    };
-
     const handleUpdate = async () => {
-        setLoading(true);
-
         const newError = {
             name: !validateName(name),
             dob: !dob,
             address: !address,
             phoneNumber: !validatePhoneNumber(phoneNumber),
             email: !validateEmail(email),
-            specialty: roleName === 'doctor' ? !specialty : false, // Kiểm tra specialty chỉ nếu là bác sĩ
         };
 
         setError(newError);
@@ -157,32 +152,25 @@ const ProfileSetting = () => {
                 imageType = getMimeType(imageUri);
             }
 
-            const updatedData: UpdatePatientInput | UpdateDoctorInput = {
+            const updatedData: UpdatePatientInput = {
                 phoneNumber,
                 email,
                 gender,
                 dateOfBirth: dob.toISOString(),
                 fullname: name,
                 address,
-                ...(roleName === 'doctor' && { specialty }), // Thêm specialty nếu là bác sĩ
             };
 
             // Gọi API update với dữ liệu cần thiết, bao gồm cả hình ảnh
-            if (roleName === 'doctor') {
-                const response = await apiDoctor.updateDoctor(updatedData, imageUri, imageType);
-                console.log('Cập nhật thành công:', response);
-            } else if (roleName == 'patient') {
-                const response = await apiPatient.updatePatient(updatedData, imageUri, imageType);
-                console.log('Cập nhật thành công:', response);
-            }
-
+            const response = await apiPatient.updatePatient(updatedData, imageUri, imageType);
+            console.log('Cập nhật thành công:', response);
             Alert.alert('Cập nhật thành công');
+
+            await AsyncStorage.setItem('userData', JSON.stringify(updatedData));
             navigation.goBack();
         } catch (error: any) {
             console.error('Cập nhật thất bại:', error.message);
             Alert.alert('Cập nhật thất bại', error.message);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -258,40 +246,17 @@ const ProfileSetting = () => {
                                 onChangeText={handleEmailChange}
                                 keyboardType="email-address"
                             />
-
-                            {roleName === 'doctor' && ( // Hiển thị ô nhập specialty chỉ nếu là bác sĩ
-                                <>
-                                    <Text style={styles.label}>Chuyên khoa:</Text>
-                                    <TextInput
-                                        style={[styles.input, error.specialty && styles.errorInput]}
-                                        placeholder="Nhập chuyên khoa"
-                                        value={specialty}
-                                        onChangeText={handleSpecialtyChange}
-                                    />
-                                </>
-                            )}
                         </View>
-                        <TouchableOpacity
-                            style={styles.updateButton}
-                            onPress={handleUpdate}
-                            disabled={loading}>
-                            {loading ? (
-                                <ActivityIndicator size="small" color="#fff" /> // Hiện loading spinner
-                            ) : (
-                                <Text style={styles.updateButtonText}>Cập nhật</Text>
-                            )}
-                        </TouchableOpacity>
                     </ScrollView>
                 </View>
             </TouchableWithoutFeedback>
 
-
+            <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
+                <Text style={styles.updateButtonText}>Cập nhật</Text>
+            </TouchableOpacity>
         </KeyboardAvoidingView>
     );
 };
-
-
-
 
 export default ProfileSetting;
 
@@ -362,10 +327,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#4CAF50',
         paddingVertical: 15,
         borderRadius: 8,
+        margin: 20,
     },
     updateButtonText: {
         color: '#fff',
         textAlign: 'center',
         fontSize: 16,
     },
-});
+})

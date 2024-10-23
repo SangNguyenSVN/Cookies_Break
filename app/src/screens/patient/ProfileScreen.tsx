@@ -8,9 +8,6 @@ import Item_View_Profile_3 from '../../components/patient/profile/Item_View_Prof
 
 const ProfileScreen = () => {
     const { user } = useAuth();
-
-    console.log(user)// Get the authenticated user and logout function from useAuth
-    console.log(user)
     return (
         <View style={styles.container}>
             <Header title="Thông tin tài khoản" showBackButton={false} />

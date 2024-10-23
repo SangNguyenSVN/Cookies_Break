@@ -4,18 +4,18 @@ import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
 interface HeaderProps {
-  title: string; // Tiêu đề của header
-  showBackButton: boolean; // Biến để điều khiển hiển thị nút quay lại
+  title: string; 
+  showBackButton: boolean; 
 }
 
 const Header: React.FC<HeaderProps> = ({ title, showBackButton }) => {
   const navigation = useNavigation();
 
   const goBack = () => {
-    try {
+    if (navigation.canGoBack()) {
       navigation.goBack();
-    } catch {
-      console.log("Error goBack() in Header component");
+    } else {
+      console.log("Không thể quay lại");
     }
   };
 
@@ -23,7 +23,9 @@ const Header: React.FC<HeaderProps> = ({ title, showBackButton }) => {
     <View style={styles.headerContainer}>
       {showBackButton && (
         <TouchableOpacity onPress={goBack} style={styles.backButton}>
-          <AntDesign name="leftcircleo" size={40} color="white" />
+          <View style={styles.iconContainer}>
+            <AntDesign name="leftcircleo" size={40} color="white" />
+          </View>
         </TouchableOpacity>
       )}
       <View style={styles.titleContainer}>
@@ -41,12 +43,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#489458', // Màu nền của header
     padding: 18,
-    paddingTop: 44, // Khoảng cách cho tai thỏ (nếu có)
-    position: 'relative', // Relative position to use absolute positioning for the back button
+    paddingTop: 44, 
+    position: 'relative', 
   },
   titleContainer: {
-    flex: 1, // Chiếm không gian còn lại
-    alignItems: 'center', // Giữa theo chiều ngang
+    flex: 1, 
+    alignItems: 'center', 
   },
   title: {
     color: 'white',
@@ -54,8 +56,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   backButton: {
-    position: 'absolute', // Absolute position for the back button
-    bottom: 10,
-    left: 10
+    position: 'absolute',
+    height: 50, 
+    width: 50, 
+    bottom: 0,
+    left: 10,
+    justifyContent: 'center', // Giữa icon theo chiều dọc
+    alignItems: 'center', // Giữa icon theo chiều ngang
+  },
+  iconContainer: {
+    height: 50, 
+    width: 50, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
 });

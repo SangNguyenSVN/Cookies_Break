@@ -1,6 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import apiClient from './apiClient';
+import apiClient from './apiClient'; // Đảm bảo đường dẫn đúng
 
 // Định nghĩa kiểu cho dữ liệu phản hồi
 interface RegisterResponse {
@@ -17,6 +16,7 @@ interface RegisterResponse {
     };
 }
 
+<<<<<<< HEAD
 interface LoginResponse {
   
     token: string;
@@ -45,10 +45,13 @@ const API_URL = 'http://192.168.1.13:3000/auth'; // Đổi thành URL thực t�
 
 const API_URL = 'http://192.168.1.4:3000/api/auth'; // Đổi thành URL thực tế của bạn
 >>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
+=======
+
+>>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
 
 // Hàm đăng ký chung
 const registerUser = async (type: 'patient' | 'doctor', username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
-    const response: AxiosResponse<RegisterResponse> = await axios.post(`${API_URL}/register/${type}`, {
+    const response = await apiClient.post(`/auth/register/${type}`, {
         username,
         password,
         phoneNumber,
@@ -56,7 +59,7 @@ const registerUser = async (type: 'patient' | 'doctor', username: string, passwo
     });
     return response.data;
 };
-
+ 
 // Đăng ký bệnh nhân và bác sĩ
 const registerPatient = (username: string, password: string, phoneNumber: string, roleId: string) =>
     registerUser('patient', username, password, phoneNumber, roleId);
@@ -65,6 +68,7 @@ const registerDoctor = (username: string, password: string, phoneNumber: string,
     registerUser('doctor', username, password, phoneNumber, roleId);
 
 // Đăng nhập
+<<<<<<< HEAD
 const login = async (username: String, password: string, roleId: string): Promise<LoginResponse | undefined> => {
     try {
 <<<<<<< HEAD
@@ -80,6 +84,11 @@ const login = async (username: String, password: string, roleId: string): Promis
         return response.data; // Return response if successful
 =======
         const response: AxiosResponse<LoginResponse> = await axios.post(`${API_URL}/login`, { username, password });
+=======
+const login = async (username: string, password: string, userType: string) => {
+    try {
+        const response = await apiClient.post('/auth/login', { username, password, userType });
+>>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
 
         // Lưu user và token vào AsyncStorage
         await AsyncStorage.multiSet([
@@ -88,6 +97,7 @@ const login = async (username: String, password: string, roleId: string): Promis
         ]);
 
         return response.data;
+<<<<<<< HEAD
 >>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -95,6 +105,10 @@ const login = async (username: String, password: string, roleId: string): Promis
         } else {
             console.error('Lỗi không xác định:', error);
         }
+=======
+    } catch (error: any) {
+        console.error('Lỗi đăng nhập:', error.response?.data);
+>>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
     }
 <<<<<<< HEAD
 
@@ -120,18 +134,34 @@ const login = async (username: String, password: string, roleId: string): Promis
     return undefined;
 };
 
+const updateAccount = async (password?: string, userType?: string): Promise<{ message: string }> => {
+    const data: any = {}; // Tạo đối tượng rỗng để chứa dữ liệu
 
-const updateAccount = async (username: string, password?: string): Promise<{ message: string }> => {
-    const data = { username, ...(password && { password }) }; // Chỉ thêm password nếu có
+    // Chỉ thêm password nếu có
+    if (password) {
+        data.password = password;
+    }
+
+    // Thêm userType nếu có
+    if (userType) {
+        data.userType = userType;
+    }
+
     try {
-        const response = await apiClient.put('/auth/account/update', data);
+        // Gửi yêu cầu PUT tới endpoint cập nhật tài khoản
+        const response = await apiClient.put('/change/password', data);
+
+        // Trả về phản hồi từ server
         return response.data;
-    } catch (error) {
-        console.error('Lỗi thay đổi tài khoản:', axios.isAxiosError(error) ? error.response?.data : error);
+    } catch (error: any) {
+        console.error('Lỗi thay đổi tài khoản:', error.response?.data || error.message);
+
+        // Ném lỗi với thông điệp phù hợp
         throw new Error('Không thể thay đổi tài khoản');
     }
 };
 >>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
+
 
 // Đăng xuất
 const logout = async () => {

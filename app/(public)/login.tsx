@@ -5,8 +5,8 @@ import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 import authService from '../src/services/authService';
 
 const login = () => {
-  const [username, setUsername] = useState('test');
-  const [password, setPassword] = useState('1');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const { userType }: any = useLocalSearchParams(); // Lấy userType từ tham số đường dẫn
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -25,7 +25,11 @@ const login = () => {
       console.log("rolee: "+roleId)
       const trimmedUsername = username.trim();
       const trimmedPassword = password.trim();
+<<<<<<< HEAD
       console.log("rolee: "+trimmedUsername)
+=======
+      console.log(userType)
+>>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
       if (!trimmedUsername || !trimmedPassword) {
         Alert.alert("Lỗi", "Vui lòng nhập tên người dùng và mật khẩu.");
         return;
@@ -33,8 +37,12 @@ const login = () => {
 
       // Bắt đầu loading
       setLoading(true);
+<<<<<<< HEAD
       const response = await authService.login(trimmedUsername,trimmedPassword,roleId);
       console.log('Result from login:', response)
+=======
+      const response = await authService.login(trimmedUsername, trimmedPassword, userType);
+>>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
 
       // Kết thúc loading
       setLoading(false);
@@ -106,7 +114,7 @@ const login = () => {
                 </View>
               </View>
               <View>
-                <TouchableOpacity style={styles.btnLogin} onPress={changeScreen} disabled={loading}>
+                <TouchableOpacity style={styles.btnLogin} onPress={handleLogin} disabled={loading}>
                   {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Đăng nhập</Text>}
                 </TouchableOpacity>
               </View>

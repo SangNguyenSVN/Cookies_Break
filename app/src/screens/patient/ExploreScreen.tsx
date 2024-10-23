@@ -7,11 +7,10 @@ import DoctorItem_List_View from '../../components/patient/explore/DoctorItem_Li
 import HospitalItem_List_View from '../../components/patient/explore/HospitalItem_List_View';
 
 const ExploreScreen = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const [activeTab, setActiveTab] = useState('hospital'); // Default tab to "hospital"
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Sample data for hospitals
     const [hospitalList, setHospitalList] = useState([
         {
             id: 1,
@@ -25,7 +24,6 @@ const ExploreScreen = () => {
         },
     ]);
 
-    // Sample data for doctors
     const [doctorList, setDoctorList] = useState([
         {
             id: 1,
