@@ -5,8 +5,8 @@ import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 import authService from '../src/services/authService';
 
 const login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('test');
+  const [password, setPassword] = useState('1');
   const { userType }: any = useLocalSearchParams(); // Lấy userType từ tham số đường dẫn
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -57,6 +57,9 @@ const login = () => {
     }
   };
 
+  const changeScreen =()=>{
+    router.replace('/(user)'); // Chuyển đến trang của bệnh nhân
+  }
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -103,7 +106,7 @@ const login = () => {
                 </View>
               </View>
               <View>
-                <TouchableOpacity style={styles.btnLogin} onPress={handleLogin} disabled={loading}>
+                <TouchableOpacity style={styles.btnLogin} onPress={changeScreen} disabled={loading}>
                   {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Đăng nhập</Text>}
                 </TouchableOpacity>
               </View>
