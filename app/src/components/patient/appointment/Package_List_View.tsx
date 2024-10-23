@@ -5,19 +5,20 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native
 const Package_List_View = ({ route, navigation }: { route: any, navigation: any }) => {
     const { hospital } = route.params; // Nhận thông tin bệnh viện từ route
     const packages = hospital?.packages || []; // Gán giá trị mặc định nếu packages bị undefined
-    console.log(hospital);
-    
+    console.log("Benh vien: ", hospital);
+    console.log("Goi kham: ", packages);
+
     const handleSelectPackage = (pkg: any) => {
         navigation.navigate('doctor_booking_screen', { hospital, selectedPackage: pkg });
     };
 
     return (
         <View style={styles.container}>
-            <Header title='Gói khám' showBackButton={true}/>
+            <Header title='Gói khám' showBackButton={true} />
             {packages.length > 0 ? (
                 <FlatList
                     data={packages} // Dữ liệu các gói khám
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item._id}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => handleSelectPackage(item)} style={styles.packageItem}>
                             <Text style={styles.packageName}>{item.name}</Text>

@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'; // Thêm import này
 
 const BookingScreen = ({ route }: { route: any }) => {
   const navigation = useNavigation(); // Sử dụng useNavigation hook
-  const { doctor, hospital } = route.params; // Lấy thông tin bác sĩ và bệnh viện từ navigation parameters
+  const { doctor, hospital, selectedPackage} = route.params; // Lấy thông tin bác sĩ và bệnh viện từ navigation parameters
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [fullname, setFullname] = useState<string>('');
@@ -42,17 +42,7 @@ const BookingScreen = ({ route }: { route: any }) => {
       Alert.alert("Thông tin không đầy đủ", "Vui lòng điền đầy đủ thông tin.");
       return;
     }
-
-    // Chuyển đến màn hình chọn gói khám với các thông tin
-    navigation.navigate('SelectPackage', {
-      doctor,
-      hospital,
-      fullname,
-      email,
-      phoneNumber,
-      selectedDay,
-      selectedHour,
-    });
+    
   };
 
   return (

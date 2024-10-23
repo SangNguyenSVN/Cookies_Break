@@ -4,16 +4,19 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 
 const Doctor_List_View = ({ route }: { route: any }) => {
-  const { hospital } = route.params; // Lấy thông tin bệnh viện từ navigation parameters
-  const navigation = useNavigation(); // Khởi tạo đối tượng navigation
-
-  console.log('Hospital data:', hospital); // Kiểm tra dữ liệu bệnh viện
+  const { hospital, selectedPackage } = route.params; // Lấy thông tin bệnh viện từ navigation parameters
+  const navigation = useNavigation<any>(); 
+  const doctorData = hospital?.doctors;
+  
+  console.log("goi kham: ", selectedPackage);
+  console.log("bac si: ", doctorData);
+  console.log('Hospital data:', hospital); 
 
   // Hàm để render mỗi mục bác sĩ
   const renderDoctor = ({ item }: any) => (
     <TouchableOpacity 
       style={styles.doctorContainer}     
-      onPress={() => navigation.navigate('booking_screen', { doctor: item, hospital })} 
+      onPress={() => navigation.navigate('booking_screen', { doctor: item, hospital, selectedPackage })} 
     >
       <Text style={styles.doctorName}>{item.name}</Text>
       <Text style={styles.doctorSpecialty}>{item.specialty}</Text> 

@@ -22,7 +22,7 @@ const login = () => {
     try {
       const trimmedUsername = username.trim();
       const trimmedPassword = password.trim();
-
+      console.log(userType)
       if (!trimmedUsername || !trimmedPassword) {
         Alert.alert("Lỗi", "Vui lòng nhập tên người dùng và mật khẩu.");
         return;

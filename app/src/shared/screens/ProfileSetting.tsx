@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Image, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import Header from '../../shared/Header';
@@ -42,6 +42,8 @@ const ProfileSetting = () => {
     const [email, setEmail] = useState('');
     const [specialty, setSpecialty] = useState('')
     const [imageUri, setImageUri] = useState<any>();
+    const [loading, setLoading] = useState(false);
+
     const route = useRoute();
     const navigation = useNavigation();
 
@@ -91,14 +93,12 @@ const ProfileSetting = () => {
             if (!result.canceled && result.assets && result.assets.length > 0) {
                 const selectedImageUri = result.assets[0].uri;
                 setImageUri(selectedImageUri);
-
                 // Sử dụng getMimeType để lấy loại MIME từ URI
-                const imageType = getMimeType(selectedImageUri);
+                // const imageType = getMimeType(selectedImageUri);
 
-                console.log("Hình ảnh đã chọn:", selectedImageUri);
-                console.log("Loại MIME của hình ảnh:", imageType);
+                // console.log("Hình ảnh đã chọn:", selectedImageUri);
+                // console.log("Loại MIME của hình ảnh:", imageType);
 
-                // Sau đó có thể sử dụng imageType khi gửi dữ liệu đến API
             }
         } catch (error) {
             console.error("Error selecting image:", error);
@@ -132,6 +132,8 @@ const ProfileSetting = () => {
     };
 
     const handleUpdate = async () => {
+        setLoading(true);
+
         const newError = {
             name: !validateName(name),
             dob: !dob,
@@ -179,6 +181,8 @@ const ProfileSetting = () => {
         } catch (error: any) {
             console.error('Cập nhật thất bại:', error.message);
             Alert.alert('Cập nhật thất bại', error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -267,8 +271,15 @@ const ProfileSetting = () => {
                                 </>
                             )}
                         </View>
-                        <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
-                            <Text style={styles.updateButtonText}>Cập nhật</Text>
+                        <TouchableOpacity
+                            style={styles.updateButton}
+                            onPress={handleUpdate}
+                            disabled={loading}>
+                            {loading ? (
+                                <ActivityIndicator size="small" color="#fff" /> // Hiện loading spinner
+                            ) : (
+                                <Text style={styles.updateButtonText}>Cập nhật</Text>
+                            )}
                         </TouchableOpacity>
                     </ScrollView>
                 </View>

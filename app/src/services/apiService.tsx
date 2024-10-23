@@ -10,16 +10,16 @@ const getDoctors = (): Promise<AxiosResponse> => {
     return apiClient.get('/user/doctors/')
 }
 
-// Bạn có thể thêm nhiều hàm API khác ở đây
-// Ví dụ:
-// const getHospitalById = async (id) => { ... }
+const getNews = (): Promise<AxiosResponse> => {
+    return apiClient.get('/news/')
+}
+
 
 const apiService = {
     getHospitals,
     getDoctors,
-    // getHospitalById, // Thêm hàm khác vào đối tượng nếu cần
-    // Thêm các hàm API khác vào đây
+    getNews,
+  
 };
 
-// Xuất đối tượng chứa các hàm API
-export default apiService; // Xuất đối tượng hospitalService
+export default apiService; 
