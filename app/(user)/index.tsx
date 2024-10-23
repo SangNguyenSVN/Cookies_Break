@@ -2,19 +2,20 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 import HomeNavigation from '../src/navigation/patient/HomeNavigation'
+import { NavigationContainer } from '@react-navigation/native'
 
 const Home = () => {
   return (
-    <View style={styles.container}>
-      <HomeNavigation/>
-    </View>
-  )
-}
+    <NavigationContainer independent={true}>
+      <HomeNavigation />
+    </NavigationContainer>
+  );
+};
 
-export default Home
+export default Home;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-})
+});

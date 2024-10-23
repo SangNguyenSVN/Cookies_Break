@@ -7,7 +7,7 @@ interface RegisterResponse {
         id: string;
         username: string;
         phoneNumber: string;
-        role: {
+        roleId: {
             id: string;
             name: string;
             permissions: string[];
@@ -16,21 +16,12 @@ interface RegisterResponse {
 }
 
 interface LoginResponse {
-    message: string;
+  
     token: string;
-    user: {
-        id: string;
-        username: string;
-        phoneNumber: string;
-        role: {
-            id: string;
-            name: string;
-            permissions: string[];
-        };
-    };
+   
 }
 
-const API_URL = 'http://192.168.1.3:3000/auth'; // Đổi thành URL thực tế của bạn
+const API_URL = 'http://192.168.1.13:3000/auth'; // Đổi thành URL thực tế của bạn
 
 // Đăng ký bệnh nhân
 const registerPatient = async (username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
@@ -55,14 +46,18 @@ const registerDoctor = async (username: string, password: string, phoneNumber: s
 };
 
 // Đăng nhập
-const login = async (username: string, password: string): Promise<LoginResponse | undefined> => {
+const login = async (username: String, password: string, roleId: string): Promise<LoginResponse | undefined> => {
     try {
+        console.log('Attempting to log in with:' + roleId);
+        
         const response: AxiosResponse<LoginResponse> = await axios.post(`${API_URL}/login`, {
             username,
             password,
-            // Không cần role ở đây
+            roleId
+        
         });
-        return response.data; // Trả về phản hồi
+        
+        return response.data; // Return response if successful
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             console.error('Lỗi đăng nhập:', error.response.data);
@@ -71,24 +66,24 @@ const login = async (username: string, password: string): Promise<LoginResponse 
         }
     }
 
-    return undefined; // Trả về undefined nếu có lỗi
+    return undefined; // Return undefined if there's an error
 };
 
 // Hàm để đăng nhập cho mọi người dùng thử api
-const loginUser = async () => {
-    try {
-        const loginResponse = await login("test", "1"); // Không cần truyền role
-        console.log("Login Response:", loginResponse); // In toàn bộ phản hồi từ API
+// const loginUser = async () => {
+//     try {
+//         const loginResponse = await login("test", "1","patient"); // Không cần truyền role
+//         console.log("Login Response:", loginResponse); // In toàn bộ phản hồi từ API
 
-        if (loginResponse && loginResponse.user) {
-            console.log("User role:", loginResponse.user.role); // Truy cập role từ user
-        } else {
-            console.error("Login response hoặc user là null hoặc undefined");
-        }
-    } catch (error) {
-        console.error("Login error:", error);
-    }
-};
+//         if (loginResponse && loginResponse.user) {
+//             console.log("User role:", loginResponse.user.roleId); // Truy cập role từ user
+//         } else {
+//             console.error("Login response hoặc user là null hoặc undefined");
+//         }
+//     } catch (error) {
+//         console.error("Login error:", error);
+//     }
+// };
 
 // logout
 const logout = async () => {
@@ -111,5 +106,5 @@ export default {
     registerDoctor,
     login,
     logout,
-    loginUser
+    // loginUser
 };

@@ -19,10 +19,13 @@ const login = () => {
   }, [userType]);
 
   const handleLogin = async () => {
+   
     try {
+      const roleId = userType === 'doctor' ? 'doctor' : 'patient'; 
+      console.log("rolee: "+roleId)
       const trimmedUsername = username.trim();
       const trimmedPassword = password.trim();
-
+      console.log("rolee: "+trimmedUsername)
       if (!trimmedUsername || !trimmedPassword) {
         Alert.alert("Lỗi", "Vui lòng nhập tên người dùng và mật khẩu.");
         return;
@@ -30,14 +33,15 @@ const login = () => {
 
       // Bắt đầu loading
       setLoading(true);
-      const response = await authService.login(trimmedUsername, trimmedPassword);
+      const response = await authService.login(trimmedUsername,trimmedPassword,roleId);
+      console.log('Result from login:', response)
 
       // Kết thúc loading
       setLoading(false);
       console.log(response);
       if (response) {
         // Kiểm tra vai trò người dùng từ phản hồi
-        const userRole = response.user.role.name;
+        const userRole = userType;
         if (userRole === 'doctor') {
           router.replace('/(doctor)'); // Chuyển đến trang của bác sĩ
         } else if (userRole === 'patient') {
