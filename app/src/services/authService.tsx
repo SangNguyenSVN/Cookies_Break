@@ -8,38 +8,6 @@ interface RegisterResponse {
         id: string;
         username: string;
         phoneNumber: string;
-        roleId: {
-            id: string;
-            name: string;
-            permissions: string[];
-        };
-    };
-}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-=======
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
-interface LoginResponse {
-  
-    token: string;
-<<<<<<< HEAD
-   
-}
-
-const API_URL = 'http://192.168.1.13:3000/auth'; // Đổi thành URL thực tế của bạn
-=======
-    user: {
-        id: string;
-        username: string;
-        phoneNumber: string;
-        email: string;
-        gender: string;
-        dateOfBirth: Date;
-        fullname: string;
-        address: string;
         role: {
             id: string;
             name: string;
@@ -48,15 +16,7 @@ const API_URL = 'http://192.168.1.13:3000/auth'; // Đổi thành URL thực t�
     };
 }
 
-const API_URL = 'http://192.168.1.4:3000/api/auth'; // Đổi thành URL thực tế của bạn
->>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
-<<<<<<< HEAD
-=======
 
->>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
-=======
->>>>>>> f031cfe18ce236131c7db6e19772888c54d204ac
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
 
 // Hàm đăng ký chung
 const registerUser = async (type: 'patient' | 'doctor', username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
@@ -77,38 +37,9 @@ const registerDoctor = (username: string, password: string, phoneNumber: string,
     registerUser('doctor', username, password, phoneNumber, roleId);
 
 // Đăng nhập
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 const login = async (username: string, password: string, userType: string) => {
     try {
         const response = await apiClient.post('/auth/login', { username, password, userType });
-=======
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
-const login = async (username: String, password: string, roleId: string): Promise<LoginResponse | undefined> => {
-    try {
-<<<<<<< HEAD
-        console.log('Attempting to log in with:' + roleId);
-        
-        const response: AxiosResponse<LoginResponse> = await axios.post(`${API_URL}/login`, {
-            username,
-            password,
-            roleId
-        
-        });
-        
-        return response.data; // Return response if successful
-=======
-        const response: AxiosResponse<LoginResponse> = await axios.post(`${API_URL}/login`, { username, password });
-<<<<<<< HEAD
-=======
-const login = async (username: string, password: string, userType: string) => {
-    try {
-        const response = await apiClient.post('/auth/login', { username, password, userType });
->>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
-=======
->>>>>>> f031cfe18ce236131c7db6e19772888c54d204ac
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
 
         // Lưu user và token vào AsyncStorage
         await AsyncStorage.multiSet([
@@ -117,50 +48,9 @@ const login = async (username: string, password: string, userType: string) => {
         ]);
 
         return response.data;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     } catch (error: any) {
         console.error('Lỗi đăng nhập:', error.response?.data);
-=======
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
->>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            console.error('Lỗi đăng nhập:', error.response?.data);
-        } else {
-            console.error('Lỗi không xác định:', error);
-        }
-<<<<<<< HEAD
-=======
-    } catch (error: any) {
-        console.error('Lỗi đăng nhập:', error.response?.data);
->>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
-=======
->>>>>>> f031cfe18ce236131c7db6e19772888c54d204ac
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
     }
-<<<<<<< HEAD
-
-    return undefined; // Return undefined if there's an error
-};
-
-// Hàm để đăng nhập cho mọi người dùng thử api
-// const loginUser = async () => {
-//     try {
-//         const loginResponse = await login("test", "1","patient"); // Không cần truyền role
-//         console.log("Login Response:", loginResponse); // In toàn bộ phản hồi từ API
-
-//         if (loginResponse && loginResponse.user) {
-//             console.log("User role:", loginResponse.user.roleId); // Truy cập role từ user
-//         } else {
-//             console.error("Login response hoặc user là null hoặc undefined");
-//         }
-//     } catch (error) {
-//         console.error("Login error:", error);
-//     }
-// };
-=======
     return undefined;
 };
 
@@ -190,7 +80,6 @@ const updateAccount = async (password?: string, userType?: string): Promise<{ me
         throw new Error('Không thể thay đổi tài khoản');
     }
 };
->>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
 
 
 // Đăng xuất
@@ -209,9 +98,5 @@ export default {
     registerDoctor,
     login,
     logout,
-<<<<<<< HEAD
-    // loginUser
-=======
-    updateAccount,
->>>>>>> f4489b7af3607beec18bf2ba8d7c565354a2d687
+updateAccount,
 };
