@@ -31,7 +31,7 @@ const _layout = () => {
   useEffect(() => {
     // Điều hướng đến màn hình (public) khi ứng dụng khởi động
     router.replace('/(public)'); 
-  }, []);
+  }, []);  
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
       <Stack initialRouteName='(public)'>

@@ -5,7 +5,7 @@ import Item_Icon_List_View from '../src/components/patient/homescreen/Item_Icon_
 import HomeScreen from '../src/screens/patient/HomeScreen';
 import Home from '../(user)';
 import Item_Hospital_Card_View from '../src/components/patient/explore/Item_Hospital_Card_View';
-import HospitalScreen from '../src/screens/patient/HospitalScreen';
+import HospitalScreen from '../src/components/patient/homescreen/HospitalScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeNavigation from '../src/navigation/patient/HomeNavigation';
 

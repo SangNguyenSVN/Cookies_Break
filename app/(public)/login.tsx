@@ -25,11 +25,7 @@ const login = () => {
       console.log("rolee: "+roleId)
       const trimmedUsername = username.trim();
       const trimmedPassword = password.trim();
-<<<<<<< HEAD
       console.log(userType)
-=======
-      console.log("rolee: "+trimmedUsername)
->>>>>>> f031cfe18ce236131c7db6e19772888c54d204ac
       if (!trimmedUsername || !trimmedPassword) {
         Alert.alert("Lỗi", "Vui lòng nhập tên người dùng và mật khẩu.");
         return;
@@ -37,12 +33,9 @@ const login = () => {
 
       // Bắt đầu loading
       setLoading(true);
-<<<<<<< HEAD
+
       const response = await authService.login(trimmedUsername, trimmedPassword, userType);
-=======
-      const response = await authService.login(trimmedUsername,trimmedPassword,roleId);
-      console.log('Result from login:', response)
->>>>>>> f031cfe18ce236131c7db6e19772888c54d204ac
+
 
       // Kết thúc loading
       setLoading(false);
