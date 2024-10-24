@@ -18,11 +18,26 @@ const getDepartments = (): Promise<AxiosResponse> => {
     return apiClient.get('/departments/')
 }
 
+const postAppointment = (appointmentData: {
+    doctor: string;
+    package: string;
+    time: string;
+    date: string; 
+    notes: string;
+    fullname: string;
+    email: string;
+    phoneNumber: string;
+}): Promise<AxiosResponse> => {
+    return apiClient.post('/appointments', appointmentData);
+};
+
+
 const apiService = {
     getHospitals,
     getDoctors,
     getNews,
-    getDepartments
+    getDepartments,
+    postAppointment
 
 };
 

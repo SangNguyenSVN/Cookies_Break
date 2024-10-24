@@ -6,11 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 const Doctor_List_View = ({ route }: { route: any }) => {
   const { hospital, selectedPackage } = route.params; // Lấy thông tin bệnh viện từ navigation parameters
   const navigation = useNavigation<any>(); 
-  const doctorData = hospital?.doctors;
   
-  console.log("goi kham: ", selectedPackage);
-  console.log("bac si: ", doctorData);
-  console.log('Hospital data:', hospital); 
+
 
   // Hàm để render mỗi mục bác sĩ
   const renderDoctor = ({ item }: any) => (
@@ -28,9 +25,10 @@ const Doctor_List_View = ({ route }: { route: any }) => {
       <Header title='Bác sĩ' showBackButton={true} />
       <View style={styles.listContainer}> 
         <FlatList
+      
           data={hospital.doctors} // Sử dụng hospital.doctors để hiển thị danh sách bác sĩ
           renderItem={renderDoctor}
-          keyExtractor={(doctor) => doctor.id}
+          keyExtractor={(doctor) => doctor._id}
           ListEmptyComponent={<Text>Không có bác sĩ nào.</Text>} // Hiển thị nếu không có bác sĩ
         />
       </View>

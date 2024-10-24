@@ -7,6 +7,7 @@ const API_URL = 'http://192.168.1.5:3001/api/';
 // Tạo một instance của axios với baseURL
 const apiClient = axios.create({
     baseURL: API_URL,
+    timeout: 10000, 
 });
 
 // Middleware để thêm token vào header trước khi gửi request
