@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useAuth } from '@/app/src/hooks/useAuth';
+import apiService from '@/app/src/services/apiService';
 
-const MedicineSelectModal = ({ isModalVisible, setModalVisible, filteredMedicines, addMedicine }:any ) => {
+const MedicineSelectModal = ({ isModalVisible, setModalVisible, filteredMedicines, addMedicine }: any) => {
     const [searchQuery, setSearchQuery] = useState('');
+
+    // lay id benh vien tu user 
+    const { user } = useAuth()
+    const hospitalId = ''// user?.user?.hospital
+    // lay thong tin thuoc 
+    const getMedicines = () => {
+        // dung apiservice . get medicine by doctor
+    }
+    useEffect(() => {
+        if (hospitalId) { // dieu kien neu co id benh vien
+            getMedicines()
+        }
+    })
+    // ham refresh
+    const onRefresh = () => {
+        getMedicines() // lay lai thong tin benh vien
+    }
 
     return (
         <Modal visible={isModalVisible} animationType="fade" transparent={true}>
@@ -30,6 +49,7 @@ const MedicineSelectModal = ({ isModalVisible, setModalVisible, filteredMedicine
 
                     {/* Medicine List */}
                     <FlatList
+                        onRefresh={onRefresh}
                         data={filteredMedicines}
                         keyExtractor={(item) => item.id}
                         style={styles.medicineList}
