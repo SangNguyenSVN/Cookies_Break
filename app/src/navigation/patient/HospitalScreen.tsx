@@ -6,7 +6,7 @@ import Item_Hospital_Card_View from '../../components/patient/explore/Item_Hospi
 import Header from '../../shared/Header'
 import Search from '../../components/patient/explore/Search';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigation/patient/HomeNavigation';
+import { RootStackParamList } from './HomeNavigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 // Adjust path accordingly
@@ -34,8 +34,8 @@ const HospitalScreen: React.FC<HospitalScreenProps> = ({ route }) => {
     const fetchHospitals = async () => {
         try {
            
-            const response = await axios.get(`http://192.168.1.13:3000/apis/hospital/derpartment/${specialty}`);
-            
+            const response = await axios.get(`http://192.168.1.11:3000/apis/hospital/derpartment/${specialty}`);
+            console.log(specialty)
             setHospitals(response.data); 
             console.log("DỮ liệu",response)
             timeout: 10000

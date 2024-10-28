@@ -25,18 +25,15 @@ const login = () => {
       console.log("rolee: "+roleId)
       const trimmedUsername = username.trim();
       const trimmedPassword = password.trim();
-<<<<<<< HEAD
-<<<<<<< HEAD
+
       console.log("rolee: "+trimmedUsername)
-=======
+
       console.log(userType)
->>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
-=======
+
       console.log(userType)
-=======
+
       console.log("rolee: "+trimmedUsername)
->>>>>>> f031cfe18ce236131c7db6e19772888c54d204ac
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
+
       if (!trimmedUsername || !trimmedPassword) {
         Alert.alert("Lỗi", "Vui lòng nhập tên người dùng và mật khẩu.");
         return;
@@ -44,20 +41,12 @@ const login = () => {
 
       // Bắt đầu loading
       setLoading(true);
-<<<<<<< HEAD
-<<<<<<< HEAD
+
+     
+
       const response = await authService.login(trimmedUsername,trimmedPassword,roleId);
       console.log('Result from login:', response)
-=======
-      const response = await authService.login(trimmedUsername, trimmedPassword, userType);
->>>>>>> 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4
-=======
-      const response = await authService.login(trimmedUsername, trimmedPassword, userType);
-=======
-      const response = await authService.login(trimmedUsername,trimmedPassword,roleId);
-      console.log('Result from login:', response)
->>>>>>> f031cfe18ce236131c7db6e19772888c54d204ac
->>>>>>> 7d7f31ca58faccf98480597caa8bdebd9b91f6c1
+
 
       // Kết thúc loading
       setLoading(false);

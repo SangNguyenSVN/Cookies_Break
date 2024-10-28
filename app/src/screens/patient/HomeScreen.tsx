@@ -64,6 +64,7 @@ const HomeScreen = () => {
         ImgSource={require("../../../src/assets/icon/avatar.png")}
         />
     </View>
+   
   )
 }
 

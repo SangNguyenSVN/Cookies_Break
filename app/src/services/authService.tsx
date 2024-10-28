@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import apiClient from './apiClient'; // Đảm bảo đường dẫn đúng
+import apiClient from './apiClient';
+
+
 
 // Định nghĩa kiểu cho dữ liệu phản hồi
 interface RegisterResponse {
@@ -92,6 +94,7 @@ const logout = async () => {
         throw error;
     }
 };
+
 
 export default {
     registerPatient,
