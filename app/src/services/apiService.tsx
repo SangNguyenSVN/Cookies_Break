@@ -18,11 +18,34 @@ const getDepartments = (): Promise<AxiosResponse> => {
     return apiClient.get('/departments/')
 }
 
+const getAppointmentByDoctor = (doctorId: string): Promise<AxiosResponse> => {
+    return apiClient.get(`/appointments/doctor/${doctorId}`);
+};
+const getMedicinesByHospital = (hospitalId: string): Promise<AxiosResponse> => {
+    return apiClient.get(`/medicines/hospital/${hospitalId}`);
+};
+const postAppointment = (appointmentData: {
+    doctor: string;
+    package: string;
+    time: string;
+    date: string; 
+    notes: string;
+    fullname: string;
+    email: string;
+    phoneNumber: string;
+}): Promise<AxiosResponse> => {
+    return apiClient.post('/appointments', appointmentData);
+};
+
+
 const apiService = {
     getHospitals,
     getDoctors,
     getNews,
-    getDepartments
+    getDepartments,
+    postAppointment,
+    getAppointmentByDoctor,
+    getMedicinesByHospital
 
 };
 

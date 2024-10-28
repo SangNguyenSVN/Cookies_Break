@@ -28,7 +28,7 @@ const Item_Specialties_List_View = () => {
     };
     const fetchSpecialist = async () => {
         try {
-            const response = await axios.get(`http://192.168.1.11:3000/apis/department/departments`);
+            const response = await axios.get(`http://192.168.1.10:3000/apis/department/departments`);
            
                 setSpecialities(response.data);
                 console.log("Dữ liệu:", response.data);

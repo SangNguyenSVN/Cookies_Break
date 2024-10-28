@@ -34,7 +34,7 @@ const HospitalScreen: React.FC<HospitalScreenProps> = ({ route }) => {
     const fetchHospitals = async () => {
         try {
            
-            const response = await axios.get(`http://192.168.1.11:3000/apis/hospital/derpartment/${specialty}`);
+            const response = await axios.get(`http://192.168.1.10:3000/apis/hospital/derpartment/${specialty}`);
             console.log(specialty)
             setHospitals(response.data); 
             console.log("DỮ liệu",response)
