@@ -1,32 +1,37 @@
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router'; // Import useRouter
-
+import HomeScreen from '../src/screens/patient/HomeScreen';
+import HomeNavigation from '../src/navigation/patient/HomeNavigation';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 
 const index = () => {
-  const [userType, setUserType] = useState<string>('');
-  const router = useRouter(); // Lấy router từ expo-router
+  // const [userType, setUserType] = useState<string>('');
+  // const router = useRouter(); // Lấy router từ expo-router
 
-  const handleNavigate = (type: string) => {
-    setUserType(type);
-    router.push({ pathname: '/(public)/login', params: { userType: type } }); // Điều hướng và truyền dữ liệu
-  };
+  // const handleNavigate = (type: string) => {
+  //   setUserType(type);
+  //   router.push({ pathname: '/(public)/login', params: { userType: type } }); // Điều hướng và truyền dữ liệu
+  // };
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.img} source={require('../../assets/images/react-logo.png')} />
-      <View style={styles.itemsChoose}>
-        <TouchableOpacity style={styles.btn} onPress={() => handleNavigate('patient')}>
-          <Text style={styles.text}>Bệnh nhân</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={() => handleNavigate('doctor')}>
-          <Text style={styles.text}>Bác sĩ</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-
+    // <View >
+    //   {/* <Image style={styles.img} source={require('../../assets/images/react-logo.png')} />
+    //   <View style={styles.itemsChoose}>
+    //     <TouchableOpacity style={styles.btn} onPress={() => handleNavigate('patient')}>
+    //       <Text style={styles.text}>Bệnh nhân</Text>
+    //     </TouchableOpacity>
+    //     <TouchableOpacity style={styles.btn} onPress={() => handleNavigate('doctor')}>
+    //       <Text style={styles.text}>Bác sĩ</Text>
+    //     </TouchableOpacity>
+    //   </View> */}
+    //   <HomeNavigation/>
+    // </View>
+<NavigationContainer independent={true}>
+      <HomeNavigation />
+    </NavigationContainer>
   );
 };
 

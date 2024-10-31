@@ -101,10 +101,7 @@ export default {
     registerDoctor,
     login,
     logout,
-<<<<<<< HEAD
-updateAccount,
-};
-=======
+
     updateAccount,
 };
->>>>>>> 166a9e7f2178669a1bab7a94ddfe4ddc4d748a9b
+

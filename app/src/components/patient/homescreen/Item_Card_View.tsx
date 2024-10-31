@@ -1,9 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-
-const Item_Card_View = () => {
+interface CardProps{
+    Name: String,
+    Description:String,
+   
+    ImgSource: any;
+}
+const Item_Card_View: React.FC<CardProps> = ({Name,Description,ImgSource})=> {
+    
   return (
-<<<<<<< HEAD
     <View style={{padding:8}}>
       <View style={[styles.container]}>
         <View style={[styles.box]}>
@@ -52,14 +57,39 @@ const Item_Card_View = () => {
             </View>
         </View>
       </View>
-=======
-    <View>
-      <Text>Item_Card_View</Text>
->>>>>>> 166a9e7f2178669a1bab7a94ddfe4ddc4d748a9b
     </View>
   )
 }
 
 export default Item_Card_View
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container:{
+        width:"100%",
+        height:180,
+        borderRadius:20,
+        flexDirection:"row",
+        justifyContent:"space-around",
+        backgroundColor:"#EBEAEA",
+        alignItems:"center"
+    },
+    box:{
+       borderRadius:100,
+       width:120,
+       height:120,
+       overflow: "hidden",
+
+    },
+    button1:{
+        flexDirection:"row",
+        justifyContent:"space-evenly",
+        alignItems:"center",
+        width:110,height:26,
+        borderRadius:5,
+        backgroundColor:"#489458"
+    },
+    TextStyle:{
+        fontSize:12,
+
+    }
+})

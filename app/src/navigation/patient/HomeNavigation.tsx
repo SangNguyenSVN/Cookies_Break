@@ -2,11 +2,10 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from '../../screens/patient/HomeScreen';
-<<<<<<< HEAD
+
 import HospitalScreen from './HospitalScreen';
-=======
-import HospitalScreen from '../../components/patient/homescreen/HospitalScreen';
->>>>>>> 166a9e7f2178669a1bab7a94ddfe4ddc4d748a9b
+
+
 
 export type RootStackParamList = {
   user_home_screen: undefined; // No params for HomeScreen
