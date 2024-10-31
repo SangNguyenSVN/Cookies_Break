@@ -1,42 +1,46 @@
-// components/patient/explore/HospitalItem_List_View.js
-
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 
 const HospitalItem_List_View = ({ data }: any) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.name}>{data.name}</Text>
-            <Text style={styles.address}>{data.address}</Text>
+            <ImageBackground source={{ uri: data.image }} style={styles.image} imageStyle={styles.imageBorder}>
+                <View style={styles.overlay}>
+                    <Text style={styles.name}>{data.name}</Text>
+                    <Text style={styles.address}>{data.location}</Text>
+                </View>
+            </ImageBackground>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
-        backgroundColor: '#f8f8f8',
+        height: 150, // Adjust height as needed
         borderRadius: 10,
+        overflow: 'hidden', // Ensures image respects border radius
         marginVertical: 8,
         elevation: 1,
+        margin: 10
+    },
+    image: {
+        flex: 1,
+        borderRadius: 10, // Apply borderRadius here to include all corners
+        justifyContent: 'flex-end', // Position overlay at the bottom
+    },
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay for readability
+        padding: 8,
     },
     name: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: '#fff',
     },
     address: {
         fontSize: 14,
-        color: '#555',
-    },
-    role: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginTop: 8,
-    },
-    doctorName: {
-        fontSize: 14,
-        color: '#777',
-    },
+        color: '#ddd',
+    }
 });
 
 export default HospitalItem_List_View;

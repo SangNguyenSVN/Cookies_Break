@@ -1,36 +1,62 @@
 // DetailScreen.tsx
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import React from 'react';
 import Header from '@/app/src/shared/Header';
 
 const DetailScreen = ({ route }: any) => {
     const { item, type } = route.params; // Nhận thông tin và loại (type) từ params
 
+    const getInitials = (name: string) => {
+        const names = name.split(' ');
+        return names.map(n => n.charAt(0).toUpperCase()).join('');
+    };
+
+    const renderAvatar = (fullname: string) => (
+        <View style={styles.avatar}>
+            <Text style={styles.avatarText}>{getInitials(fullname)}</Text>
+        </View>
+    );
+
+    const renderDoctorInfo = () => (
+        <>
+            <Text style={styles.title}>Bác sĩ: {item.fullname}</Text>
+            {item.image ? (
+                <Image 
+                    source={{ uri: item.image }} 
+                    style={styles.image} 
+                    onError={() => console.log('Image load failed')} // Handle error if needed
+                />
+            ) : (
+                renderAvatar(item.fullname)
+            )}
+            <Text style={styles.info}>Mã bác sĩ: {item.id}</Text>
+            <Text style={styles.info}>Chuyên khoa: {item.specialty}</Text>
+        </>
+    );
+
+    const renderHospitalInfo = () => (
+        <>
+            <Text style={styles.title}>Bệnh viện: {item.name}</Text>
+            <Text style={styles.address}>Địa chỉ: {item.location}</Text>
+            <Text style={styles.info}>Danh sách bác sĩ:</Text>
+            {item.doctors && item.doctors.length > 0 ? (
+                item.doctors.map((doctor: any) => (
+                    <Text key={doctor.id} style={styles.doctorName}>
+                        - {doctor.fullname} ({doctor.specialty})
+                    </Text>
+                ))
+            ) : (
+                <Text style={styles.noDoctors}>Không có bác sĩ nào được liệt kê.</Text>
+            )}
+        </>
+    );
+
     return (
         <View style={styles.container}>
-            {/* Hiển thị thông tin theo type */}
-            {type === 'doctor' ? (
-                <>
-                    <Header title='Thông tin bác sĩ' showBackButton={false} />
-                    <Text style={styles.title}>Bác sĩ: {item.name}</Text>
-                    <Image source={{ uri: item.image }} style={styles.image} />
-                    {/* Thêm thông tin khác về bác sĩ nếu cần */}
-                    <Text style={styles.info}>Mã bác sĩ: {item.id}</Text>
-                </>
-            ) : type === 'hospital' ? (
-                <>
-                    <Header title='Thông tin bệnh việnviện' showBackButton={false} />
-                    <Text style={styles.title}>Bệnh viện: {item.name}</Text>
-                    <Text style={styles.address}>Địa chỉ: {item.address}</Text>
-                    {/* Hiển thị danh sách bác sĩ liên quan */}
-                    <Text style={styles.info}>Danh sách bác sĩ:</Text>
-                    {item.doctors && item.doctors.map((doctor: any) => (
-                        <Text key={doctor.id} style={styles.doctorName}>
-                            - {doctor.name}
-                        </Text>
-                    ))}
-                </>
-            ) : null}
+            <Header title={type === 'doctor' ? 'Thông tin bác sĩ' : 'Thông tin bệnh viện'} showBackButton={true} />
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                {type === 'doctor' ? renderDoctorInfo() : type === 'hospital' ? renderHospitalInfo() : null}
+            </ScrollView>
         </View>
     );
 };
@@ -39,12 +65,17 @@ export default DetailScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#f8f8f8',
+    },
+    scrollView: {
+        padding: 16,
     },
     title: {
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: 'bold',
         marginBottom: 10,
+        color: '#333',
     },
     address: {
         fontSize: 18,
@@ -56,14 +87,38 @@ const styles = StyleSheet.create({
         height: 100,
         borderRadius: 50,
         marginBottom: 10,
+        alignSelf: 'center',
+        borderColor: '#ccc',
+        borderWidth: 1,
     },
     info: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '600',
         marginTop: 20,
+        color: '#444',
     },
     doctorName: {
         fontSize: 16,
+        color: '#555',
+    },
+    noDoctors: {
+        fontSize: 16,
         color: 'gray',
+        marginTop: 10,
+    },
+    avatar: {
+        width: 70, // Same size as the image
+        height: 70,
+        borderRadius: 35,
+        backgroundColor: '#ddd', // Placeholder background color
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+        alignSelf: 'center',
+    },
+    avatarText: {
+        fontSize: 24,
+        color: '#fff', // White text color for contrast
+        fontWeight: 'bold',
     },
 });

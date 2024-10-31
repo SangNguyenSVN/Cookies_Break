@@ -30,13 +30,12 @@ export default Hospital_Doctor_Tab;
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%', // Set width to 100% to fill the container
         flexDirection: 'row',
         justifyContent: 'space-around',
         backgroundColor: '#D9D9D9',
         paddingVertical: 5,
         borderRadius: 10,
-        margin: 3,
+        margin: 10,
         // Remove flex: 1 to avoid taking up entire screen height
     },
     activeTab: {
@@ -45,6 +44,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         backgroundColor: 'white',
         paddingHorizontal: 20,
+        transform: [{ scale: 1.05 }], // Slightly enlarge the active tab
         height: 40, // Adjust height as needed
     },
     inActiveTab: {

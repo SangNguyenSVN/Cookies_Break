@@ -4,6 +4,7 @@ import Header from '../../shared/Header';
 import HospitalItem_List_View from '../../components/patient/appointment/Item_List_View';
 import { useNavigation } from '@react-navigation/native';
 import apiService from '../../services/apiService';
+import InputSearch from '../../shared/InputSearch';
 
 const AppointmentScreen = () => {
   const navigation = useNavigation<any>(); // Get the navigation object
@@ -14,7 +15,7 @@ const AppointmentScreen = () => {
   useEffect(() => {
     getHospitals();
   }, []);
-// lay thon tin benh vien
+  // lay thon tin benh vien
   const getHospitals = async () => {
     try {
       const data: any = await apiService.getHospitals();
@@ -51,18 +52,7 @@ const AppointmentScreen = () => {
   return (
     <View style={styles.container}>
       <Header title='Đặt lịch khám' showBackButton={false} />
-
-      {/* TextInput để tìm kiếm */}
-      <View style={styles.searchBar}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Tìm kiếm"
-          placeholderTextColor="#888"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-      </View>
-
+      <InputSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <FlatList
         data={filterHospitals()} // Sử dụng hàm filterHospitals để lấy dữ liệu đã lọc
         renderItem={renderItem}
@@ -83,18 +73,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   flatListContent: {
-paddingHorizontal: 10,  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F0F0F0',
-    margin: 10,
-    padding: 10,
-    borderRadius: 20,
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 16,
-  },
+    paddingHorizontal: 10,
+  }
 });

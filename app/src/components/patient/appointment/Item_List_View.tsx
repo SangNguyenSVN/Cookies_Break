@@ -10,7 +10,7 @@ const HospitalItem_List_View = ({ data }: { data: any }) => {
                 <Image source={{ uri: data.image }} style={styles.image} />
                 <Text style={styles.name}>{data.name}</Text>
             </View>
-            <Text style={styles.address}>{data.address}</Text>
+            <Text style={styles.address}>{data.location}</Text>
         </View>
     );
 };

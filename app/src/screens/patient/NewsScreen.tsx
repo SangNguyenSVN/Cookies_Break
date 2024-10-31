@@ -4,6 +4,7 @@ import Item_List_View from '../../components/patient/news/Item_List_View';
 import apiService from '../../services/apiService';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../../shared/Header';
+import InputSearch from '../../shared/InputSearch';
 
 const NewsFeedScreen = () => {
     const [newsData, setNewsData] = useState([]);
@@ -47,15 +48,7 @@ const NewsFeedScreen = () => {
     return (
         <View style={styles.container}>
             <Header title='Tin tức' showBackButton={false} />
-            <View style={styles.searchBar}>
-                <TextInput
-                    style={styles.searchInput}
-                    placeholder="Tìm kiếm"
-                    placeholderTextColor="#888"
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                />
-            </View>
+            <InputSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             <FlatList
                 keyExtractor={(item: any) => item._id} // Thêm keyExtractor để sử dụng ID làm khóa
                 data={filteredNewsData}
@@ -73,19 +66,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    searchBar: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#F0F0F0',
-        margin: 16,
-        padding: 8,
-        borderRadius: 20,
-    },
-    searchInput: {
-        flex: 1,
-        marginLeft: 8,
-        fontSize: 16,
-    },
+
 });
 
 export default NewsFeedScreen;

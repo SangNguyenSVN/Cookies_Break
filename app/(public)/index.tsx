@@ -14,7 +14,7 @@ const index = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.img} source={require('../../assets/images/react-logo.png')} />
+      <Image style={styles.img} source={require('../../assets/images/img-logo-cookies-break.png')} />
       <View style={styles.itemsChoose}>
         <TouchableOpacity style={styles.btn} onPress={() => handleNavigate('patient')}>
           <Text style={styles.text}>Bệnh nhân</Text>
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   img: {
-    height: 80,
-    width: 80,
+    height: 100,
+    width: 100,
   },
   itemsChoose: {
     marginTop: 20,
