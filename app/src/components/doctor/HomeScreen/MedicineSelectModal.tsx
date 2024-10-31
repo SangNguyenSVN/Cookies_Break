@@ -2,18 +2,49 @@ import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useAuth } from '@/app/src/hooks/useAuth';
-import apiService from '@/app/src/services/apiService';
 
-const MedicineSelectModal = ({ isModalVisible, setModalVisible, filteredMedicines, addMedicine }: any) => {
+import axios from 'axios';
+interface Category {
+    _id: string;
+    name: string;
+    description: string;
+    medicines: string[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+interface Medicine {
+    _id: string;
+    name: string;
+    quantity: number;
+    price: number;
+    category: Category;
+}
+
+interface MedicineSelectModalProps {
+    isModalVisible: boolean;
+    setModalVisible: (visible: boolean) => void;
+    addMedicine: (medicine: Medicine) => void;
+}
+
+const MedicineSelectModal:  React.FC<MedicineSelectModalProps> = ({ isModalVisible, setModalVisible, addMedicine }: any) => {
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [filteredMedicines, setFilteredMedicines] = useState<Medicine[]>([]);
     // lay id benh vien tu user 
     const { user } = useAuth()
     const hospitalId = ''// user?.user?.hospital
     // lay thong tin thuoc 
-    const getMedicines = () => {
-        // dung apiservice . get medicine by doctor
-    }
+    const getMedicines = async () => {
+        try {
+           const response =  await axios.get(`http://192.168.1.11:3000/apis/medicine/hospital/670f547d51a17689a7f4601b`);
+            // Assuming response contains an array of medicines
+            setFilteredMedicines(response.data); // If you want to set the medicines in state
+        } catch (error) {
+            console.error("Error fetching medicines:", error);
+        }
+    };
+    
     useEffect(() => {
         if (hospitalId) { // dieu kien neu co id benh vien
             getMedicines()
@@ -51,12 +82,12 @@ const MedicineSelectModal = ({ isModalVisible, setModalVisible, filteredMedicine
                     <FlatList
                         onRefresh={onRefresh}
                         data={filteredMedicines}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item._id}
                         style={styles.medicineList}
                         renderItem={({ item }) => (
                             <TouchableOpacity style={styles.tableRow} onPress={() => addMedicine(item)}>
                                 <Text style={styles.tableText}>{item.name}</Text>
-                                <Text style={styles.tableText}>{item.type}</Text>
+                                <Text style={styles.tableText}>{item.price}</Text>
                             </TouchableOpacity>
                         )}
                     />
