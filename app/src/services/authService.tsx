@@ -19,22 +19,19 @@ interface RegisterResponse {
 
 
 // Hàm đăng ký chung
-const registerUser = async (type: 'patient' | 'doctor', username: string, password: string, phoneNumber: string, roleId: string): Promise<RegisterResponse> => {
+const registerUser = async (type: 'patient' | 'doctor', username: string, password: string, phoneNumber: string): Promise<RegisterResponse> => {
     const response = await apiClient.post(`/auth/register/${type}`, {
         username,
         password,
         phoneNumber,
-        roleId,
+    
     });
     return response.data;
 };
  
 // Đăng ký bệnh nhân và bác sĩ
-const registerPatient = (username: string, password: string, phoneNumber: string, roleId: string) =>
-    registerUser('patient', username, password, phoneNumber, roleId);
-
-const registerDoctor = (username: string, password: string, phoneNumber: string, roleId: string) =>
-    registerUser('doctor', username, password, phoneNumber, roleId);
+const registerPatient = (username: string, password: string, phoneNumber: string) =>
+    registerUser('patient', username, password, phoneNumber);
 
 // Đăng nhập
 const login = async (username: string, password: string, userType: string) => {
@@ -95,7 +92,6 @@ const logout = async () => {
 
 export default {
     registerPatient,
-    registerDoctor,
     login,
     logout,
     updateAccount,

@@ -3,132 +3,141 @@ import { StyleSheet, Text, View, TextInput, Platform, Image, TouchableOpacity, A
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 import authService from '../src/services/authService';
+import { validateName, validatePassword } from '../src/services/Validated'; // Import validation functions
 
-const login = () => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { userType }: any = useLocalSearchParams(); // Lấy userType từ tham số đường dẫn
+  const { userType }: any = useLocalSearchParams(); 
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({ username: false, password: false });
   const router = useRouter();
 
   useEffect(() => {
     if (!userType) {
-      // Nếu không có userType, quay lại trang trước đó
-      router.back();
+      router.back(); // Go back if no userType
     }
   }, [userType]);
 
   const handleLogin = async () => {
-   
+    // Reset errors
+    setErrors({ username: false, password: false });
+
+    // Trimmed inputs
+    const trimmedUsername = username.trim();
+    const trimmedPassword = password.trim();
+
+    // Validation
+    let hasError = false;
+    
+    // Using validation functions
+    if (!validateName(trimmedUsername)) {
+      setErrors(prev => ({ ...prev, username: true }));
+      hasError = true;
+    }
+
+    if (!validatePassword(trimmedPassword)) {
+      setErrors(prev => ({ ...prev, password: true }));
+      hasError = true;
+    }
+
+    if (hasError) {
+      Alert.alert("Lỗi", "Vui lòng nhập tên người dùng và mật khẩu hợp lệ.");
+      return;
+    }
+
+    setLoading(true); // Start loading
+
     try {
-      const roleId = userType === 'doctor' ? 'doctor' : 'patient'; 
-      console.log("rolee: "+roleId)
-      const trimmedUsername = username.trim();
-      const trimmedPassword = password.trim();
-      console.log(userType)
-      if (!trimmedUsername || !trimmedPassword) {
-        Alert.alert("Lỗi", "Vui lòng nhập tên người dùng và mật khẩu.");
-        return;
-      }
-
-      // Bắt đầu loading
-      setLoading(true);
-
       const response = await authService.login(trimmedUsername, trimmedPassword, userType);
-
-
-      // Kết thúc loading
-      setLoading(false);
-      console.log(response);
       if (response) {
-        // Kiểm tra vai trò người dùng từ phản hồi
-        const userRole = userType;
-        if (userRole === 'doctor') {
-          router.replace('/(doctor)'); // Chuyển đến trang của bác sĩ
-        } else if (userRole === 'patient') {
-          router.replace('/(user)'); // Chuyển đến trang của bệnh nhân
-        } else {
-          Alert.alert("Lỗi", "Vai trò người dùng không hợp lệ.");
-        }
+        router.replace(userType === 'doctor' ? '/(doctor)' : '/(user)');
       }
     } catch (error: any) {
-      setLoading(false); // Kết thúc loading nếu có lỗi xảy ra
-      Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra khi đăng nhập."); // Hiển thị thông báo lỗi
-      console.error("Login error:", error); // In lỗi ra console để debug
+      Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra khi đăng nhập.");
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false); // Ensure loading is stopped regardless of success or failure
     }
   };
 
-  const changeScreen =()=>{
-    router.replace('/(user)'); // Chuyển đến trang của bệnh nhân
-  }
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Đảm bảo cấu hình cho cả iOS và Android
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0} // Thay đổi giá trị này nếu cần
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.select({ ios: 50, android: 50 })}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.form}>
             <View>
               <Text style={styles.txtHeader}>Welcome {userType === 'doctor' ? 'Doctor' : 'Patient'}</Text>
-              <Text style={styles.txtTitle}>Simplify your workflow and boost your productivity with </Text>
-              <Text style={styles.txtTitle}>Cookies Break App. Get started for free.</Text>
+              <Text style={styles.txtTitle}>Simplify your workflow and boost your productivity with Cookies Break App. Get started for free.</Text>
               <Image style={styles.img} source={require("../src/assets/public/login_img_1.png")} />
+
+              {/* Username Input */}
               <View style={styles.viewBox}>
                 <TextInput
-                  placeholderTextColor={"gray"}
+                  placeholderTextColor="gray"
                   value={username}
                   onChangeText={setUsername}
                   numberOfLines={1}
-                  style={styles.viewInput}
-                  placeholder='Tên người dùng'
+                  style={[styles.viewInput, errors.username && styles.inputError]}
+                  placeholder="Tên người dùng"
+                  editable={!loading} // Disable input when loading
+                  accessibilityLabel="Tên người dùng"
                 />
+                {errors.username && <Text style={styles.errorText}>Tên người dùng không được để trống.</Text>}
               </View>
+
+              {/* Password Input */}
               <View style={styles.viewBox}>
                 <TextInput
-                  placeholderTextColor={"gray"}
+                  placeholderTextColor="gray"
                   value={password}
                   onChangeText={setPassword}
                   numberOfLines={1}
                   secureTextEntry
-                  style={styles.viewInput}
-                  placeholder='Mật khẩu'
+                  style={[styles.viewInput, errors.password && styles.inputError]}
+                  placeholder="Mật khẩu"
+                  editable={!loading} // Disable input when loading
+                  accessibilityLabel="Mật khẩu"
                 />
+                {errors.password && <Text style={styles.errorText}>Mật khẩu không được để trống.</Text>}
               </View>
             </View>
+
             <View>
-              <View style={styles.viewIcon}>
-                <View style={{ width: '100%', flexDirection: "row", justifyContent: "space-between", alignItems: 'center' }}>
-                  <View>
-                    {/* Checkbox for Remember me can be added here */}
-                  </View>
-                  <Link href={"/(public)/forgot"}>Quên mật khẩu</Link>
+              {/* <View style={styles.viewIcon}>
+                <View>
+                  <Link href="/(public)/forgot">Quên mật khẩu</Link>
                 </View>
-              </View>
-              <View>
-                <TouchableOpacity style={styles.btnLogin} onPress={changeScreen} disabled={loading}>
-                  {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Đăng nhập</Text>}
-                </TouchableOpacity>
-              </View>
+              </View> */}
+              <TouchableOpacity style={styles.btnLogin} onPress={handleLogin} disabled={loading}>
+                {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Đăng nhập</Text>}
+              </TouchableOpacity>
             </View>
           </View>
-          {userType === 'patient' &&
+
+          {userType === 'patient' && (
             <View style={styles.viewbot}>
               <SignInWithGoogle />
               <View style={styles.viewRegister}>
                 <Text>Bạn chưa có tài khoản? </Text>
-                <Link style={{ color: 'green' }} href={"/(public)/register"}>Đăng ký</Link>
+                <Link style={{ color: 'green' }} href="/(public)/register">Đăng ký</Link>
               </View>
             </View>
-          }
+          )}
         </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
 
-export default login;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
@@ -143,16 +152,25 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   viewBox: {
-    marginVertical: 20,
-    margin: 20,
+    marginVertical: 10,
+    width: '90%', // Keep form centered
+    alignSelf: 'center',
   },
   viewInput: {
     justifyContent: 'center',
-    padding: 10,
+    padding: 12,
     borderRadius: 10,
     borderColor: 'black',
-    borderWidth: 2,
-    width: '100%', // Đảm bảo chiều rộng đầy đủ
+    borderWidth: 1,
+    width: '100%',
+  },
+  inputError: {
+    borderColor: 'red', // Red border for error state
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
   },
   txtHeader: {
     alignSelf: 'center',
@@ -164,6 +182,7 @@ const styles = StyleSheet.create({
   },
   txtTitle: {
     alignSelf: 'center',
+    textAlign: 'center', // Center text
   },
   viewIcon: {
     marginHorizontal: 10,
@@ -172,7 +191,7 @@ const styles = StyleSheet.create({
   },
   btnLogin: {
     height: 40,
-    width: 250,
+    width: Platform.OS === 'ios' ? 250 : 260,
     backgroundColor: '#489458',
     borderRadius: 20,
     alignItems: "center",
@@ -186,14 +205,16 @@ const styles = StyleSheet.create({
   img: {
     alignSelf: 'center',
     margin: 10,
+    width: 200,
+    height: 150,
+    resizeMode: 'contain',
   },
   viewRegister: {
     margin: 10,
     flexDirection: 'row',
   },
   viewbot: {
-    position: 'absolute',
-    bottom: 30,
     alignItems: 'center',
+    position: 'relative',
   },
 });

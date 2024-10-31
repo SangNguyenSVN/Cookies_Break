@@ -1,11 +1,12 @@
 export function validateName(name: string): boolean {
-    return !!name; // Trả về true nếu name không rỗng
+    return !!name.trim(); // Trả về true nếu name không rỗng
 }
 
 export function validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(email) && email.length <= 254; // Thêm kiểm tra độ dài tối đa cho email
 }
+
 
 export function validatePhoneNumber(phoneNumber: string): boolean {
     const phoneRegex = /^(0|\+84)[3|5|7|8|9][0-9]{8}$/;
