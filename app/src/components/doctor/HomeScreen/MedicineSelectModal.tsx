@@ -1,28 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useAuth } from '@/app/src/hooks/useAuth';
 import apiService from '@/app/src/services/apiService';
+interface Category {
+    _id: string;
+    name: string;
+    description: string;
+    medicines: string[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
 
-const MedicineSelectModal = ({ isModalVisible, setModalVisible, filteredMedicines, addMedicine }: any) => {
+interface Medicine {
+    _id: string;
+    name: string;
+    quantity: number;
+    price: number;
+    category: Category;
+}
+
+interface MedicineSelectModalProps {
+    isModalVisible: boolean;
+    setModalVisible: (visible: boolean) => void;
+    addMedicine: (medicine: Medicine) => void;
+}
+
+const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisible, setModalVisible, addMedicine }) => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [filteredMedicines, setFilteredMedicines] = useState<Medicine[]>([]);
+    const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
+    const hospitalId = user?.user?.hospital;
 
-    // lay id benh vien tu user 
-    const { user } = useAuth()
-    const hospitalId = ''// user?.user?.hospital
-    // lay thong tin thuoc 
-    const getMedicines = () => {
-        // dung apiservice . get medicine by doctor
-    }
-    useEffect(() => {
-        if (hospitalId) { // dieu kien neu co id benh vien
-            getMedicines()
+    const getMedicines = async () => {
+        setLoading(true);
+        try {
+            const response = await apiService.getMedicinesByHospital(hospitalId)
+            setFilteredMedicines(response.data);
+        } catch (error) {
+            console.error("Error fetching medicines:", error);
+        } finally {
+            setLoading(false);
         }
-    })
-    // ham refresh
+    };
+
+    useEffect(() => {
+        if (hospitalId) {
+            getMedicines();
+        }
+    }, [hospitalId]);
+
     const onRefresh = () => {
-        getMedicines() // lay lai thong tin benh vien
-    }
+        getMedicines();
+    };
+
+    const filteredData = filteredMedicines.filter(medicine =>
+        medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <Modal visible={isModalVisible} animationType="fade" transparent={true}>
@@ -30,38 +66,38 @@ const MedicineSelectModal = ({ isModalVisible, setModalVisible, filteredMedicine
                 <View style={styles.modalContainer}>
                     <Text style={styles.modalTitle}>Medicine select</Text>
 
-                    {/* Search Bar */}
                     <View style={styles.searchBar}>
                         <FontAwesome name="search" size={20} color="#aaa" />
                         <TextInput
                             style={styles.searchInput}
                             placeholder="Tìm kiếm ..."
                             value={searchQuery}
-                            onChangeText={(text) => setSearchQuery(text)}
+                            onChangeText={setSearchQuery}
                         />
                     </View>
 
-                    {/* Table Header */}
                     <View style={styles.tableHeader}>
                         <Text style={styles.tableText}>Tên thuốc</Text>
-                        <Text style={styles.tableText}>Loại thuốc</Text>
+                        <Text style={styles.tableText}>Giá</Text>
                     </View>
 
-                    {/* Medicine List */}
-                    <FlatList
-                        onRefresh={onRefresh}
-                        data={filteredMedicines}
-                        keyExtractor={(item) => item.id}
-                        style={styles.medicineList}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.tableRow} onPress={() => addMedicine(item)}>
-                                <Text style={styles.tableText}>{item.name}</Text>
-                                <Text style={styles.tableText}>{item.type}</Text>
-                            </TouchableOpacity>
-                        )}
-                    />
+                    {loading ? (
+                        <ActivityIndicator size="large" color="#007bff" />
+                    ) : (
+                        <FlatList
+                            onRefresh={onRefresh}
+                            data={filteredData}
+                            keyExtractor={(item) => item._id}
+                            style={styles.medicineList}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity style={styles.tableRow} onPress={() => addMedicine(item)}>
+                                    <Text style={styles.tableText}>{item.name}</Text>
+                                    <Text style={styles.tableText}>{item.price}</Text>
+                                </TouchableOpacity>
+                            )}
+                        />
+                    )}
 
-                    {/* Close Modal Button */}
                     <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
                         <Text style={styles.closeButtonText}>Đóng</Text>
                     </TouchableOpacity>
