@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../Header';
 import InformationForm from '../InformationForm';
 import DateTimeForm from '../DateTime';
@@ -14,18 +14,41 @@ import {
   validateTime,
 } from '../../services/Validated';
 import apiService from '../../services/apiService';
-
+import { useAuth } from '../../hooks/useAuth';
 
 const BookingScreen = ({ route }: { route: any }) => {
+  const { user } = useAuth();
   const navigation = useNavigation();
   const { doctor, hospital, selectedPackage } = route.params;
   const [selectedDay, setSelectedDay] = useState<string>('');
   const [selectedHour, setSelectedHour] = useState<string>('');
-  const [fullname, setFullname] = useState<string>('Nguyen Vu Sang');
-  const [email, setEmail] = useState<string>('sangvu220@gmail.com');
-  const [phoneNumber, setPhoneNumber] = useState<string>('0375785192');
+  const [fullname, setFullname] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [note, setNote] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [appointment, setAppointment] = useState<[]>()
+
+  const idPatient = user?.user?.id;
+  const idDoctor = doctor._id;
+  const idHospital = hospital._id;
+  const idPackage = selectedPackage._id;
+
+  const getAppointment = async () => {
+    try {
+      const data = await apiService.getDateAppointmentByDoctor(idDoctor);
+      console.log("thoi gian lich kham", data.data)
+      setAppointment(data.data)
+    } catch (error) {
+      console.error("Error get date time appointment:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+ 
+  useEffect(() => {
+    getAppointment()
+  }, [])
 
   const [error, setError] = useState<{ fullname: boolean; email: boolean; phoneNumber: boolean }>({
     fullname: false,
@@ -33,9 +56,7 @@ const BookingScreen = ({ route }: { route: any }) => {
     phoneNumber: false,
   });
 
-  const idDoctor = doctor._id;
-  const idHospital = hospital._id;
-  const idPackage = selectedPackage._id;
+
 
   const handleDaySelected = (day: string) => {
     setSelectedDay(day);
@@ -100,6 +121,7 @@ const BookingScreen = ({ route }: { route: any }) => {
 
       // Gọi API để tạo lịch hẹn
       const response = await apiService.postAppointment({
+        patient: idPatient || "",
         doctor: idDoctor,
         package: idPackage,
         time: selectedHour,
@@ -150,7 +172,7 @@ const BookingScreen = ({ route }: { route: any }) => {
                 onEmailChanged={handleEmailChanged}
                 onChangePhoneNumber={handlePhoneNumberChanged}
               />
-              <DateTimeForm onDaySelected={handleDaySelected} onHourSelected={handleHourSelected} />
+              <DateTimeForm onDaySelected={handleDaySelected} onHourSelected={handleHourSelected} data={appointment} />
               <SubHeading title={"Ghi chú"} />
 
               <TextInput

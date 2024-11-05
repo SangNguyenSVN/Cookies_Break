@@ -6,8 +6,8 @@ import authService from '../src/services/authService';
 import { validateName, validatePassword } from '../src/services/Validated'; // Import validation functions
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('sangheo2');
+  const [password, setPassword] = useState('11082003Sang');
   const { userType }: any = useLocalSearchParams(); 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ username: false, password: false });
@@ -37,8 +37,8 @@ const Login = () => {
     }
 
     if (!validatePassword(trimmedPassword)) {
-      setErrors(prev => ({ ...prev, password: true }));
-      hasError = true;
+      // setErrors(prev => ({ ...prev, password: true }));
+      // hasError = true;
     }
 
     if (hasError) {
@@ -90,7 +90,7 @@ const Login = () => {
                   editable={!loading} // Disable input when loading
                   accessibilityLabel="Tên người dùng"
                 />
-                {errors.username && <Text style={styles.errorText}>Tên người dùng không được để trống.</Text>}
+                {errors.username && <Text style={styles.errorText}>Tên người dùng không hợp lệ.</Text>}
               </View>
 
               {/* Password Input */}
@@ -106,7 +106,7 @@ const Login = () => {
                   editable={!loading} // Disable input when loading
                   accessibilityLabel="Mật khẩu"
                 />
-                {errors.password && <Text style={styles.errorText}>Mật khẩu không được để trống.</Text>}
+                {errors.password && <Text style={styles.errorText}>Mật khẩu không hợp lệ.</Text>}
               </View>
             </View>
 

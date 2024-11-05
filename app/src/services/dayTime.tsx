@@ -1,4 +1,3 @@
-// DayTime.js
 import moment from "moment";
 
 export function getDays(dayNumber = 7) {
@@ -18,15 +17,14 @@ export function getTimes(startTime = 7, endTime = 18) {
     const hourOfDay = [];
     for (let i = startTime; i <= endTime; i++) {
         hourOfDay.push({
-            time: `${i}:00 ${i < 12 ? 'A.M' : 'P.M'}`
+            time: `${i}:00`
         });
         hourOfDay.push({
-            time: `${i}:30 ${i < 12 ? 'A.M' : 'P.M'}`
+            time: `${i}:30`
         });
     }
     return hourOfDay;
 }
-
 
 export function formatTime(time: string): string {
     const [hours, minutes] = time.split(':');

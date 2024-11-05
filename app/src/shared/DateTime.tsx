@@ -1,22 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { getTimes, getDays } from '../services/dayTime'; // Ensure correct import path
+import { FlatList, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { getTimes, getDays } from '../services/dayTime'; // Đảm bảo đường dẫn import đúng
 import SubHeading from './SubHeading';
+import moment from 'moment'; // Đảm bảo đã cài đặt moment
 
-const DateTimeForm = ({ onDaySelected, onHourSelected }: any) => {
+const DateTimeForm = ({ onDaySelected, onHourSelected, data }: any) => {
     const [nextSevenDays, setNextSevenDays] = useState([]);
     const [hourOfDay, setHourOfDay] = useState([]);
     const [selectedDay, setSelectedDay] = useState(null);
     const [selectedHour, setSelectedHour] = useState(null);
 
     useEffect(() => {
-        const days: any = getDays(); // Get days data
-        const times: any = getTimes(); // Get times data
+        const days: any = getDays(); // Lấy dữ liệu ngày
+        const times: any = getTimes(); // Lấy dữ liệu giờ
         setNextSevenDays(days);
         setHourOfDay(times);
     }, []);
 
     const toggleDaySelection = (item: any) => {
+        const formattedSelectedDate = moment(item.date).format('YYYY-MM-DD');
+
+        // Kiểm tra xem ngày đã tồn tại trong data chưa
+        const existingDate = data.find((entry: any) => moment(entry.date).format('YYYY-MM-DD') === formattedSelectedDate);
+
+        if (existingDate) {
+            // Nếu ngày đã tồn tại, kiểm tra giờ
+            if (selectedHour && existingDate.time === selectedHour) {
+                Alert.alert('Thông báo', 'Giờ này đã được chọn cho ngày này. Vui lòng chọn giờ khác.'); // Thay alert bằng Alert.alert
+                return; // Ngăn không cho chọn
+            }
+        }
+
+        // Cập nhật ngày đã chọn
         if (selectedDay === item.date) {
             setSelectedDay(null);
             onDaySelected(null);
@@ -27,6 +42,19 @@ const DateTimeForm = ({ onDaySelected, onHourSelected }: any) => {
     };
 
     const toggleHourSelection = (item: any) => {
+        const formattedSelectedDate = moment(selectedDay).format('YYYY-MM-DD');
+
+        // Kiểm tra nếu ngày đã được chọn
+        if (selectedDay) {
+            const existingDate = data.find((entry: any) => moment(entry.date).format('YYYY-MM-DD') === formattedSelectedDate);
+
+            if (existingDate && existingDate.time === item.time) {
+                Alert.alert('Thông báo', 'Giờ này đã được chọn cho ngày này. Vui lòng chọn giờ khác.');
+                return; // Ngăn không cho chọn
+            }
+        }
+
+        // Cập nhật giờ đã chọn
         if (selectedHour === item.time) {
             setSelectedHour(null);
             onHourSelected(null);
@@ -48,21 +76,25 @@ const DateTimeForm = ({ onDaySelected, onHourSelected }: any) => {
         </View>
     );
 
-    const renderItemTime = ({ item }: any) => (
-        <View style={styles.itemListView}>
-            <TouchableOpacity
-                style={[selectedHour === item.time ? styles.btnItem_Selected : styles.btnItem]}
-                onPress={() => toggleHourSelection(item)}
-            >
-                <Text style={styles.times}>{item.time}</Text>
-            </TouchableOpacity>
-        </View>
-    );
+    const renderItemTime = ({ item }: any) => {
+        const isBooked = selectedDay ? data.some((entry: any) => moment(entry.date).format('YYYY-MM-DD') === moment(selectedDay).format('YYYY-MM-DD') && entry.time === item.time) : false;
+
+        return (
+            <View style={styles.itemListView}>
+                <TouchableOpacity
+                    style={[isBooked ? styles.btnItem_Booked : (selectedHour === item.time ? styles.btnItem_Selected : styles.btnItem)]}
+                    onPress={() => isBooked ? null : toggleHourSelection(item)} // Prevent selection if booked
+                >
+                    <Text style={styles.times}>{item.time}</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    };
 
     return (
         <View>
             <View style={styles.viewItem_Form}>
-                <SubHeading title={"Ngày: "}/>
+                <SubHeading title={"Ngày: "} />
                 <FlatList
                     horizontal
                     scrollEnabled
@@ -72,7 +104,7 @@ const DateTimeForm = ({ onDaySelected, onHourSelected }: any) => {
                 />
             </View>
             <View style={styles.viewItem_Form}>
-            <SubHeading title={"Giờ: "}/>
+                <SubHeading title={"Giờ: "} />
                 <FlatList
                     horizontal
                     scrollEnabled
@@ -113,6 +145,17 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         backgroundColor: '#00B2BF',
     },
+    btnItem_Booked: {
+        height: 50,
+        width: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 40,
+        borderWidth: 1,
+        borderColor: 'gray',
+        marginHorizontal: 10,
+        backgroundColor: 'lightgray', // Gray background for booked times
+    },
     days: {
         fontSize: 16,
         alignSelf: 'center',
@@ -125,6 +168,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     btnItem: {
-        // Add styles if needed
+        // Thêm style nếu cần
     },
 });

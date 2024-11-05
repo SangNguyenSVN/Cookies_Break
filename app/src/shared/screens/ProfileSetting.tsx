@@ -9,7 +9,7 @@ import apiDoctor from '../../services/apiDoctor';
 import * as ImagePicker from 'expo-image-picker';
 import { getMimeType } from '../../services/mime';
 import { validateName, validateEmail, validatePhoneNumber } from '../../services/Validated'; // Import các hàm xác thực
-
+import { useAuth } from '../../hooks/useAuth';
 // Định nghĩa kiểu UpdatePatientInput
 interface UpdatePatientInput {
     username?: string;
@@ -43,7 +43,8 @@ const ProfileSetting = () => {
     const [specialty, setSpecialty] = useState('')
     const [imageUri, setImageUri] = useState<any>();
     const [loading, setLoading] = useState(false);
-
+    const { user } = useAuth()
+    const idUser = user?.user?.id
     const route = useRoute();
     const navigation = useNavigation();
 
@@ -169,10 +170,10 @@ const ProfileSetting = () => {
 
             // Gọi API update với dữ liệu cần thiết, bao gồm cả hình ảnh
             if (roleName === 'doctor') {
-                const response = await apiDoctor.updateDoctor(updatedData, imageUri, imageType);
+                const response = await apiDoctor.updateDoctor(idUser, updatedData, imageUri, imageType);
                 console.log('Cập nhật thành công:', response);
             } else if (roleName == 'patient') {
-                const response = await apiPatient.updatePatient(updatedData, imageUri, imageType);
+                const response = await apiPatient.updatePatient(idUser, updatedData, imageUri, imageType);
                 console.log('Cập nhật thành công:', response);
             }
 

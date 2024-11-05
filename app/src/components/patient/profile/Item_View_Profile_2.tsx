@@ -2,9 +2,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation for navigation
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useLocalSearchParams } from 'expo-router';
 
 const Item_View_Profile_2 = (data : any) => {
     const navigation = useNavigation();
+    const { userType }: any = useLocalSearchParams(); 
 
     return (
         <View style={styles.container}>
@@ -12,14 +14,7 @@ const Item_View_Profile_2 = (data : any) => {
                 <TouchableOpacity style={styles.option}>
                     <FontAwesome name="user" size={20} color="#1A5828" style={styles.icon} />
                     <View style={styles.textContainer}>
-                        <Text style={styles.text1}>Thông tin cá nhân</Text>
-                        <View style={styles.underline} />
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.option}>
-                    <FontAwesome name="calendar" size={20} color="#1A5828" style={styles.icon} />
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text1}>Lịch khám</Text>
+                        <Text style={styles.text1}>Lịch sử khám</Text>
                         <View style={styles.underline} />
                     </View>
                 </TouchableOpacity>

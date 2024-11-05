@@ -14,12 +14,13 @@ interface UpdateDoctorInput {
 
 // Hàm để cập nhật thông tin bác sĩ
 const updateDoctor = async (
+    id:string,
     updatedData: UpdateDoctorInput,
     imageUri?: string,
     imageType?: string,
 ): Promise<{ message: string }> => {
     try {
-        const url = '/user/doctors/update'; // URL cho API cập nhật bác sĩ
+        const url = `/user/doctors/${id}`; // URL cho API cập nhật bác sĩ
 
         console.log('URL:', url);
         console.log("Data", updatedData);

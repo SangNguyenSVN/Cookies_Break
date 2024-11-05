@@ -14,12 +14,13 @@ interface UpdatePatientInput {
 }
 
 const updatePatient = async (
+    id:string,
     updatedData: UpdatePatientInput,
     imageUri?: string,
     imageType?: string,
 ): Promise<{ message: string }> => {
     try {
-        const url = '/user/patients/update';
+        const url = `/user/patients/${id}`;
 
         console.log('URL:', url);
         console.log("Data", updatedData);
