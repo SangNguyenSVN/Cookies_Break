@@ -3,42 +3,32 @@ import { Modal, View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, A
 import { FontAwesome } from '@expo/vector-icons';
 import { useAuth } from '@/app/src/hooks/useAuth';
 import apiService from '@/app/src/services/apiService';
-interface Category {
-    _id: string;
-    name: string;
-    description: string;
-    medicines: string[];
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
-}
-
-interface Medicine {
-    _id: string;
-    name: string;
-    quantity: number;
-    price: number;
-    category: Category;
-}
 
 interface MedicineSelectModalProps {
     isModalVisible: boolean;
     setModalVisible: (visible: boolean) => void;
-    addMedicine: (medicine: Medicine) => void;
+    selectMedicines: (medicines: SelectedMedicine[]) => void;
 }
 
-const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisible, setModalVisible, addMedicine }) => {
+interface SelectedMedicine {
+    id: string;
+    name: string;
+    price: number;
+}
+
+const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisible, setModalVisible, selectMedicines }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [filteredMedicines, setFilteredMedicines] = useState<Medicine[]>([]);
+    const [medicines, setMedicines] = useState<any>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedMedicines, setSelectedMedicines] = useState<SelectedMedicine[]>([]);
     const { user } = useAuth();
-    const hospitalId = user?.user?.hospital;
+    const hospitalId = user?.user.hospital;
 
     const getMedicines = async () => {
         setLoading(true);
         try {
-            const response = await apiService.getMedicinesByHospital(hospitalId)
-            setFilteredMedicines(response.data);
+            const data = await apiService.getMedicinesByHospital(hospitalId);
+            setMedicines(data.data);
         } catch (error) {
             console.error("Error fetching medicines:", error);
         } finally {
@@ -47,16 +37,37 @@ const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisibl
     };
 
     useEffect(() => {
-        if (hospitalId) {
-            getMedicines();
-        }
-    }, [hospitalId]);
-
-    const onRefresh = () => {
         getMedicines();
+    }, []);
+
+    const handleSelect = (medicine: any) => {
+        const isSelected = selectedMedicines.some(item => item.id === medicine._id);
+
+        if (isSelected) {
+            // Unselect medicine
+            setSelectedMedicines(selectedMedicines.filter(item => item.id !== medicine._id));
+        } else {
+            // Select medicine
+            const selectedMedicine: SelectedMedicine = {
+                id: medicine._id,
+                name: medicine.name,
+                price: medicine.price,
+            };
+            setSelectedMedicines([...selectedMedicines, selectedMedicine]);
+        }
     };
 
-    const filteredData = filteredMedicines.filter(medicine =>
+    const handleSave = () => {
+        selectMedicines(selectedMedicines)
+        setModalVisible(false)
+    }
+
+    const isMedicineSelected = (medicineId: string) => {
+        return selectedMedicines.some(med => med.id === medicineId);
+    };
+
+    // Lọc danh sách thuốc dựa trên searchQuery
+    const filteredMedicines = medicines.filter((medicine: any) => 
         medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -64,33 +75,38 @@ const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisibl
         <Modal visible={isModalVisible} animationType="fade" transparent={true}>
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Medicine select</Text>
+                    <Text style={styles.modalTitle}>Medicine Select</Text>
 
                     <View style={styles.searchBar}>
                         <FontAwesome name="search" size={20} color="#aaa" />
                         <TextInput
                             style={styles.searchInput}
-                            placeholder="Tìm kiếm ..."
+                            placeholder="Search..."
                             value={searchQuery}
                             onChangeText={setSearchQuery}
                         />
                     </View>
 
                     <View style={styles.tableHeader}>
-                        <Text style={styles.tableText}>Tên thuốc</Text>
-                        <Text style={styles.tableText}>Giá</Text>
+                        <Text style={styles.tableText}>Medicine Name</Text>
+                        <Text style={styles.tableText}>Price</Text>
                     </View>
 
                     {loading ? (
                         <ActivityIndicator size="large" color="#007bff" />
                     ) : (
                         <FlatList
-                            onRefresh={onRefresh}
-                            data={filteredData}
+                            data={filteredMedicines} 
                             keyExtractor={(item) => item._id}
                             style={styles.medicineList}
                             renderItem={({ item }) => (
-                                <TouchableOpacity style={styles.tableRow} onPress={() => addMedicine(item)}>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tableRow,
+                                        isMedicineSelected(item._id) && styles.selectedRow,
+                                    ]}
+                                    onPress={() => handleSelect(item)}
+                                >
                                     <Text style={styles.tableText}>{item.name}</Text>
                                     <Text style={styles.tableText}>{item.price}</Text>
                                 </TouchableOpacity>
@@ -98,8 +114,8 @@ const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisibl
                         />
                     )}
 
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
-                        <Text style={styles.closeButtonText}>Đóng</Text>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => handleSave()}>
+                        <Text style={styles.closeButtonText}>Save</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -160,6 +176,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderBottomWidth: 1,
         borderColor: '#ddd',
+    },
+    selectedRow: {
+        borderColor: '#007bff',
+        borderWidth: 1,
+        borderRadius: 5,
     },
     closeButton: {
         marginTop: 15,

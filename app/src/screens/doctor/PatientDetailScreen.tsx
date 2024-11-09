@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Platform, TouchableOpacity, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import Header from '../../shared/Header';
-import moment from 'moment';
+import moment from 'moment'; 
 
 const PatientDetailScreen = ({ route, navigation }: any) => {
     const { patientData } = route.params; // Nhận dữ liệu bệnh nhân từ tham số điều hướng
