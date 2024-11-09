@@ -29,7 +29,7 @@ const postAppointment = (appointmentData: {
     doctor: string;
     package: string;
     time: string;
-    date: string; 
+    date: string;
     notes: string;
     fullname: string;
     email: string;
@@ -43,10 +43,12 @@ const getDateAppointmentByDoctor = (doctorId: string): Promise<AxiosResponse> =>
 };
 
 
-const getAppointmentbyUser = (email: string): Promise<AxiosResponse> => {
-    return apiClient.get(`/appointments/${email}`);
+const getAppointmentbyUser = (id: string): Promise<AxiosResponse> => {
+    return apiClient.get(`/appointments/by-patient/${id}`);
 };
-
+const getAppopintmentByDoctor = (id: string): Promise<AxiosResponse> => {
+    return apiClient.get(`/appointments/doctor/${id}`)
+}
 const apiService = {
     getHospitals,
     getDoctors,
@@ -55,8 +57,9 @@ const apiService = {
     postAppointment,
     getAppointmentByDoctor,
     getMedicinesByHospital,
-    getDateAppointmentByDoctor
-
+    getDateAppointmentByDoctor,
+    getAppointmentbyUser,
+    getAppopintmentByDoctor
 };
 
 export default apiService; 

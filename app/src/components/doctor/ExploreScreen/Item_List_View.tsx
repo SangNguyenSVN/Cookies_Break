@@ -1,15 +1,20 @@
-// components/doctor/HomeScreen/Item_List_View.tsx
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-const Item_List_View = ({ data }: { data: { id: number; patientName: string; status: string } }) => {
+const Item_List_View = ({ data }: any) => {
   // Determine the text color based on the appointment status
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Chưa thanh toán':
+      case 'chưa thanh toán':
         return styles.pending; // Red for pending
-      case 'Đã thanh toán':
+      case 'đã thanh toán':
         return styles.confirmed; // Green for confirmed
+      case 'chờ khám':
+        return styles.waiting; // Yellow for waiting
+      case 'đã khám':
+        return styles.completed; // Blue for completed
+      case 'chờ thanh toán':
+        return styles.awaitingPayment; // Orange for awaiting payment
       default:
         return styles.default; // Default style
     }
@@ -18,9 +23,9 @@ const Item_List_View = ({ data }: { data: { id: number; patientName: string; sta
   return (
     <View style={styles.container}>
       <Text style={styles.id}>ID: {data.id}</Text>
-      <Text style={styles.name}>Tên Bệnh Nhân: {data.patientName}</Text>
-      <Text style={[styles.status, getStatusColor(data.status)]}>
-         {data.status}
+      <Text style={styles.name}>Tên Bệnh Nhân: {data.fullname}</Text>
+      <Text style={[styles.status, getStatusColor(data.status.name)]}>
+        {data.status.name}  {/* Display status name */}
       </Text>
     </View>
   );
@@ -52,6 +57,15 @@ const styles = StyleSheet.create({
   },
   pending: {
     color: 'red', // Red for pending
+  },
+  waiting: {
+    color: 'yellow', // Yellow for waiting (Chờ khám)
+  },
+  completed: {
+    color: 'blue', // Blue for completed (Đã khám)
+  },
+  awaitingPayment: {
+    color: 'orange', // Orange for awaiting payment (Chờ thanh toán)
   },
   default: {
     color: 'black', // Default color if no specific status

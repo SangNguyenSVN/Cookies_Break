@@ -5,7 +5,7 @@ import HomeScreen from '../../screens/doctor/HomeScreen';
 import PatientDetailScreen from '../../screens/doctor/PatientDetailScreen';
 import MedicineSelectionScreen from '../../shared/MedicineSelection';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator(); 
 const HomeNavigation = () => {
   return (
     <Stack.Navigator  screenOptions={{ headerShown: false }}>

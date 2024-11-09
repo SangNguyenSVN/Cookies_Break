@@ -4,35 +4,38 @@ import React, { useState } from 'react';
 const Appointment_Tab = ({ activeTab }: any) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
+    // Define the tab items, which can be easily extended if needed
+    const tabs = [
+        { label: 'Tất cả', value: 'all' },
+        { label: 'Chờ khám', value: 'chờ khám' },
+        { label: 'Đã thanh toán', value: 'đã thanh toán' },
+    ];
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => { setActiveIndex(0); activeTab('all'); }} // Changed to 'all'
-                style={[activeIndex === 0 ? styles.activeTab : styles.inActiveTab]}
-            >
-                <Text style={[activeIndex === 0 ? styles.activeText : styles.inActiveText]}>
-                    All
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => { setActiveIndex(1); activeTab('chua thanh toan'); }} // Changed to 'unpaid'
-                style={[activeIndex === 1 ? styles.activeTab : styles.inActiveTab]}
-            >
-                <Text style={[activeIndex === 1 ? styles.activeText : styles.inActiveText]}>
-                    Chưa thanh toán
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => { setActiveIndex(2); activeTab('da thanh toan'); }} // Changed to 'paid'
-                style={[activeIndex === 2 ? styles.activeTab : styles.inActiveTab]}
-            >
-                <Text style={[activeIndex === 2 ? styles.activeText : styles.inActiveText]}>
-                    Đã thanh toán
-                </Text>
-            </TouchableOpacity>
+            {tabs.map((tab, index) => (
+                <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                        setActiveIndex(index); // Set the active index
+                        activeTab(tab.value); // Pass the tab value to the parent
+                    }}
+                    style={[
+                        activeIndex === index ? styles.activeTab : styles.inActiveTab,
+                    ]}
+                >
+                    <Text
+                        style={[
+                            activeIndex === index ? styles.activeText : styles.inActiveText,
+                        ]}
+                    >
+                        {tab.label}
+                    </Text>
+                </TouchableOpacity>
+            ))}
         </View>
     );
-}
+};
 
 export default Appointment_Tab;
 
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D9D9D9',
         paddingVertical: 5,
         borderRadius: 10,
-        marginHorizontal:5
+        marginHorizontal: 5,
     },
     activeTab: {
         alignItems: 'center',

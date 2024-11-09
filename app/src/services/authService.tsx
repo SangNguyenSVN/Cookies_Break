@@ -51,33 +51,30 @@ const login = async (username: string, password: string, userType: string) => {
     return undefined;
 };
 
-const updateAccount = async (password?: string, userType?: string): Promise<{ message: string }> => {
-    const data: any = {}; // Tạo đối tượng rỗng để chứa dữ liệu
-
-    // Chỉ thêm password nếu có
-    if (password) {
-        data.password = password;
-    }
-
-    // Thêm userType nếu có
-    if (userType) {
-        data.userType = userType;
-    }
+const updateAccount = async (
+    id: string,
+    password: string,
+    newPassword: string,
+    userType: 'patient' | 'doctor' = 'patient' // Default to 'patient' if not provided
+): Promise<{ message: string }> => {
+    const data = { password, newPassword }; // Send both old and new password
 
     try {
-        // Gửi yêu cầu PUT tới endpoint cập nhật tài khoản
-        const response = await apiClient.put('/change/password', data);
+        // Determine the correct API endpoint based on userType
+        const endpoint = userType === 'doctor' ? `user/doctors/change-password/${id}` : `user/patients/change-password/${id}`;
 
-        // Trả về phản hồi từ server
+        // Send a PUT request with old and new passwords to the correct endpoint
+        const response = await apiClient.put(endpoint, data);
+
+        // Return the response from the server
         return response.data;
     } catch (error: any) {
-        console.error('Lỗi thay đổi tài khoản:', error.response?.data || error.message);
+        console.error('Error updating account:', error.response?.data || error.message);
 
-        // Ném lỗi với thông điệp phù hợp
-        throw new Error('Không thể thay đổi tài khoản');
+        // Throw an error with a descriptive message
+        throw new Error('Unable to update account password');
     }
 };
-
 
 // Đăng xuất
 const logout = async () => {

@@ -4,21 +4,34 @@ import { useNavigation } from '@react-navigation/native'; // Import useNavigatio
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useLocalSearchParams } from 'expo-router';
 
-const Item_View_Profile_2 = (data : any) => {
-    const navigation = useNavigation();
-    const { userType }: any = useLocalSearchParams(); 
+const Item_View_Profile_2 = (data: any) => {
+    const navigation = useNavigation<any>();
+    const { userType } = useLocalSearchParams();
 
+    const handleChange1 = () => {
+        navigation.navigate('user_record_screen', { userType })
+
+    }
+    const handleChange2 = () =>{
+        navigation.navigate('user_payment_screen', { userType })
+
+    }
     return (
         <View style={styles.container}>
             <View style={styles.options}>
-                <TouchableOpacity style={styles.option}>
+                <TouchableOpacity
+                 style={styles.option}
+                 onPress={handleChange1}>
                     <FontAwesome name="user" size={20} color="#1A5828" style={styles.icon} />
                     <View style={styles.textContainer}>
                         <Text style={styles.text1}>Lịch sử khám</Text>
                         <View style={styles.underline} />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.option}>
+                <TouchableOpacity
+                 style={styles.option}
+                 onPress={handleChange2}>
+
                     <FontAwesome name="money" size={20} color="#1A5828" style={styles.icon} />
                     <View style={styles.textContainer}>
                         <Text style={styles.text1}>Lịch sử thanh toán</Text>
