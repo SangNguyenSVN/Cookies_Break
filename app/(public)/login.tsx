@@ -6,8 +6,8 @@ import authService from '../src/services/authService';
 import { validateName, validatePassword } from '../src/services/Validated'; // Import validation functions
 
 const Login = () => {
-  const [username, setUsername] = useState('SangNV');
-  const [password, setPassword] = useState('1111111111');
+  const [username, setUsername] = useState('sangheo3');
+  const [password, setPassword] = useState('20042003Sang');
   const { userType }: any = useLocalSearchParams(); 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ username: false, password: false });

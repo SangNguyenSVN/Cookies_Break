@@ -1,73 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { useAuth } from '@/app/src/hooks/useAuth';
-import apiService from '@/app/src/services/apiService';
 
 interface MedicineSelectModalProps {
     isModalVisible: boolean;
     setModalVisible: (visible: boolean) => void;
     selectMedicines: (medicines: SelectedMedicine[]) => void;
+    medicines: SelectedMedicine[];
 }
 
 interface SelectedMedicine {
-    id: string;
+    _id: string;
     name: string;
     price: number;
 }
 
-const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisible, setModalVisible, selectMedicines }) => {
+const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisible, setModalVisible, selectMedicines, medicines }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [medicines, setMedicines] = useState<any>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [selectedMedicines, setSelectedMedicines] = useState<SelectedMedicine[]>([]);
-    const { user } = useAuth();
-    const hospitalId = user?.user.hospital;
-
-    const getMedicines = async () => {
-        setLoading(true);
-        try {
-            const data = await apiService.getMedicinesByHospital(hospitalId);
-            setMedicines(data.data);
-        } catch (error) {
-            console.error("Error fetching medicines:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
-        getMedicines();
-    }, []);
+        setLoading(false); // Set to false after medicines are fetched
+    }, [medicines]);
 
-    const handleSelect = (medicine: any) => {
-        const isSelected = selectedMedicines.some(item => item.id === medicine._id);
-
-        if (isSelected) {
-            // Unselect medicine
-            setSelectedMedicines(selectedMedicines.filter(item => item.id !== medicine._id));
+    const handleSelect = (medicine: SelectedMedicine) => {
+        const index = selectedMedicines.findIndex(item => item._id === medicine._id);
+        if (index === -1) {
+            setSelectedMedicines([...selectedMedicines, medicine]);
         } else {
-            // Select medicine
-            const selectedMedicine: SelectedMedicine = {
-                id: medicine._id,
-                name: medicine.name,
-                price: medicine.price,
-            };
-            setSelectedMedicines([...selectedMedicines, selectedMedicine]);
+            const newSelectedMedicines = [...selectedMedicines];
+            newSelectedMedicines.splice(index, 1);
+            setSelectedMedicines(newSelectedMedicines);
         }
     };
 
     const handleSave = () => {
-        selectMedicines(selectedMedicines)
-        setModalVisible(false)
-    }
-
-    const isMedicineSelected = (medicineId: string) => {
-        return selectedMedicines.some(med => med.id === medicineId);
+        selectMedicines(selectedMedicines);
+        setModalVisible(false);
     };
 
-    // Lọc danh sách thuốc dựa trên searchQuery
-    const filteredMedicines = medicines.filter((medicine: any) => 
+    const isMedicineSelected = (medicineId: string) => {
+        return selectedMedicines.some(med => med._id === medicineId);
+    };
+
+    const filteredMedicines = medicines.filter((medicine: SelectedMedicine) =>
         medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -96,15 +73,12 @@ const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisibl
                         <ActivityIndicator size="large" color="#007bff" />
                     ) : (
                         <FlatList
-                            data={filteredMedicines} 
+                            data={filteredMedicines}
                             keyExtractor={(item) => item._id}
                             style={styles.medicineList}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
-                                    style={[
-                                        styles.tableRow,
-                                        isMedicineSelected(item._id) && styles.selectedRow,
-                                    ]}
+                                    style={[styles.tableRow, isMedicineSelected(item._id) && styles.selectedRow]}
                                     onPress={() => handleSelect(item)}
                                 >
                                     <Text style={styles.tableText}>{item.name}</Text>
@@ -114,7 +88,7 @@ const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisibl
                         />
                     )}
 
-                    <TouchableOpacity style={styles.closeButton} onPress={() => handleSave()}>
+                    <TouchableOpacity style={styles.closeButton} onPress={handleSave}>
                         <Text style={styles.closeButtonText}>Save</Text>
                     </TouchableOpacity>
                 </View>
