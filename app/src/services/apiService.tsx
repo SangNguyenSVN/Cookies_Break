@@ -17,7 +17,9 @@ const getNews = (): Promise<AxiosResponse> => {
 const getDepartments = (): Promise<AxiosResponse> => {
     return apiClient.get('/departments/')
 }
-
+const getHospitalsDepartment = (name:string): Promise<AxiosResponse> => {
+    return apiClient.get(`/hospitals/department/${name}`)
+}
 const getAppointmentByDoctor = (doctorId: string): Promise<AxiosResponse> => {
     return apiClient.get(`/appointments/doctor/${doctorId}`);
 };
@@ -59,7 +61,8 @@ const apiService = {
     getMedicinesByHospital,
     getDateAppointmentByDoctor,
     getAppointmentbyUser,
-    getAppopintmentByDoctor
+    getAppopintmentByDoctor,
+    getHospitalsDepartment
 };
 
 export default apiService; 

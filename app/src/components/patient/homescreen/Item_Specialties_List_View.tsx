@@ -1,102 +1,89 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/app/src/navigation/patient/HomeNavigation';
-
+import axios from 'axios';
+import { FlatList } from 'react-native-gesture-handler';
+import apiService from '@/app/src/services/apiService';
 
 // Define the navigation prop type
 type NavigationProp = StackNavigationProp<RootStackParamList, 'user_hospital_screen'>;
-
+interface IDepartment {
+    _id: string; // Optional ID field (automatically generated)
+    name: string; // Required name of the department
+    description?: string; // Optional description of the department
+    image: string; // Required path to the department's image
+    createdAt?: Date; // Optional field for creation timestamp
+    updatedAt?: Date; // Optional field for last updated timestamp
+}
 const Item_Specialties_List_View = () => {
-  
+    const [Specialities, setSpecialities] = useState<IDepartment[]>([])
     const navigation = useNavigation<NavigationProp>();
-  
+
 
     const navigateToHospitalScreen = (specialty: string) => {
         navigation.navigate('user_hospital_screen', { specialty });
     };
 
-    return (
-    <View>
-     <View style={[styles.Container]}>
-     <Pressable style={[styles.ItemContainer]}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/coronary_care_unit.png")}/>
-                <Text style={[styles.TextStyle]}>
-                    Tim mạch
-                </Text>
-            </Pressable>
-            <Pressable style={[styles.ItemContainer,{width:68}]}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/virus.png")}/>
-                <Text style={[styles.TextStyle]}>
-                Ung bướu, 
-                tuyến giáp
-                </Text>
-            </Pressable>
-            <Pressable style={[styles.ItemContainer]}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/Mental_Disorder.png")}/>
-                <Text style={[styles.TextStyle]}>
-                Nội thần kinh
-                </Text>
-            </Pressable>
-            <Pressable style={[styles.ItemContainer]}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/ears_nose_and_throat.png")}/>
-                <Text style={[styles.TextStyle]}>
-                Tai, mũi, họng
-                </Text>
-            </Pressable>
-            
-     </View>
+    const getSpecialist = async () => {
+        try {
+            const response = await apiService.getDepartments()
+            setSpecialities(response.data);
+            console.log("Dữ liệu:", response.data);
+        } catch (error) {
+            console.error("Error occurred:", error);
+        }
+    };
 
-     <View style={[styles.Container,{paddingTop:24}]}>
-     <Pressable style={[styles.ItemContainer]} onPress={() => navigateToHospitalScreen("Cơ Xương Khớp")}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/joints.png")}/>
-                <Text style={[styles.TextStyle]}>
-                cơ xương khớp
-                </Text>
-            </Pressable>
-            <Pressable style={[styles.ItemContainer,{width:68}]}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/coughing.png")}/>
-                <Text style={[styles.TextStyle,]}>
-                Nhi
-                </Text>
-            </Pressable>
-            <Pressable style={[styles.ItemContainer]}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/liver.png")}/>
-                <Text style={[styles.TextStyle]}>
-                    Gan, mật, tuỵ
-                </Text>
-            </Pressable>
-            <Pressable style={[styles.ItemContainer]}>
-                <Image style={{width:35,height:35,alignSelf:"center"}} source={require("../../../assets/icon/teath.png")}/>
-                <Text style={[styles.TextStyle]}>
-                    Răng, hàm
-                </Text>
-            </Pressable>
-            
-     </View>
-     
-    </View>
-  )
+    useEffect(() => {
+        getSpecialist();
+    }, []);
+    const renderItem = ({ item }: { item: IDepartment }) => (
+        <Pressable key={item._id} style={styles.itemContainer} onPress={() => navigateToHospitalScreen(item.name)}>
+            <Image style={styles.image} source={require("../../../assets/icon/liver.png")} />
+            <Text style={styles.textStyle}>{item.name}</Text>
+        </Pressable>
+    );
+    return (
+        <View>
+            <FlatList
+                data={Specialities}
+                renderItem={renderItem}
+                keyExtractor={(item) => item._id}
+                contentContainerStyle={styles.container}
+                numColumns={2} // Change this value to set the number of columns
+            />
+        </View>
+
+    )
 }
 
 export default Item_Specialties_List_View
 
 const styles = StyleSheet.create({
-    Container:{
-        flexDirection:"row",
-        width:"92%",
-       alignSelf:"center",justifyContent:"space-around"
+    container: {
+        justifyContent: "space-around",
+        paddingHorizontal: 16,
+        paddingVertical: 8,
     },
-    ItemContainer:{
-        flexDirection:"column",
-        alignItems:"center",
-        width:100
+    itemContainer: {
+        flexDirection: "column",
+        alignItems: "center",
+        width: '45%', // Adjust this for proper spacing in a 2-column layout
+        marginBottom: 16,
     },
-    TextStyle:{
-        fontSize:11,
-        fontWeight:"400",alignSelf:"center"
+    textStyle: {
+        fontSize: 11,
+        fontWeight: "400",
+        alignSelf: "center",
+        textAlign: "center", // Center text
+    },
+    image: {
+        width: 35,
+        alignSelf: 'center',
+        height: 35,
     }
-    
-})
+}
+)

@@ -4,7 +4,7 @@ import React from 'react'
 import HomeNavigation from '../src/navigation/patient/HomeNavigation'
 import { NavigationContainer } from '@react-navigation/native'
 
-const Home = () => {
+const Home = () => { 
   return (
     <NavigationContainer independent={true}>
       <HomeNavigation />
