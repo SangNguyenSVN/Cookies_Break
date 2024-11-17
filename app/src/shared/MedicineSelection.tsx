@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     medicineList: { flex: 1 },
     tableHeader: {
         flexDirection: 'row',
-        backgroundColor: '#5ca02a',
+        backgroundColor: '#5CB15A',
         padding: 10,
         borderRadius: 5,
     },
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     quantityInput: { width: 40, textAlign: 'center', fontSize: 14, borderWidth: 1, borderColor: '#ddd', padding: 5, marginHorizontal: 5 },
 
     confirmButton: {
-        backgroundColor: '#5ca02a',
+        backgroundColor: '#5CB15A',
         padding: 15,
         borderRadius: 10,
         marginTop: 20,

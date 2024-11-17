@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Text, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Header from '../Header';
 import { useAuth } from '../../hooks/useAuth';
@@ -22,7 +22,7 @@ const ChangePassword = () => {
             Alert.alert('Thiếu mật khẩu cũ', 'Vui lòng nhập mật khẩu cũ của bạn.');
             return;
         }
-        
+
         if (password !== confirmPassword) {
             Alert.alert('Mật khẩu không khớp', 'Vui lòng kiểm tra lại mật khẩu của bạn.');
             return;
@@ -51,6 +51,7 @@ const ChangePassword = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="Mật khẩu cũ"
+                    placeholderTextColor={"#888888"}
                     secureTextEntry
                     value={oldPassword}
                     onChangeText={setOldPassword}
@@ -58,6 +59,7 @@ const ChangePassword = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="Mật khẩu mới"
+                    placeholderTextColor={"#888888"}
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
@@ -65,11 +67,16 @@ const ChangePassword = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="Xác nhận mật khẩu"
+                    placeholderTextColor={"#888888"}
                     secureTextEntry
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
                 />
-                <Button title="Thay đổi mật khẩu" onPress={handleChangePassword} />
+                <TouchableOpacity style={styles.btn} onPress={handleChangePassword}>
+                    <Text style={styles.txtBtn}>
+                        Đổi mật khẩu
+                    </Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -88,10 +95,22 @@ const styles = StyleSheet.create({
         height: 50,
         borderColor: '#ccc',
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 10,
         marginBottom: 15,
         paddingHorizontal: 10,
     },
+    btn: {
+        alignItems: 'center',
+        alignSelf: 'center',
+        padding: 15,
+        backgroundColor: '#5CB15A',
+        borderRadius: 20,
+        margin: 20
+
+    },
+    txtBtn: {
+        color: 'white'
+    }
 });
 
 export default ChangePassword;

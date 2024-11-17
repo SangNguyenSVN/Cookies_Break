@@ -61,14 +61,17 @@ const Register = () => {
       Alert.alert("Người dùng đã tồn tại");
     }
   };
-
+  const objectCookie = 'Cookies Break'
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.select({ ios: 'padding', android: 'height' })}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
           <View style={styles.form}>
-            <Text style={styles.txtHeader}>Welcome to Cookies Break</Text>
-            <Text style={styles.txtTitle}>Simplify your health management with us.</Text>
+            <Text style={styles.txtHeader}>Tạo tài khoản</Text>
+            <Text style={styles.txtTitle}>
+              Đơn giản hóa quy trình làm việc của bạn và tăng cường năng suất với ứng dụng
+              <Text style={styles.objectCookie}> {objectCookie}</Text>. Bắt đầu miễn phí.
+            </Text>
             <Image style={styles.img} source={require("../src/assets/public/login_img_1.png")} />
 
             <View style={styles.viewBox}>
@@ -195,6 +198,9 @@ const styles = StyleSheet.create({
     height: 120,
     resizeMode: 'contain',
   },
+  objectCookie: {
+    fontWeight: 'bold'
+  }
 });
 
 export default Register;

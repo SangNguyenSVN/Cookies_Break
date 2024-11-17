@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Platform, TouchableOpacity, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 import Header from '../../shared/Header';
-import moment from 'moment'; 
+import moment from 'moment';
 
 const PatientDetailScreen = ({ route, navigation }: any) => {
     const { patientData } = route.params; // Nhận dữ liệu bệnh nhân từ tham số điều hướng
@@ -11,7 +11,7 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
     const [status, setStatus] = useState(patientData.status.name); // Trạng thái cho đơn khám
 
     const handlePress = () => {
-        navigation.navigate('medicine_selection_screen', {patientData});
+        navigation.navigate('medicine_selection_screen', { patientData });
     };
 
     const handleConfirm = () => {
@@ -44,8 +44,8 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
             style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-        >           
-         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View>
                     <Header title='Thông tin bệnh nhân' showBackButton={true} />
 
@@ -60,31 +60,24 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
                             <Text style={styles.label}>Trạng thái:</Text>
                             <Text style={[styles.value, { fontWeight: 'bold', color: getStatusColor(status) }]}>{status}</Text>
 
-                            <Text style={styles.label}>Thông tin khám:</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={note}
-                                onChangeText={setNote}
-                                multiline
-                            />
+                            <Text style={styles.label}>Ghi chú từ bệnh nhân:</Text>
+                            <Text style={styles.input}>{patientData.notes}</Text>
 
-                            <Text style={styles.label}>Lý do từ chối (nếu có):</Text>
+                            <Text style={styles.label}>Ghi chú từ bác sĩ:</Text>
                             <TextInput
                                 style={styles.input}
                                 value={reason}
                                 onChangeText={setReason}
                                 multiline
                             />
-
+                        </View>
+                        <View style={styles.buttonView}>
                             <View style={styles.buttonContainer}>
-                                <TouchableOpacity style={[styles.button, styles.confirmButton]} onPress={handleConfirm}>
-                                    <Text style={styles.buttonText}>Xác nhận đơn khám</Text>
-                                </TouchableOpacity>
                                 <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handleCancel}>
-                                    <Text style={styles.buttonText}>Hủy đơn khám</Text>
+                                    <Text style={styles.buttonText}>Từ chối</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={handlePress}>
-                                    <Text style={styles.buttonText}>Chọn thuốc</Text>
+                                <TouchableOpacity style={[styles.button, styles.confirmButton]} onPress={handlePress}>
+                                    <Text style={styles.buttonText}>Chấp nhận</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -118,7 +111,9 @@ const styles = StyleSheet.create({
         padding: 10
     },
     content: {
-        paddingBottom: 20, // Khoảng cách dưới cùng
+        backgroundColor: '#D9D9D9',
+        borderRadius: 10,
+        padding: 20, // Khoảng cách dưới cùng
     },
     label: {
         fontSize: 18,
@@ -132,34 +127,35 @@ const styles = StyleSheet.create({
     input: {
         height: 80,
         borderColor: 'gray',
-        borderWidth: 1,
         borderRadius: 5,
         marginBottom: 20,
         paddingHorizontal: 10,
         textAlignVertical: 'top',
+        backgroundColor: 'white'
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 20,
+    },
+    buttonView: {
+        marginVertical: 30, // Optional: Add some vertical spacing
     },
     button: {
-        flex: 1,
-        padding: 15,
-        borderRadius: 5,
+        width: 100,
+        padding: 10,
+        borderRadius: 20,
         marginHorizontal: 5,
     },
     confirmButton: {
-        backgroundColor: 'green',
+        backgroundColor: '#5CB15A',
     },
     cancelButton: {
-        backgroundColor: 'red',
+        backgroundColor: '#FC7070',
     },
     buttonText: {
         color: 'white',
         textAlign: 'center',
         fontSize: 18,
-        fontWeight: 'bold',
     },
 });
 

@@ -95,7 +95,7 @@ const ExploreScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Explore Screen" showBackButton={false} />
+      <Header title="Tìm kiếm" showBackButton={false} />
       <TextInput
         style={styles.searchInput}
         placeholder="Tìm kiếm bệnh nhân hoặc trạng thái..."
@@ -111,7 +111,7 @@ const ExploreScreen = () => {
       ) : filteredAppointments.length > 0 ? (
         <FlatList
           data={filteredAppointments}  // Display the filtered appointments
-          renderItem={({ item }) => <Item_List_View data={item} />}
+          renderItem={({ item, index }) => <Item_List_View data={item} index={index} />}
           keyExtractor={(item: any) => item._id}
         />
       ) : (

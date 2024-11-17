@@ -28,7 +28,7 @@ const ConfirmScreen = ({ route }: any) => {
 
         setTotalAmount(total)
     }, [medicines])
-    const handleSubmit = () =>{
+    const handleSubmit = () => {
         console.log("submit", patientData._id, medicines)
     }
     // Render each item in the FlatList
@@ -80,8 +80,8 @@ const ConfirmScreen = ({ route }: any) => {
                     />
                 </View>
             </View>
-            <TouchableOpacity onPress={handleSubmit}>
-                <Text> Xác nhận </Text>
+            <TouchableOpacity style={styles.confirmButton} onPress={handleSubmit}>
+                <Text style={styles.txtButton}> Xác nhận </Text>
             </TouchableOpacity>
         </View>
     )
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     medicinesContainer: {
         marginTop: 20,
-        maxHeight:'70%'
+        maxHeight: '70%'
     },
     medicinesTitle: {
         fontSize: 18,
@@ -158,4 +158,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
     },
+    confirmButton: {
+        justifyContent: 'center',
+        padding: 15,
+        alignSelf: 'center',
+        alignItems: 'center',
+        width: 100,
+        borderRadius: 20,
+        backgroundColor: "#5CB15A"
+    },
+    txtButton:{
+        color:'white',
+        fontSize: 17
+    }
 })

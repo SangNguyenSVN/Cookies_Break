@@ -48,16 +48,16 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title='Home Screen' showBackButton={false} />
+      <Header title='Trang chủ' showBackButton={false} />
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
       {appointmentData.length > 0 ? (
         <FlatList
           data={appointmentData}
           refreshing={loading}
           onRefresh={handleRefresh}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <TouchableOpacity onPress={() => handlePress(item)}>
-              <Item_List_View data={item} />
+              <Item_List_View data={item} index ={index} />
             </TouchableOpacity>
           )}
         />

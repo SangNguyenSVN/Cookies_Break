@@ -6,8 +6,8 @@ import authService from '../src/services/authService';
 import { validateName, validatePassword } from '../src/services/Validated'; // Import validation functions
 
 const Login = () => {
-  const [username, setUsername] = useState('sangheo3');
-  const [password, setPassword] = useState('20042003Sang');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const { userType }: any = useLocalSearchParams(); 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ username: false, password: false });
@@ -37,8 +37,8 @@ const Login = () => {
     }
 
     if (!validatePassword(trimmedPassword)) {
-      // setErrors(prev => ({ ...prev, password: true }));
-      // hasError = true;
+      setErrors(prev => ({ ...prev, password: true }));
+      hasError = true;
     }
 
     if (hasError) {
@@ -74,11 +74,11 @@ const Login = () => {
         >
           <View style={styles.form}>
             <View>
-              <Text style={styles.txtHeader}>Welcome {userType === 'doctor' ? 'Doctor' : 'Patient'}</Text>
-              <Text style={styles.txtTitle}>Simplify your workflow and boost your productivity with Cookies Break App. Get started for free.</Text>
+              <Text style={styles.txtHeader}>Xin Chào {userType === 'doctor' ? 'Bác sĩ' : 'Bệnh nhân'}</Text>
+              <Text style={styles.txtTitle}>Chào mừng bạn đến với dịch vụ lịch khám Cookies Break.</Text>
+              <Text style={styles.txtTitle}></Text>
               <Image style={styles.img} source={require("../src/assets/public/login_img_1.png")} />
 
-              {/* Username Input */}
               <View style={styles.viewBox}>
                 <TextInput
                   placeholderTextColor="gray"

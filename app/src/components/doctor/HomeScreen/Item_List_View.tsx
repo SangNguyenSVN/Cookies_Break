@@ -1,26 +1,26 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import moment from 'moment';
-const Item_List_View = ({ data }: any) => {
+const Item_List_View = ({ data, index }: any) => {
 
   return (
     <View style={styles.itemContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>ID: {data.length}</Text>
-        </View>
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>Thông Tin Bệnh Nhân:</Text>
-          <Text style={styles.infoDetailText}>- Tên: {data.fullname}</Text>
-          <Text style={styles.infoDetailText}>- Trạng Thái: {data.status.name}</Text>
-          <Text style={styles.infoDetailText}>- Thời Gian Hẹn: {data.time} | { moment(data.date).format('YYYY-MM-DD')}</Text>
-        </View>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>ID: {index + 1}</Text>
+      </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>Thông Tin Bệnh Nhân:</Text>
+        <Text style={styles.infoDetailText}>- Tên: {data.fullname}</Text>
+        <Text style={styles.infoDetailText}>- Trạng Thái: {data.status.name}</Text>
+        <Text style={styles.infoDetailText}>- Thời Gian Hẹn: {data.time} | {moment(data.date).format('YYYY-MM-DD')}</Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   itemContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '#EBEAEA',
     marginBottom: 10,
     borderRadius: 8,
     padding: 10,
