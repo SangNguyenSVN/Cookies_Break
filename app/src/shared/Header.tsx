@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
 interface HeaderProps {
-  title: string; 
-  showBackButton: boolean; 
+  title: string;
+  showBackButton: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ title, showBackButton }) => {
@@ -41,14 +41,14 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#489458', // Màu nền của header
+    backgroundColor: '#489458',
     padding: 18,
-    paddingTop: 44, 
-    position: 'relative', 
+    paddingTop: 44,
+    position: 'relative',
   },
   titleContainer: {
-    flex: 1, 
-    alignItems: 'center', 
+    flex: 1,
+    alignItems: 'center',
   },
   title: {
     color: 'white',
@@ -57,17 +57,17 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    height: 50, 
-    width: 50, 
+    height: 50,
+    width: 50,
     bottom: 0,
     left: 10,
-    justifyContent: 'center', // Giữa icon theo chiều dọc
-    alignItems: 'center', // Giữa icon theo chiều ngang
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   iconContainer: {
-    height: 50, 
-    width: 50, 
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    height: 50,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

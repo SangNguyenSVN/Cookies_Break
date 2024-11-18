@@ -1,5 +1,7 @@
 import apiClient from './apiClient';
-import { AxiosResponse } from "axios";
+import { Axios, AxiosResponse } from "axios";
+
+
 
 // Hàm để lấy thông tin bệnh viện
 const getHospitals = (): Promise<AxiosResponse> => {
@@ -17,7 +19,7 @@ const getNews = (): Promise<AxiosResponse> => {
 const getDepartments = (): Promise<AxiosResponse> => {
     return apiClient.get('/departments/')
 }
-const getHospitalsDepartment = (name:string): Promise<AxiosResponse> => {
+const getHospitalsDepartment = (name: string): Promise<AxiosResponse> => {
     return apiClient.get(`/hospitals/department/${name}`)
 }
 const getAppointmentByDoctor = (doctorId: string): Promise<AxiosResponse> => {
@@ -51,6 +53,21 @@ const getAppointmentbyUser = (id: string): Promise<AxiosResponse> => {
 const getAppopintmentByDoctor = (id: string): Promise<AxiosResponse> => {
     return apiClient.get(`/appointments/doctor/${id}`)
 }
+const getAppointmentByEmail = (email: string): Promise<AxiosResponse> => {
+    return apiClient.get(`/appointments/by-email/${email}`)
+}
+const postRecordByDoctor = (dataRecord: {
+    appointmentId: string,
+    detail: any[],
+    amount: number,
+    description: string
+}): Promise<AxiosResponse> => { return apiClient.post(`/records/${dataRecord}`) }
+const putAppointmentStatus = (id: string, statusName: string, reason: string): Promise<AxiosResponse> => {
+    return apiClient.put(`/appointments/update-status/${id}`, {
+        statusName,
+        reason,
+    })
+}
 const apiService = {
     getHospitals,
     getDoctors,
@@ -62,7 +79,10 @@ const apiService = {
     getDateAppointmentByDoctor,
     getAppointmentbyUser,
     getAppopintmentByDoctor,
-    getHospitalsDepartment
+    getHospitalsDepartment,
+    getAppointmentByEmail,
+    postRecordByDoctor,
+    putAppointmentStatus
 };
 
 export default apiService; 

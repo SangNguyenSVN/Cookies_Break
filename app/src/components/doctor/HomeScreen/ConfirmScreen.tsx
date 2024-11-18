@@ -1,6 +1,7 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Header from '@/app/src/shared/Header'
+import apiService from '@/app/src/services/apiService'
 
 interface SelectedMedicine {
     _id: string
@@ -11,11 +12,15 @@ interface SelectedMedicine {
 interface MedicineDetail {
     medicine: SelectedMedicine
     quantity: number
+    description: string
 }
+
 
 const ConfirmScreen = ({ route }: any) => {
     const { patientData, medicines } = route.params
-    const [totalAmount, setTotalAmount] = useState(0)
+    const [totalAmount, setTotalAmount] = useState<number>(0)
+
+    const [dataRecord, setDataRecord] = useState()
 
     useEffect(() => {
         // Log the received data to the console
@@ -28,9 +33,25 @@ const ConfirmScreen = ({ route }: any) => {
 
         setTotalAmount(total)
     }, [medicines])
-    const handleSubmit = () => {
-        console.log("submit", patientData._id, medicines)
-    }
+    const handleSubmit = async () => {
+        // Tạo bản ghi dataRecord
+        const record: any = {
+            appointmentId: patientData._id,
+            details: medicines,
+            amount: totalAmount,
+            descriptions: "Ghi chú từ bác sĩ",
+        };
+
+        setDataRecord(record); // Cập nhật state
+
+        try {
+            const response = await apiService.postRecordByDoctor(record); // Gửi bản ghi
+            console.log("Lưu hồ sơ khám thành công:", response.data);
+        } catch (error: any) {
+            console.log("Lỗi khi lưu hồ sơ khám:", error.message);
+        }
+    };
+
     // Render each item in the FlatList
     const renderItem = ({ item }: { item: MedicineDetail }) => (
         <View style={styles.medicineItem}>
@@ -167,8 +188,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: "#5CB15A"
     },
-    txtButton:{
-        color:'white',
+    txtButton: {
+        color: 'white',
         fontSize: 17
     }
 })

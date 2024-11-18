@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from '../../screens/doctor/HomeScreen';
-import PatientDetailScreen from '../../screens/doctor/PatientDetailScreen';
+import PatientDetailScreen from '../../components/doctor/HomeScreen/PatientDetailScreen';
 import MedicineSelectionScreen from '../../shared/MedicineSelection';
 import ConfirmScreen from '../../components/doctor/HomeScreen/ConfirmScreen';
 

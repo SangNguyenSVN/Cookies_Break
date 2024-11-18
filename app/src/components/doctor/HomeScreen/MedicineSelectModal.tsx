@@ -43,7 +43,7 @@ const MedicineSelectModal: React.FC<MedicineSelectModalProps> = ({ isModalVisibl
     const isMedicineSelected = (medicineId: string) => {
         return selectedMedicines.some(med => med._id === medicineId);
     };
-
+ 
     const filteredMedicines = medicines.filter((medicine: SelectedMedicine) =>
         medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
     );

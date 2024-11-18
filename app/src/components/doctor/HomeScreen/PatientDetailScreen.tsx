@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Platform, TouchableOpacity, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
-import Header from '../../shared/Header';
+import Header from '../../../shared/Header';
 import moment from 'moment';
+import apiService from '@/app/src/services/apiService';
 
 const PatientDetailScreen = ({ route, navigation }: any) => {
     const { patientData } = route.params; // Nhận dữ liệu bệnh nhân từ tham số điều hướng
@@ -10,8 +11,15 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
     const [reason, setReason] = useState(patientData.reason); // Trạng thái cho lý do
     const [status, setStatus] = useState(patientData.status.name); // Trạng thái cho đơn khám
 
-    const handlePress = () => {
-        navigation.navigate('medicine_selection_screen', { patientData });
+    const handlePress = async () => {
+        const idAppointment = patientData.id
+        const statusName = 'đã khám'
+        try {
+            await apiService.putAppointmentStatus(idAppointment, statusName, reason);
+            navigation.navigate('medicine_selection_screen', { patientData });
+        } catch (erorr) {
+            console.log("loi khi xac nhan lich kham")
+        }
     };
 
     const handleConfirm = () => {
@@ -28,14 +36,35 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
             return;
         }
 
-        // Nếu lý do có chữ, cập nhật trạng thái thành "Đã hủy"
-        if (reason.trim()) {
-            setStatus('Đã hủy'); // Cập nhật trạng thái thành "Đã hủy"
-            Alert.alert('Thông báo', 'Đơn khám đã bị hủy.', [
-                { text: 'OK', onPress: () => navigation.goBack() },
-            ]);
-        }
+        // Hiển thị Alert xác nhận trước khi hủy
+        Alert.alert(
+            'Xác nhận', // Tiêu đề
+            'Bạn có chắc chắn muốn hủy đơn khám này không?', // Nội dung
+            [
+                {
+                    text: 'Hủy bỏ', // Nút từ chối
+                    style: 'cancel',
+                },
+                {
+                    text: 'Đồng ý', // Nút đồng ý
+                    onPress: async () => {
+                        const idAppointment = patientData.id
+                        const statusName = 'đã hủy'
+                        try {
+                            await apiService.putAppointmentStatus(idAppointment, statusName, reason);
+                            Alert.alert('Thông báo', 'Đơn khám đã bị hủy.', [
+                                { text: 'OK', onPress: () => navigation.goBack() },
+                            ]);
+                        } catch (erorr) {
+                            console.log("loi khi huy lich kham")
+                        }
+
+                    },
+                },
+            ]
+        );
     };
+
 
 
 

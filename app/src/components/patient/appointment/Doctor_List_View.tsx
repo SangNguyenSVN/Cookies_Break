@@ -15,7 +15,7 @@ const Doctor_List_View = ({ route }: { route: any }) => {
       style={styles.doctorContainer}     
       onPress={() => navigation.navigate('booking_screen', { doctor: item, hospital, selectedPackage })} 
     >
-      <Text style={styles.doctorName}>{item.name}</Text>
+      <Text style={styles.doctorName}>{item.fullname}</Text>
       <Text style={styles.doctorSpecialty}>{item.specialty}</Text> 
     </TouchableOpacity>
   );

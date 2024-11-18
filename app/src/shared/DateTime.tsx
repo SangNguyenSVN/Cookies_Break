@@ -126,13 +126,13 @@ const styles = StyleSheet.create({
     itemListView: {
         height: 50,
         width: 80,
+        padding: 5,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 40,
         borderWidth: 1,
         borderColor: 'black',
         marginHorizontal: 10,
-        backgroundColor: 'white',
     },
     btnItem_Selected: {
         height: 50,

@@ -4,12 +4,12 @@ import apiService from '@/app/src/services/apiService';
 import { useAuth } from '@/app/src/hooks/useAuth';
 import Header from '@/app/src/shared/Header';
 import moment from 'moment';
+import { useUser } from '@clerk/clerk-expo';
 
 const HistoryScreen = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<any[]>([]);
     const { user } = useAuth();
-
     const idUser = user?.user?.id;
     const roleName = user?.role?.name;
 
@@ -21,6 +21,10 @@ const HistoryScreen = () => {
                 response = await apiService.getAppointmentByDoctor(idUser); // Fetch data for doctor
             } else if (roleName === 'patient') {
                 response = await apiService.getAppointmentbyUser(idUser); // Fetch data for patient
+            } else if (!roleName || roleName == null) {
+                const { user } = useUser();
+                const email: any = user?.primaryEmailAddress?.emailAddress
+                response = await apiService.getAppointmentByEmail(email); 
             }
 
             setData(response?.data || []);
@@ -65,7 +69,7 @@ const HistoryScreen = () => {
                 renderItem={({ item, index }) => (
                     <View style={styles.item}>
                         <Text>Id: {index + 1}</Text>
-                        <Text style={styles.itemText}>Date: { moment(item.date).format('YYYY-MM-DD')}</Text>
+                        <Text style={styles.itemText}>Date: {moment(item.date).format('YYYY-MM-DD')}</Text>
                         <Text style={styles.itemText}>Time: {item.time}</Text>
                         {
                             item.patient?.fullname ?

@@ -6,13 +6,6 @@ import DateTimeForm from '../DateTime';
 import SubHeading from '../SubHeading';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
-import {
-  validateName,
-  validateEmail,
-  validatePhoneNumber,
-  validateDate,
-  validateTime,
-} from '../../services/Validated';
 import apiService from '../../services/apiService';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -27,6 +20,8 @@ const BookingScreen = ({ route }: { route: any }) => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [note, setNote] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [onsubmitForm, setOnsubmitForm] = useState(false);
+
   const [appointment, setAppointment] = useState<[]>()
 
   const idPatient = user?.user?.id;
@@ -40,21 +35,17 @@ const BookingScreen = ({ route }: { route: any }) => {
       console.log("thoi gian lich kham", data.data)
       setAppointment(data.data)
     } catch (error) {
-      console.error("Error get date time appointment:", error);
+      // console.error("Error get date time appointment:", error);
     } finally {
       setLoading(false);
     }
   }
- 
+
   useEffect(() => {
     getAppointment()
   }, [])
 
-  const [error, setError] = useState<{ fullname: boolean; email: boolean; phoneNumber: boolean }>({
-    fullname: false,
-    email: false,
-    phoneNumber: false,
-  });
+
 
 
 
@@ -68,17 +59,14 @@ const BookingScreen = ({ route }: { route: any }) => {
 
   const handleFullnameChanged = (name: string) => {
     setFullname(name);
-    setError(prev => ({ ...prev, fullname: !validateName(name) }));
   };
 
   const handleEmailChanged = (email: string) => {
     setEmail(email);
-    setError(prev => ({ ...prev, email: !validateEmail(email) }));
   };
 
   const handlePhoneNumberChanged = (number: string) => {
     setPhoneNumber(number);
-    setError(prev => ({ ...prev, phoneNumber: !validatePhoneNumber(number) }));
   };
 
   const handleNoteChanged = (note: string) => {
@@ -86,20 +74,10 @@ const BookingScreen = ({ route }: { route: any }) => {
   };
 
   const handleBooking = async () => {
-    const isValidFullname = validateName(fullname);
-    const isValidEmail = validateEmail(email);
-    const isValidPhoneNumber = validatePhoneNumber(phoneNumber);
-    const isValidDay = validateDate(selectedDay);
-    const isValidHour = validateTime(selectedHour);
+    setOnsubmitForm(true)
 
-    setError({
-      fullname: !isValidFullname,
-      email: !isValidEmail,
-      phoneNumber: !isValidPhoneNumber,
 
-    });
-
-    if (!isValidFullname || !isValidEmail || !isValidPhoneNumber || !isValidDay || !isValidHour) {
+    if (!fullname || !email || !phoneNumber || !selectedDay || !selectedHour) {
       Alert.alert("Thông tin không đầy đủ", "Vui lòng điền đầy đủ thông tin hợp lệ.");
       return;
     }
@@ -171,37 +149,15 @@ const BookingScreen = ({ route }: { route: any }) => {
                 onFullnameChanged={handleFullnameChanged}
                 onEmailChanged={handleEmailChanged}
                 onChangePhoneNumber={handlePhoneNumberChanged}
+                onsubmitForm={onsubmitForm}
               />
               <DateTimeForm onDaySelected={handleDaySelected} onHourSelected={handleHourSelected} data={appointment} />
               <SubHeading title={"Ghi chú"} />
-
-              <TextInput
-                style={[styles.textInput, error.fullname ? styles.textInputError : null]}
-                placeholder="Nhập họ tên..."
-                onChangeText={handleFullnameChanged}
-              />
-              {error.fullname && <Text style={styles.errorText}>Họ tên không hợp lệ!</Text>}
-
-              <TextInput
-                style={[styles.textInput, error.email ? styles.textInputError : null]}
-                placeholder="Nhập email..."
-                onChangeText={handleEmailChanged}
-              />
-              {error.email && <Text style={styles.errorText}>Email không hợp lệ!</Text>}
-
-              <TextInput
-                style={[styles.textInput, error.phoneNumber ? styles.textInputError : null]}
-                placeholder="Nhập số điện thoại..."
-                onChangeText={handlePhoneNumberChanged}
-              />
-              {error.phoneNumber && <Text style={styles.errorText}>Số điện thoại không hợp lệ!</Text>}
-
               <TextInput
                 style={styles.textInput}
                 placeholder="Nhập ghi chú ở đây..."
                 multiline={true}
                 numberOfLines={4}
-                textAlignVertical="top"
                 onChangeText={handleNoteChanged} // Cập nhật ghi chú
               />
 
@@ -243,6 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
+    height: 80
   },
   textInputError: {
     borderWidth: 1,
@@ -270,7 +227,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   bookButton: {
-    backgroundColor: '#00B2BF',
+    backgroundColor: '#489458',
     padding: 15,
     borderRadius: 10,
     marginTop: 20,
