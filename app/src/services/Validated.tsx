@@ -1,5 +1,16 @@
 export function validateName(name: string): boolean {
-    return !!name.trim(); // Trả về true nếu name không rỗng
+    if (!name.trim()) return false;
+    const nameParts = name.trim().split(/\s+/);
+    const nameRegex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăắặẳẵặẸẻẽếềệỄễỈịỌỏốồỗộỚờỡợỦủứừữựỲỵỷỹý]+$/; // Hỗ trợ chữ có dấu
+    return (
+        nameParts.length >= 2 &&
+        nameParts.every(part => part.length >= 2 && nameRegex.test(part))
+    );
+}
+
+export function validateUsername(username: string): boolean {
+    const usernameRegex = /^[a-zA-Z0-9][a-zA-Z0-9._]{2,19}$/;
+    return usernameRegex.test(username.trim());
 }
 
 export function validateEmail(email: string): boolean {

@@ -22,7 +22,7 @@ const BookingScreen = ({ route }: { route: any }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [onsubmitForm, setOnsubmitForm] = useState(false);
 
-  const [appointment, setAppointment] = useState<[]>()
+  const [appointment, setAppointment] = useState<[]>([])
 
   const idPatient = user?.user?.id;
   const idDoctor = doctor._id;

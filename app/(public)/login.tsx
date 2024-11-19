@@ -3,12 +3,12 @@ import { StyleSheet, Text, View, TextInput, Platform, Image, TouchableOpacity, A
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import SignInWithGoogle from '../src/hooks/SignInWithGoogle';
 import authService from '../src/services/authService';
-import { validateName, validatePassword } from '../src/services/Validated'; // Import validation functions
+import { validateUsername, validatePassword } from '../src/services/Validated'; // Import validation functions
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { userType }: any = useLocalSearchParams(); 
+  const { userType }: any = useLocalSearchParams();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ username: false, password: false });
   const router = useRouter();
@@ -23,20 +23,19 @@ const Login = () => {
     // Reset errors
     setErrors({ username: false, password: false });
 
-    // Trimmed inputs
     const trimmedUsername = username.trim();
     const trimmedPassword = password.trim();
 
     // Validation
     let hasError = false;
-    
+
     // Using validation functions
-    if (!validateName(trimmedUsername)) {
+    if (!validateUsername(username)) {
       setErrors(prev => ({ ...prev, username: true }));
       hasError = true;
     }
 
-    if (!validatePassword(trimmedPassword)) {
+    if (!validatePassword(password)) {
       setErrors(prev => ({ ...prev, password: true }));
       hasError = true;
     }

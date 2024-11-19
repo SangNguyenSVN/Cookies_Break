@@ -7,8 +7,8 @@ import moment from 'moment'; // Đảm bảo đã cài đặt moment
 const DateTimeForm = ({ onDaySelected, onHourSelected, data }: any) => {
     const [nextSevenDays, setNextSevenDays] = useState([]);
     const [hourOfDay, setHourOfDay] = useState([]);
-    const [selectedDay, setSelectedDay] = useState(null);
-    const [selectedHour, setSelectedHour] = useState(null);
+    const [selectedDay, setSelectedDay] = useState<string | null>(null);
+    const [selectedHour, setSelectedHour] = useState<string | null>(null);
 
     useEffect(() => {
         const days: any = getDays(); // Lấy dữ liệu ngày
@@ -17,51 +17,44 @@ const DateTimeForm = ({ onDaySelected, onHourSelected, data }: any) => {
         setHourOfDay(times);
     }, []);
 
+    const isTimeBooked = (date: string | null, time: string | null): boolean => {
+        if (!date || !time) return false;
+        return data.some(
+            (entry: any) => 
+                moment(entry.date).format('YYYY-MM-DD') === moment(date).format('YYYY-MM-DD') && 
+                entry.time === time
+        );
+    };
+
     const toggleDaySelection = (item: any) => {
-        const formattedSelectedDate = moment(item.date).format('YYYY-MM-DD');
-
-        // Kiểm tra xem ngày đã tồn tại trong data chưa
-        const existingDate = data.find((entry: any) => moment(entry.date).format('YYYY-MM-DD') === formattedSelectedDate);
-
-        if (existingDate) {
-            // Nếu ngày đã tồn tại, kiểm tra giờ
-            if (selectedHour && existingDate.time === selectedHour) {
-                Alert.alert('Thông báo', 'Giờ này đã được chọn cho ngày này. Vui lòng chọn giờ khác.'); // Thay alert bằng Alert.alert
-                return; // Ngăn không cho chọn
-            }
-        }
-
-        // Cập nhật ngày đã chọn
         if (selectedDay === item.date) {
             setSelectedDay(null);
             onDaySelected(null);
-        } else {
-            setSelectedDay(item.date);
-            onDaySelected(item.date);
+            return;
         }
+        
+        if (isTimeBooked(item.date, selectedHour)) {
+            Alert.alert('Thông báo', 'Giờ này đã được chọn. Vui lòng chọn ngày hoặc giờ khác.');
+            return;
+        }
+
+        setSelectedDay(item.date);
+        onDaySelected(item.date);
     };
 
     const toggleHourSelection = (item: any) => {
-        const formattedSelectedDate = moment(selectedDay).format('YYYY-MM-DD');
-
-        // Kiểm tra nếu ngày đã được chọn
-        if (selectedDay) {
-            const existingDate = data.find((entry: any) => moment(entry.date).format('YYYY-MM-DD') === formattedSelectedDate);
-
-            if (existingDate && existingDate.time === item.time) {
-                Alert.alert('Thông báo', 'Giờ này đã được chọn cho ngày này. Vui lòng chọn giờ khác.');
-                return; // Ngăn không cho chọn
-            }
+        if (!selectedDay) {
+            Alert.alert('Thông báo', 'Vui lòng chọn ngày trước khi chọn giờ.');
+            return setSelectedHour(null);
         }
 
-        // Cập nhật giờ đã chọn
-        if (selectedHour === item.time) {
-            setSelectedHour(null);
-            onHourSelected(null);
-        } else {
-            setSelectedHour(item.time);
-            onHourSelected(item.time);
+        if (isTimeBooked(selectedDay, item.time)) {
+            Alert.alert('Thông báo', 'Giờ này đã được chọn. Vui lòng chọn giờ khác.');
+            return ;
         }
+
+        setSelectedHour(item.time === selectedHour ? null : item.time);
+        onHourSelected(item.time === selectedHour ? null : item.time);
     };
 
     const renderItemDay = ({ item }: any) => (
@@ -77,13 +70,13 @@ const DateTimeForm = ({ onDaySelected, onHourSelected, data }: any) => {
     );
 
     const renderItemTime = ({ item }: any) => {
-        const isBooked = selectedDay ? data.some((entry: any) => moment(entry.date).format('YYYY-MM-DD') === moment(selectedDay).format('YYYY-MM-DD') && entry.time === item.time) : false;
+        const isBooked = isTimeBooked(selectedDay, item.time);
 
         return (
             <View style={styles.itemListView}>
                 <TouchableOpacity
                     style={[isBooked ? styles.btnItem_Booked : (selectedHour === item.time ? styles.btnItem_Selected : styles.btnItem)]}
-                    onPress={() => isBooked ? null : toggleHourSelection(item)} // Prevent selection if booked
+                    onPress={() => isBooked ? null : toggleHourSelection(item)} 
                 >
                     <Text style={styles.times}>{item.time}</Text>
                 </TouchableOpacity>
@@ -101,6 +94,7 @@ const DateTimeForm = ({ onDaySelected, onHourSelected, data }: any) => {
                     showsHorizontalScrollIndicator={false}
                     data={nextSevenDays}
                     renderItem={renderItemDay}
+                    keyExtractor={(item: any) => item.date}
                 />
             </View>
             <View style={styles.viewItem_Form}>
@@ -111,6 +105,7 @@ const DateTimeForm = ({ onDaySelected, onHourSelected, data }: any) => {
                     showsHorizontalScrollIndicator={false}
                     data={hourOfDay}
                     renderItem={renderItemTime}
+                    keyExtractor={(item : any) => item.time}
                 />
             </View>
         </View>
@@ -143,7 +138,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'white',
         marginHorizontal: 10,
-        backgroundColor: '#00B2BF',
+        backgroundColor: '#489458',
     },
     btnItem_Booked: {
         height: 50,

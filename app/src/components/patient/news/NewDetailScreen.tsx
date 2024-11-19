@@ -22,7 +22,7 @@ const NewsDetailScreen = ({ route }: any) => {
                                 if (item.type === 'text') {
                                     return (
                                         <Text style={styles.textContent}>
-                                            {item.content}
+                                            -   {item.content}
                                         </Text>
                                     );
                                 } else if (item.type === 'image' && item.url) {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    detailContainer:{
+    detailContainer: {
         padding: 10
     },
     title: {
@@ -61,12 +61,15 @@ const styles = StyleSheet.create({
     textContent: {
         fontSize: 16,
         marginBottom: 12,
+        letterSpacing: 0.8,
+        
     },
     imageContent: {
         width: '100%',
         height: 200,
         marginBottom: 12,
         resizeMode: 'cover',
+        alignSelf: 'center'
     },
     noData: {
         fontSize: 16,
