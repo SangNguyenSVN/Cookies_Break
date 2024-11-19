@@ -1,20 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { StyleSheet } from 'react-native';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import HistoryScreen from '../../screens/patient/HistoryScreen';
+import PaymentHistoryScreen from '../../components/patient/profile/PaymentHistoryScreen';
+import PaymentDetailScreen from '../../components/patient/profile/PaymentDetailScreen';
 
 const HistoryNavigation = () => {
     const Stack = createStackNavigator();
+
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="user_history_screen" component={HistoryScreen} />
-            {/* <Stack.Screen name='History' component={HistoryScreen} />
-            <Stack.Screen name='history-list' component={HistoryList} />
-            <Stack.Screen name='appointment-information' component={AppointmentInfo} /> */}
+            {/* Màn hình chính của lịch sử */}
+            <Stack.Screen name="History" component={HistoryScreen} />
+            {/* Màn hình thanh toán của bệnh nhân */}
+            <Stack.Screen name="PaymentHistory" component={PaymentHistoryScreen} />
+            {/* Màn hình chi tiết thanh toán */}
+            <Stack.Screen name="PaymentDetail" component={PaymentDetailScreen} />
         </Stack.Navigator>
-    )
-}
+    );
+};
 
-export default HistoryNavigation
+export default HistoryNavigation;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
