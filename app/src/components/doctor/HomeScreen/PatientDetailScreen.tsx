@@ -6,13 +6,12 @@ import apiService from '@/app/src/services/apiService';
 
 const PatientDetailScreen = ({ route, navigation }: any) => {
     const { patientData } = route.params; // Nhận dữ liệu bệnh nhân từ tham số điều hướng
-
-    const [note, setNote] = useState(patientData.note); // Trạng thái cho thông tin khám
+    // console.log(patientData)
     const [reason, setReason] = useState(patientData.reason); // Trạng thái cho lý do
     const [status, setStatus] = useState(patientData.status.name); // Trạng thái cho đơn khám
-
+    const idAppointment = patientData._id
     const handlePress = async () => {
-        const idAppointment = patientData.id
+        const idAppointment = patientData._id
         const statusName = 'đã khám'
         try {
             await apiService.putAppointmentStatus(idAppointment, statusName, reason);
@@ -20,13 +19,6 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
         } catch (erorr) {
             console.log("loi khi xac nhan lich kham")
         }
-    };
-
-    const handleConfirm = () => {
-        setStatus('Chờ'); // Chuyển trạng thái thành "Chờ"
-        Alert.alert('Thông báo', 'Đơn khám đã được xác nhận.', [
-            { text: 'OK', onPress: () => navigation.goBack() },
-        ]);
     };
 
     const handleCancel = () => {
@@ -48,15 +40,15 @@ const PatientDetailScreen = ({ route, navigation }: any) => {
                 {
                     text: 'Đồng ý', // Nút đồng ý
                     onPress: async () => {
-                        const idAppointment = patientData.id
+                       
                         const statusName = 'đã hủy'
                         try {
                             await apiService.putAppointmentStatus(idAppointment, statusName, reason);
                             Alert.alert('Thông báo', 'Đơn khám đã bị hủy.', [
                                 { text: 'OK', onPress: () => navigation.goBack() },
                             ]);
-                        } catch (erorr) {
-                            console.log("loi khi huy lich kham")
+                        } catch (error: any) {
+                            console.log("loi khi huy lich kham",error.message)
                         }
 
                     },

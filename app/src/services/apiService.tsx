@@ -2,6 +2,13 @@ import apiClient from './apiClient';
 import { Axios, AxiosResponse } from "axios";
 
 
+interface AppointmentRecord {
+    appointmentId: string;
+    details: {
+        medicineId: string;
+        quantity: number;
+    }[];
+}
 
 // Hàm để lấy thông tin bệnh viện
 const getHospitals = (): Promise<AxiosResponse> => {
@@ -56,12 +63,10 @@ const getAppopintmentByDoctor = (id: string): Promise<AxiosResponse> => {
 const getAppointmentByEmail = (email: string): Promise<AxiosResponse> => {
     return apiClient.get(`/appointments/by-email/${email}`)
 }
-const postRecordByDoctor = (dataRecord: {
-    appointmentId: string,
-    detail: any[],
-    amount: number,
-    description: string
-}): Promise<AxiosResponse> => { return apiClient.post(`/records/${dataRecord}`) }
+const postRecordByDoctor = (dataRecord: AppointmentRecord): Promise<AxiosResponse> => { 
+    return apiClient.post('/records', dataRecord);  // Gửi dataRecord vào body của request
+}
+
 const putAppointmentStatus = (id: string, statusName: string, reason: string): Promise<AxiosResponse> => {
     return apiClient.put(`/appointments/update-status/${id}`, {
         statusName,

@@ -3,10 +3,12 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation for navigation
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useLocalSearchParams } from 'expo-router';
+import { useAuth } from '@/app/src/hooks/useAuth';
 
 const Item_View_Profile_2 = (data: any) => {
     const navigation = useNavigation<any>();
-    const { userType } = useLocalSearchParams();
+    const { user } = useAuth()
+    const userType = user?.role?.name;
 
     const handleChange1 = () => {
         navigation.navigate('user_record_screen', { userType })

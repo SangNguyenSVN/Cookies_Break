@@ -81,7 +81,7 @@ const BookingScreen = ({ route }: { route: any }) => {
       Alert.alert("Thông tin không đầy đủ", "Vui lòng điền đầy đủ thông tin hợp lệ.");
       return;
     }
-
+    console.log("benh vien: ", idPatient);
     console.log("benh vien: ", idHospital);
     console.log("goi kham: ", idPackage);
     console.log("bac si: ", idDoctor);
@@ -98,7 +98,7 @@ const BookingScreen = ({ route }: { route: any }) => {
       // Chuyển đổi selectedDay thành Date trước khi gọi API
 
       // Gọi API để tạo lịch hẹn
-      const response = await apiService.postAppointment({
+      await apiService.postAppointment({
         patient: idPatient || "",
         doctor: idDoctor,
         package: idPackage,
@@ -112,7 +112,7 @@ const BookingScreen = ({ route }: { route: any }) => {
 
       // Nếu đặt lịch thành công, bạn có thể điều hướng hoặc hiển thị thông báo
       Alert.alert("Đặt lịch thành công", "Bạn đã đặt lịch thành công!");
-      return response;
+      getAppointment()
     } catch (error) {
       console.error("Error booking appointment:", error);
       Alert.alert("Có lỗi xảy ra", "Không thể đặt lịch hẹn, vui lòng thử lại sau.");
