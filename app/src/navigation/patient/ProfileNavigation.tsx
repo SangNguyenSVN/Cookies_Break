@@ -6,6 +6,7 @@ import ProfileSetting from '../../shared/screens/ProfileSetting';
 import ChangePassword from '../../shared/screens/ChangePassword';
 import HistoryScreen from '../../components/patient/profile/HistoryScreen';
 import PaymentHistoryScreen from '../../components/patient/profile/PaymentHistoryScreen';
+import PaymentDetailScreen from '../../components/patient/profile/PaymentDetailScreen';
  
 
 const ProfileNavigation = () => {
@@ -17,6 +18,7 @@ const ProfileNavigation = () => {
             <Stack.Screen name='user_change_password_screen' component={ChangePassword}/>
             <Stack.Screen name='user_record_screen' component={HistoryScreen}/>
             <Stack.Screen name='user_payment_screen' component={PaymentHistoryScreen}/>
+            <Stack.Screen name="user_detail_payment" component={PaymentDetailScreen} />
         </Stack.Navigator>
     )
 }
