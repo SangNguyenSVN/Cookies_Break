@@ -10,6 +10,12 @@ interface AppointmentRecord {
     }[];
 }
 
+interface dataEvalution {
+    hospitalId: string,
+    patientId: string,
+    score: number,
+    comment: string,
+}
 // Hàm để lấy thông tin bệnh viện
 const getHospitals = (): Promise<AxiosResponse> => {
     return apiClient.get('/hospitals/');
@@ -73,6 +79,18 @@ const putAppointmentStatus = (id: string, statusName: string, reason: string): P
         reason,
     })
 }
+
+// commit by sang
+// huynh lam viec o day
+// xem qua ham goi api
+const getEvalutionByHospital = (hospitalId: string): Promise<AxiosResponse>=>{
+    return apiClient.get(`/evalutions/hospital/${hospitalId}`)
+}
+
+const postEvalutionByPatient = (dataEvalution: dataEvalution): Promise<AxiosResponse> => { 
+    return apiClient.post('/evalutions', dataEvalution);  // Gửi dataRecord vào body của request
+}
+
 const apiService = {
     getHospitals,
     getDoctors,
@@ -87,7 +105,9 @@ const apiService = {
     getHospitalsDepartment,
     getAppointmentByEmail,
     postRecordByDoctor,
-    putAppointmentStatus
+    putAppointmentStatus,
+    getEvalutionByHospital,
+    postEvalutionByPatient
 };
 
 export default apiService; 

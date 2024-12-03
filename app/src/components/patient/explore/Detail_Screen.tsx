@@ -1,11 +1,23 @@
-// DetailScreen.tsx
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import Header from '@/app/src/shared/Header';
+import apiService from '@/app/src/services/apiService';
 
 const DetailScreen = ({ route }: any) => {
-    const { item, type } = route.params; // Nhận thông tin và loại (type) từ params
+   // huynh them giao dien ngoi sao cho benh vien
+    const [evalutions,setEvalutions] = useState<[]>([])
+    const { item, type } = route.params; 
+    const hospitalId = item?._id
+    console.log("id benh vien: ", hospitalId)
 
+    const getEvalutionByHospital = async () => {
+        const response = await apiService.getEvalutionByHospital(hospitalId)
+        setEvalutions(response.data)
+        console.log("data evalution:", response.data)
+    }
+    useEffect(()=>{
+        getEvalutionByHospital
+    })
     const getInitials = (name: string) => {
         const names = name.split(' ');
         return names.map(n => n.charAt(0).toUpperCase()).join('');
@@ -41,7 +53,7 @@ const DetailScreen = ({ route }: any) => {
             <Text style={styles.info}>Danh sách bác sĩ:</Text>
             {item.doctors && item.doctors.length > 0 ? (
                 item.doctors.map((doctor: any) => (
-                    <Text key={doctor.id} style={styles.doctorName}>
+                    <Text key={doctor._id} style={styles.doctorName}>
                         - {doctor.fullname} ({doctor.specialty})
                     </Text>
                 ))
