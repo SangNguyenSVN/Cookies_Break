@@ -1,10 +1,15 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 
-const Appointment_Tab = ({ activeTab }: any) => {
-    const [activeIndex, setActiveIndex] = useState(0);
+// Define the props interface for TypeScript
+interface AppointmentTabProps {
+    activeTab: (value: string) => void; // Function to handle active tab value
+}
 
-    // Define the tab items, which can be easily extended if needed
+const AppointmentTab: React.FC<AppointmentTabProps> = ({ activeTab }) => {
+    const [activeIndex, setActiveIndex] = useState<number>(0);
+
+    // Tabs configuration
     const tabs = [
         { label: 'Tất cả', value: 'all' },
         { label: 'Chờ khám', value: 'chờ khám' },
@@ -13,58 +18,83 @@ const Appointment_Tab = ({ activeTab }: any) => {
 
     return (
         <View style={styles.container}>
-            {tabs.map((tab, index) => (
-                <TouchableOpacity
-                    key={index}
-                    onPress={() => {
-                        setActiveIndex(index); // Set the active index
-                        activeTab(tab.value); // Pass the tab value to the parent
-                    }}
-                    style={[
-                        activeIndex === index ? styles.activeTab : styles.inActiveTab,
-                    ]}
-                >
-                    <Text
+            {tabs.map((tab, index) => {
+                const isActive = activeIndex === index;
+
+                return (
+                    <TouchableOpacity
+                        key={tab.value}
+                        onPress={() => {
+                            setActiveIndex(index); // Update active index
+                            activeTab(tab.value); // Notify parent component
+                        }}
                         style={[
-                            activeIndex === index ? styles.activeText : styles.inActiveText,
+                            styles.tab,
+                            isActive ? styles.activeTab : styles.inactiveTab,
                         ]}
+                        accessibilityRole="button"
+                        accessibilityState={{ selected: isActive }}
                     >
-                        {tab.label}
-                    </Text>
-                </TouchableOpacity>
-            ))}
+                        <Text
+                            style={[
+                                styles.tabText,
+                                isActive ? styles.activeText : styles.inactiveText,
+                            ]}
+                        >
+                            {tab.label}
+                        </Text>
+                        
+                    </TouchableOpacity>
+                );
+            })}
         </View>
     );
 };
 
-export default Appointment_Tab;
+export default AppointmentTab;
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: '#D9D9D9',
-        paddingVertical: 5,
-        borderRadius: 10,
+        justifyContent: 'space-between',
+        backgroundColor: '#E0E0E0',
+        padding: 8,
+        borderRadius: 20,
+        marginHorizontal: 10,
+        elevation: 3, // Shadow effect
+    },
+    tab: {
+        flex: 1, // Đảm bảo mỗi tab chiếm khoảng cách đều
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 25,
         marginHorizontal: 5,
+        height: 35,
+        
     },
     activeTab: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        backgroundColor: 'white',
-        paddingHorizontal: 20,
-        height: 30,
+        backgroundColor: '#FFFFFF',
+        elevation: 2, // Subtle shadow for active tab
     },
-    inActiveTab: {
-        alignItems: 'center',
-        justifyContent: 'center',
+    inactiveTab: {
+        backgroundColor: 'transparent',
+    },
+    tabText: {
+        fontSize: 14,
+        fontWeight: '600',
     },
     activeText: {
-        color: '#489458', // Green color for active tab text
-        fontWeight: 'bold',
+        color: '#4CAF50', // Bright green for active tab text
     },
-    inActiveText: {
-        color: '#9C9696', // Gray color for inactive tab text
+    inactiveText: {
+        color: '#7E7E7E', // Softer gray for inactive tab text
+    },
+    underline: {
+        position: 'absolute',
+        bottom: 0,
+        width: '70%', // Đảm bảo chiều dài cố định
+        height: 2,
+        backgroundColor: '#4CAF50', // Màu hiệu ứng
+        borderRadius: 1,
     },
 });

@@ -12,33 +12,38 @@ import { useUser } from '@clerk/clerk-expo';
 import Header from '@/app/src/shared/Header';
 import moment from 'moment';
 import InputSearch from '@/app/src/shared/InputSearch';
+import Appointment_Tab from '../../doctor/ExploreScreen/Appointment_Tab';
 
 const HistoryScreen = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const [activeTab, setActiveTab] = useState<string>('all'); // Trạng thái tab hiện tại
+
     const { user } = useAuth();
     const { user: userClerk } = useUser();
 
     const idUser = user?.user?.id;
     const roleName = user?.role?.name;
+
     const getData = async () => {
         setLoading(true);
         setError(null);
         try {
             let response: any;
             if (roleName === 'doctor') {
-                response = await apiService.getAppointmentByDoctor(idUser)
+                response = await apiService.getAppointmentByDoctor(idUser);
             } else if (roleName === 'patient') {
                 response = await apiService.getAppointmentbyUser(idUser);
             } else if (userClerk) {
                 const email: any = userClerk?.primaryEmailAddress?.emailAddress;
                 response = await apiService.getAppointmentByEmail(email);
             }
-            setData(response?.data)
+            setData(response?.data);
         } catch (err: any) {
             console.error('Error in HistoryScreen:', err.response?.status, err.response?.data, err.message);
+            setError('Không thể tải dữ liệu, vui lòng thử lại sau.');
         } finally {
             setLoading(false);
         }
@@ -52,13 +57,18 @@ const HistoryScreen = () => {
         getData();
     };
 
-    // Lọc dữ liệu dựa trên chuỗi tìm kiếm
-    const filteredData = (data || []).filter(
-        (item: any) =>
-            item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.date.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.time.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // Lọc dữ liệu dựa trên tab hiện tại và chuỗi tìm kiếm
+    const filteredData = (data || [])
+        .filter((item: any) => {
+            if (activeTab !== 'all' && item.status?.name !== activeTab) {
+                return false;
+            }
+            return (
+                item.fullname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                item.date.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                item.time.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        });
 
     const renderAppointmentItem = ({ item, index }: { item: any; index: number }) => (
         <View style={styles.item}>
@@ -90,8 +100,8 @@ const HistoryScreen = () => {
         <View style={styles.emptyState}>
             <Text style={styles.emptyStateText}>
                 {searchQuery
-                    ? 'No appointments match your search.'
-                    : 'No appointment history available.'}
+                    ? 'Không tìm thấy lịch khám phù hợp.'
+                    : 'Không tìm thấy lịch khám phù hợp.'}
             </Text>
         </View>
     );
@@ -108,8 +118,10 @@ const HistoryScreen = () => {
             <InputSearch
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
-                placeholder="Search by patient, doctor, or status"
+                placeholder="Tìm kiếm theo tên bệnh nhân, bác sĩ hoặc trạng thái"
             />
+            <Appointment_Tab activeTab={setActiveTab} />
+
             {loading ? (
                 <View style={styles.loader}>
                     <ActivityIndicator size="large" color="#4caf50" />
@@ -118,7 +130,7 @@ const HistoryScreen = () => {
                 renderErrorState()
             ) : (
                 <FlatList
-                    data={filteredData} // Sử dụng dữ liệu đã lọc
+                    data={filteredData} // Dữ liệu đã lọc
                     keyExtractor={(item) => item._id}
                     renderItem={renderAppointmentItem}
                     refreshing={loading}
@@ -129,6 +141,7 @@ const HistoryScreen = () => {
         </View>
     );
 };
+
 export default HistoryScreen;
 
 const styles = StyleSheet.create({
@@ -148,6 +161,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     emptyStateText: {
+        marginTop: 20,
         fontSize: 18,
         color: '#999',
         textAlign: 'center',
