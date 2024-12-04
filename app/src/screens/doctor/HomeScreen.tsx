@@ -10,7 +10,7 @@ const HomeScreen = () => {
   const [appointmentData, setAppointmentData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const { user } = useAuth();
   useEffect(() => {
     if (user) {

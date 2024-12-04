@@ -9,7 +9,12 @@ interface AppointmentRecord {
         quantity: number;
     }[];
 }
-
+interface Payment {
+    userId: string,
+    appointmentId: string,
+    total: number,
+    currency: string,
+}
 interface dataEvalution {
     hospitalId: string,
     patientId: string,
@@ -69,7 +74,7 @@ const getAppopintmentByDoctor = (id: string): Promise<AxiosResponse> => {
 const getAppointmentByEmail = (email: string): Promise<AxiosResponse> => {
     return apiClient.get(`/appointments/by-email/${email}`)
 }
-const postRecordByDoctor = (dataRecord: AppointmentRecord): Promise<AxiosResponse> => { 
+const postRecordByDoctor = (dataRecord: AppointmentRecord): Promise<AxiosResponse> => {
     return apiClient.post('/records', dataRecord);  // Gửi dataRecord vào body của request
 }
 
@@ -80,15 +85,23 @@ const putAppointmentStatus = (id: string, statusName: string, reason: string): P
     })
 }
 
-// commit by sang
-// huynh lam viec o day
-// xem qua ham goi api
-const getEvalutionByHospital = (hospitalId: string): Promise<AxiosResponse>=>{
+
+const getEvalutionByHospital = (hospitalId: string): Promise<AxiosResponse> => {
     return apiClient.get(`/evalutions/hospital/${hospitalId}`)
 }
 
-const postEvalutionByPatient = (dataEvalution: dataEvalution): Promise<AxiosResponse> => { 
+const postEvalutionByPatient = (dataEvalution: dataEvalution): Promise<AxiosResponse> => {
     return apiClient.post('/evalutions', dataEvalution);  // Gửi dataRecord vào body của request
+}
+
+
+
+const createPayment = (data: Payment): Promise<AxiosResponse> => {
+    return apiClient.post('create-payment', data)
+}
+
+const getRecordByAppointment = (id: string): Promise<AxiosResponse> => {
+    return apiClient.get(`/records/appointment/${id}`)
 }
 
 const apiService = {
@@ -107,7 +120,9 @@ const apiService = {
     postRecordByDoctor,
     putAppointmentStatus,
     getEvalutionByHospital,
-    postEvalutionByPatient
+    postEvalutionByPatient,
+    createPayment,
+    getRecordByAppointment
 };
 
 export default apiService; 

@@ -11,9 +11,13 @@ const DetailScreen = ({ route }: any) => {
     console.log("id benh vien: ", hospitalId)
 
     const getEvalutionByHospital = async () => {
+       try{
         const response = await apiService.getEvalutionByHospital(hospitalId)
         setEvalutions(response.data)
         console.log("data evalution:", response.data)
+       }catch(error){
+        console.log("error when call apievalution:", error)
+       }
     }
     useEffect(()=>{
         getEvalutionByHospital

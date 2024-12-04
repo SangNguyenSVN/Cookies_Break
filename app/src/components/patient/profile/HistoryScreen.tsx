@@ -4,6 +4,7 @@ import {
     FlatList,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native';
 import apiService from '@/app/src/services/apiService';
@@ -13,6 +14,7 @@ import Header from '@/app/src/shared/Header';
 import moment from 'moment';
 import InputSearch from '@/app/src/shared/InputSearch';
 import Appointment_Tab from '../../doctor/ExploreScreen/Appointment_Tab';
+import { useNavigation } from '@react-navigation/native';
 
 const HistoryScreen = () => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -23,6 +25,8 @@ const HistoryScreen = () => {
 
     const { user } = useAuth();
     const { user: userClerk } = useUser();
+
+    const navigation = useNavigation<any>();
 
     const idUser = user?.user?.id;
     const roleName = user?.role?.name;
@@ -57,6 +61,9 @@ const HistoryScreen = () => {
         getData();
     };
 
+    const onChangeScreen = (item: any, index: number) => {
+        navigation.navigate('user_history_detail', { item, index })
+    }
     // Lọc dữ liệu dựa trên tab hiện tại và chuỗi tìm kiếm
     const filteredData = (data || [])
         .filter((item: any) => {
@@ -71,29 +78,32 @@ const HistoryScreen = () => {
         });
 
     const renderAppointmentItem = ({ item, index }: { item: any; index: number }) => (
-        <View style={styles.item}>
-            <Text style={styles.itemId}>ID {index + 1}</Text>
-            <Text style={styles.itemText}>
-                <Text style={styles.label}>Ngày: </Text>
-                {moment(item.date).format('DD-MM-YYYY')}
-            </Text>
-            <Text style={styles.itemText}>
-                <Text style={styles.label}>Giờ: </Text>
-                {item.time}
-            </Text>
-            <Text style={styles.itemText}>
-                <Text style={styles.label}>Tên bệnh nhân: </Text>
-                {item.patient?.fullname || item.fullname || 'Đang cập nhật'}
-            </Text>
-            <Text style={styles.itemText}>
-                <Text style={styles.label}>Tên bác sĩ: </Text>
-                {item.doctor?.fullname || 'Đang cập nhật'}
-            </Text>
-            <Text style={styles.itemText}>
-                <Text style={styles.label}>Trạng thái: </Text>
-                {item.status?.name || 'Đang cập nhật'}
-            </Text>
-        </View>
+        <TouchableOpacity onPress={() =>  onChangeScreen(item,index) }>
+            <View style={styles.item}>
+                <Text style={styles.itemId}>ID {index + 1}</Text>
+                <Text style={styles.itemText}>
+                    <Text style={styles.label}>Ngày: </Text>
+                    {moment(item.date).format('DD-MM-YYYY')}
+                </Text>
+                <Text style={styles.itemText}>
+                    <Text style={styles.label}>Giờ: </Text>
+                    {item.time}
+                </Text>
+                <Text style={styles.itemText}>
+                    <Text style={styles.label}>Tên bệnh nhân: </Text>
+                    {item.patient?.fullname || item.fullname || 'Đang cập nhật'}
+                </Text>
+                <Text style={styles.itemText}>
+                    <Text style={styles.label}>Tên bác sĩ: </Text>
+                    {item.doctor?.fullname || 'Đang cập nhật'}
+                </Text>
+                <Text style={styles.itemText}>
+                    <Text style={styles.label}>Trạng thái: </Text>
+                    {item.status?.name || 'Đang cập nhật'}
+                </Text>
+            </View>
+        </TouchableOpacity>
+
     );
 
     const renderEmptyState = () => (

@@ -13,6 +13,7 @@ const AppointmentTab: React.FC<AppointmentTabProps> = ({ activeTab }) => {
     const tabs = [
         { label: 'Tất cả', value: 'all' },
         { label: 'Chờ khám', value: 'chờ khám' },
+        { label: 'Chờ thanh toán', value: 'đã khám' },
         { label: 'Đã thanh toán', value: 'đã thanh toán' },
     ];
 
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     tabText: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: '600',
     },
     activeText: {

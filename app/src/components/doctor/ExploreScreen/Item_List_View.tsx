@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-
+import moment from 'moment';
 const Item_List_View = ({ data, index }: any) => {
   // Determine the text color based on the appointment status
   const getStatusColor = (status: string) => {
@@ -24,8 +24,9 @@ const Item_List_View = ({ data, index }: any) => {
     <View style={styles.container}>
       <Text style={styles.id}>ID: {index+1}</Text>
       <Text style={styles.name}>Tên Bệnh Nhân: {data.fullname}</Text>
+      <Text style={styles.name}> {data.time} | {moment(data.date).format('DD-MM-YYYY')}</Text>
       <Text style={[styles.status, getStatusColor(data.status.name)]}>
-        {data.status.name}  {/* Display status name */}
+        {data.status.name}  
       </Text>
     </View>
   );

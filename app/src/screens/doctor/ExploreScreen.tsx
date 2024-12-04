@@ -1,10 +1,11 @@
-import { StyleSheet, View, Text, TextInput, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../../shared/Header';
 import Item_List_View from '../../components/doctor/ExploreScreen/Item_List_View';
 import Appointment_Tab from '../../components/doctor/ExploreScreen/Appointment_Tab';
 import { useAuth } from '../../hooks/useAuth';
 import apiService from '../../services/apiService';
+import { useNavigation } from '@react-navigation/native';
 
 interface Appointment {
   id: string;
@@ -60,7 +61,11 @@ const ExploreScreen = () => {
       );
     });
   };
+  const navigation = useNavigation();
 
+  const handlePress = (item: any) => {
+    navigation.navigate('patient_detail_screen', { patientData: item });
+  };
   // Get filtered appointment data based on the active tab
   const getFilteredAppointments = () => {
     switch (activeTab) {
@@ -90,7 +95,9 @@ const ExploreScreen = () => {
         return [];  // Fallback in case of an unknown tab
     }
   };
-
+  const handleRefresh = () => {
+    getAppointments();
+  };
   const filteredAppointments = getFilteredAppointments();  // Get filtered appointments
 
   return (
@@ -102,7 +109,7 @@ const ExploreScreen = () => {
         value={searchQuery}
         onChangeText={handleSearch}
       />
-      <Appointment_Tab activeTab={setActiveTab} /> 
+      <Appointment_Tab activeTab={setActiveTab} />
 
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
@@ -110,8 +117,15 @@ const ExploreScreen = () => {
         <Text>{error}</Text>
       ) : filteredAppointments.length > 0 ? (
         <FlatList
-          data={filteredAppointments}  // Display the filtered appointments
-          renderItem={({ item, index }) => <Item_List_View data={item} index={index} />}
+          refreshing={loading}
+          onRefresh={handleRefresh}
+          data={filteredAppointments}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity onPress={() => handlePress(item)}>
+              <Item_List_View data={item} index={index} />
+            </TouchableOpacity>
+          )
+          }
           keyExtractor={(item: any) => item._id}
         />
       ) : (

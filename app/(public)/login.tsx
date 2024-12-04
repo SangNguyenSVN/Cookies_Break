@@ -16,6 +16,12 @@ const Login = () => {
   useEffect(() => {
     if (!userType) {
       router.back(); // Go back if no userType
+    }else if (userType == 'patient'){
+      setUsername('sangheo3')
+      setPassword('20042003Sang')
+    }else if (userType == 'doctor'){
+      setUsername('sangnvps24709')
+      setPassword('11082003Sang')
     }
   }, [userType]);
 
