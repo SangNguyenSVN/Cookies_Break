@@ -1,16 +1,42 @@
 import Header from '@/app/src/shared/Header';
 import SubHeading from '@/app/src/shared/SubHeading';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { useAuth } from '@/app/src/hooks/useAuth';
+import apiService from '@/app/src/services/apiService';
 const Payment_Method_Screen = ({ route, navigation }: any) => {
     // Lấy thông tin từ route.params
     const { totalPrice, appointmentId } = route.params;
+    const {user} = useAuth()
+    const handlePayment = async () => {
+        try {
+            const response = await apiService.createPayment()
+            const approvalUrl = response.data.approvalUrl;
 
-    const handlePayment = () => {
-        // Xử lý thanh toán (ví dụ, gọi API thanh toán)
-        console.log('Thực hiện thanh toán cho lịch hẹn:', appointmentId);
+            if (approvalUrl) {
+                window.location.href = approvalUrl; 
+            } else {
+                Alert.alert('Lỗi', 'Không nhận được URL chuyển hướng.');
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Lỗi', 'Có lỗi xảy ra khi tạo thanh toán.');
+        } finally {
+        }
     };
+
+    const data = [
+        {
+            id: 1,
+            name: 'Paypal',
+            color: '#0070ba',  // Màu nền của Paypal
+        },
+        {
+            id: 2,
+            name: 'Momo',
+            color: '#fba400',  // Màu nền của Momo
+        }
+    ];
 
     return (
         <View style={styles.container}>
@@ -20,11 +46,19 @@ const Payment_Method_Screen = ({ route, navigation }: any) => {
                 <Text style={styles.text}>Tổng tiền: {totalPrice} VND</Text>
             </View>
             <View style={styles.select}>
-                <SubHeading title='Chọn phương thức thanh toán'/>
-                
+                <SubHeading title='Chọn phương thức thanh toán' />
+                <View style={styles.options}>
+                    {data.map((item) => (
+                        <TouchableOpacity
+                            onPress={handlePayment}
+                            key={item.id}
+                            style={[styles.touch, { backgroundColor: item.color }]}
+                        >
+                            <Text style={styles.textButton}>{item.name}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
             </View>
-
-
         </View>
     );
 };
@@ -49,10 +83,27 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         padding: 10
     },
-    select:{
+    select: {
         margin: 20,
-
-    }
+    },
+    options: {
+        flexDirection: 'row',
+        gap: 10,
+    },
+    touch: {
+        height: 50,
+        width: 150,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 0.5,
+        borderColor: 'black',
+    },
+    textButton: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
 });
 
 export default Payment_Method_Screen;
