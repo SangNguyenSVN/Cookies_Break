@@ -1,89 +1,102 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Image, Pressable, StyleSheet, Text, View, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/app/src/navigation/patient/HomeNavigation';
-import axios from 'axios';
-import { FlatList } from 'react-native-gesture-handler';
 import apiService from '@/app/src/services/apiService';
 
-// Define the navigation prop type
-type NavigationProp = StackNavigationProp<RootStackParamList, 'user_hospital_screen'>;
-interface IDepartment {
-    _id: string; // Optional ID field (automatically generated)
-    name: string; // Required name of the department
-    description?: string; // Optional description of the department
-    image: string; // Required path to the department's image
-    createdAt?: Date; // Optional field for creation timestamp
-    updatedAt?: Date; // Optional field for last updated timestamp
+interface Specialty {
+  _id: string;
+  name: string;
+  image: string;
 }
+
 const Item_Specialties_List_View = () => {
-    const [Specialities, setSpecialities] = useState<IDepartment[]>([])
-    const navigation = useNavigation<NavigationProp>();
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const navigation = useNavigation<any>();
 
+  const navigateToHospitalScreen = (specialty: string) => {
+    navigation.navigate('user_hospital_screen', { specialty });
+  };
 
-    const navigateToHospitalScreen = (specialty: string) => {
-        navigation.navigate('user_hospital_screen', { specialty });
-    };
+  const getSpecialist = async () => {
+    try {
+      const response = await apiService.getDepartments();
+      setSpecialties(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error occurred:", error);
+    }
+  };
 
-    const getSpecialist = async () => {
-        try {
-            const response = await apiService.getDepartments()
-            setSpecialities(response.data);
-            console.log("Dữ liệu:", response.data);
-        } catch (error) {
-            console.error("Error occurred:", error);
-        }
-    };
+  useEffect(() => {
+    getSpecialist();
+  }, []);
 
-    useEffect(() => {
-        getSpecialist();
-    }, []);
-    const renderItem = ({ item }: { item: IDepartment }) => (
-        <Pressable key={item._id} style={styles.itemContainer} onPress={() => navigateToHospitalScreen(item.name)}>
-            <Image style={styles.image} source={require("../../../assets/icon/liver.png")} />
-            <Text style={styles.textStyle}>{item.name}</Text>
-        </Pressable>
-    );
-    return (
-        <View>
-            <FlatList
-                data={Specialities}
-                renderItem={renderItem}
-                keyExtractor={(item) => item._id}
-                contentContainerStyle={styles.container}
-                numColumns={2} // Change this value to set the number of columns
-            />
-        </View>
+  const renderItem = ({ item }: { item: Specialty }) => (
+    <Pressable
+      style={styles.itemContainer}
+      onPress={() => navigateToHospitalScreen(item.name)}
+    >
+      <Image
+        style={styles.image}
+        source={{ uri: item.image }}
+      />
+      <Text style={styles.textStyle}>{item.name}</Text>
+    </Pressable>
+  );
 
-    )
-}
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={specialties}
+        renderItem={renderItem}
+        keyExtractor={(item) => item._id}
+        numColumns={2}
+        contentContainerStyle={styles.listContainer}
+        ListEmptyComponent={<Text style={styles.emptyText}>Không có dữ liệu</Text>}
+      />
+    </View>
+  );
+};
 
-export default Item_Specialties_List_View
+export default Item_Specialties_List_View;
 
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: "space-around",
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-    },
-    itemContainer: {
-        flexDirection: "column",
-        alignItems: "center",
-        width: '45%', // Adjust this for proper spacing in a 2-column layout
-        marginBottom: 16,
-    },
-    textStyle: {
-        fontSize: 11,
-        fontWeight: "400",
-        alignSelf: "center",
-        textAlign: "center", // Center text
-    },
-    image: {
-        width: 35,
-        alignSelf: 'center',
-        height: 35,
-    }
-}
-)
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+  },
+  listContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  itemContainer: {
+    flex: 1,
+    alignItems: 'center',
+    margin: 8,
+    padding: 8,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  textStyle: {
+    marginTop: 8,
+    fontSize: 12,
+    fontWeight: '400',
+    textAlign: 'center',
+    color: '#333',
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    color: '#888',
+  },
+});
