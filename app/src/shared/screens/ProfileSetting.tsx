@@ -58,19 +58,18 @@ const ProfileSetting = () => {
     });
 
     const { dataUser }: any = route.params || {};
-    const roleName = dataUser.role.name;
+    const roleName = user?.role?.name;
 
-    // Initialize fields with user data
     useEffect(() => {
         if (dataUser) {
-            setName(dataUser.user.fullname || '');
-            setDob(new Date(dataUser.user.dateOfBirth) || new Date());
-            setGender(dataUser.user.gender || '');
-            setAddress(dataUser.user.address || '');
-            setPhoneNumber(dataUser.user.phoneNumber || '');
-            setSpecialty(dataUser.user.specialty || ''); // Cập nhật specialty
-            setEmail(dataUser.user.email || '');
-            setImageUri(dataUser.user.image || null);
+            setName(dataUser.userInfo.fullname || '');
+            setDob(new Date(dataUser.userInfo.dateOfBirth) || new Date());
+            setGender(dataUser.userInfo.gender || '');
+            setAddress(dataUser.userInfo.address || '');
+            setPhoneNumber(dataUser.userInfo.phoneNumber || '');
+            setSpecialty(dataUser.userInfo.specialty || ''); 
+            setEmail(dataUser.userInfo.email || '');
+            setImageUri(dataUser.userInfo.image || null);
         }
     }, [route.params]);
 
@@ -141,13 +140,14 @@ const ProfileSetting = () => {
             address: !address,
             phoneNumber: !validatePhoneNumber(phoneNumber),
             email: !validateEmail(email),
-            specialty: roleName === 'doctor' ? !specialty : false, // Kiểm tra specialty chỉ nếu là bác sĩ
+            specialty: roleName === 'doctor' ? !specialty : false, 
         };
 
         setError(newError);
 
         if (Object.values(newError).some(error => error)) {
-            console.log('Có lỗi trong các trường nhập.');
+            
+            console.log('Có lỗi trong các trường nhập.', error);
             return;
         }
 

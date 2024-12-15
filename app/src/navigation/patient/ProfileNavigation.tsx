@@ -9,6 +9,7 @@ import PaymentHistoryScreen from '../../components/patient/profile/PaymentHistor
 import PaymentDetailScreen from '../../components/patient/profile/PaymentDetailScreen';
 import History_Detail from '../../components/patient/profile/History_Detail';
 import Payment_Method_Screen from '../../components/patient/profile/Payment_Method_Screen';
+import Service_Screen from '../../components/patient/profile/Service_Screen';
  
 
 const ProfileNavigation = () => {
@@ -23,6 +24,7 @@ const ProfileNavigation = () => {
             <Stack.Screen name='user_payment_screen' component={PaymentHistoryScreen}/>
             <Stack.Screen name="user_detail_payment" component={PaymentDetailScreen} />
             <Stack.Screen name="payment_method_screen" component={Payment_Method_Screen}/>
+            <Stack.Screen name="service_screen" component={Service_Screen}/>
         </Stack.Navigator>
     )
 }

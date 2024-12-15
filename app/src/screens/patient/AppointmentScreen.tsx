@@ -1,8 +1,8 @@
-import { StyleSheet, View, FlatList, TouchableOpacity, TextInput } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback } from 'react';
 import Header from '../../shared/Header';
 import HospitalItem_List_View from '../../components/patient/appointment/Item_List_View';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import apiService from '../../services/apiService';
 import InputSearch from '../../shared/InputSearch';
 
@@ -12,9 +12,11 @@ const AppointmentScreen = () => {
   const [searchQuery, setSearchQuery] = useState(''); // Trạng thái cho tìm kiếm
   const [refreshing, setRefreshing] = useState(false); // Trạng thái làm mới
 
-  useEffect(() => {
-    getHospitals();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getHospitals();
+    }, [])
+  );
   // lay thon tin benh vien
   const getHospitals = async () => {
     try {

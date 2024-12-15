@@ -1,8 +1,8 @@
 import { StyleSheet, View, ActivityIndicator, TouchableOpacity, Keyboard, TouchableWithoutFeedback, FlatList } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Hospital_Doctor_Tab from '../../components/patient/explore/Hospital_Doctor_Tab';
 import Header from '../../shared/Header';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import DoctorItem_List_View from '../../components/patient/explore/DoctorItem_List_View';
 import HospitalItem_List_View from '../../components/patient/explore/HospitalItem_List_View';
 import InputSearch from '../../shared/InputSearch';
@@ -17,10 +17,12 @@ const ExploreScreen = () => {
     const [doctorList, setDoctorList] = useState([]);
     const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
-    useEffect(() => {
-        getHospitals();
-        getDoctors();
-    }, []);
+    useFocusEffect(
+        useCallback(()=>{
+            getDoctors();
+            getHospitals();
+        },[])
+    )
 
     const getHospitals = async () => {
         try {

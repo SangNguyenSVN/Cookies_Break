@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Item_List_View from '../../components/patient/news/Item_List_View';
 import apiService from '../../services/apiService';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Header from '../../shared/Header';
 import InputSearch from '../../shared/InputSearch';
 
@@ -30,9 +30,11 @@ const NewsFeedScreen = () => {
         setRefreshing(false); // Đặt trạng thái làm mới là false
     };
 
-    useEffect(() => {
-        getNews();
-    }, []);
+    useFocusEffect(
+        useCallback(()=>{
+            getNews();
+        },[])
+    )
 
     const renderNewsItem = ({ item }: any) => (
         <TouchableOpacity onPress={() => navigation.navigate('NewsDetail', { newsItem: item })}>

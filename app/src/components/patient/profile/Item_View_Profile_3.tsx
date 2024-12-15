@@ -7,11 +7,15 @@ import { useUser, useClerk } from '@clerk/clerk-expo'; // Import useUser and use
 import { useRouter } from 'expo-router';
 
 const Item_View_Profile_3 = (data: any) => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const router = useRouter();
 
     const { user } = useUser(); // Lấy thông tin người dùng từ Clerk
     const clerk = useClerk(); // Khởi tạo clerk
+
+    const handleNavigation = () => {
+        navigation.navigate('service_screen')
+    }
 
     const handleLogout = () => {
         Alert.alert(
@@ -28,7 +32,7 @@ const Item_View_Profile_3 = (data: any) => {
                     onPress: () => {
                         clerk.signOut(); // Gọi hàm đăng xuất từ Clerk
                         Alert.alert('Đăng xuất thành công');
-    
+
                         router.canGoBack;
                         router.replace('/(public)'); // Thay thế màn hình hiện tại bằng màn hình login
                     },
@@ -40,14 +44,14 @@ const Item_View_Profile_3 = (data: any) => {
     return (
         <View style={styles.container}>
             <View style={styles.options}>
-                <TouchableOpacity style={styles.option}>
+                <TouchableOpacity style={styles.option} onPress={handleNavigation}>
                     <FontAwesome name="file-text" size={20} color="black" style={styles.icon} />
                     <Text style={styles.text1}>
                         Điều khoản dịch vụ
                     </Text>
                 </TouchableOpacity>
                 {user ? (
-                    <TouchableOpacity style={styles.option} onPress={ handleLogout }>
+                    <TouchableOpacity style={styles.option} onPress={handleLogout}>
                         <FontAwesome name="user-times" size={20} color="black" style={styles.icon} />
                         <Text style={styles.text1}>Đăng xuất</Text>
                     </TouchableOpacity>

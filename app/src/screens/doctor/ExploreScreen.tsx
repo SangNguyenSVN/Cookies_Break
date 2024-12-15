@@ -1,11 +1,11 @@
 import { StyleSheet, View, Text, TextInput, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Header from '../../shared/Header';
 import Item_List_View from '../../components/doctor/ExploreScreen/Item_List_View';
 import Appointment_Tab from '../../components/doctor/ExploreScreen/Appointment_Tab';
 import { useAuth } from '../../hooks/useAuth';
 import apiService from '../../services/apiService';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 interface Appointment {
   id: string;
@@ -23,12 +23,14 @@ const ExploreScreen = () => {
 
   const doctorId = user?.user?.id;
 
-  useEffect(() => {
-    if (doctorId) {
-      getAppointments();  // Fetch appointments only if doctorId is available
-    }
-  }, [doctorId]); // Dependency on doctorId
-
+  useFocusEffect(
+    useCallback(() => {
+      if (doctorId) {
+        getAppointments(); 
+      }
+    }, [doctorId]) 
+  )
+  
   const getAppointments = async () => {
     setLoading(true);
     try {
@@ -61,7 +63,7 @@ const ExploreScreen = () => {
       );
     });
   };
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handlePress = (item: any) => {
     navigation.navigate('patient_detail_screen', { patientData: item });

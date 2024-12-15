@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from './apiClient'; // Đảm bảo đường dẫn đúng
+import { AxiosResponse } from 'axios';
 
 // Định nghĩa kiểu cho dữ liệu phản hồi
 interface RegisterResponse {
@@ -24,11 +25,11 @@ const registerUser = async (type: 'patient' | 'doctor', username: string, passwo
         username,
         password,
         phoneNumber,
-    
+
     });
     return response.data;
 };
- 
+
 // Đăng ký bệnh nhân và bác sĩ
 const registerPatient = (username: string, password: string, phoneNumber: string) =>
     registerUser('patient', username, password, phoneNumber);
@@ -87,9 +88,26 @@ const logout = async () => {
     }
 };
 
+
+const googleApi = async (code: string): Promise<{ access_token: string; refresh_token: string }> => {
+    try {
+        const response = await apiClient.post('/auth/google', { code });
+        return response.data;
+    } catch (error: any) {
+        console.error('Error during Google login', error.response?.data);
+        throw new Error('Failed to authenticate with Google');
+    }
+};
+
+
+const getUser = (idUser: string): Promise<AxiosResponse> => {
+    return apiClient.get(`/auth/user/${idUser}`)
+}
 export default {
     registerPatient,
     login,
     logout,
     updateAccount,
+    googleApi,
+    getUser
 };

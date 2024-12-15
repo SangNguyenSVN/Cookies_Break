@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import Header from '@/app/src/shared/Header';
 import apiService from '@/app/src/services/apiService';
+import { useFocusEffect } from '@react-navigation/native';
 
 const DetailScreen = ({ route }: any) => {
    const [evaluations, setEvaluations] = useState<[]>([]); // Fixed typo: evalutions -> evaluations
@@ -19,11 +20,13 @@ const DetailScreen = ({ route }: any) => {
        }
    };
 
-   useEffect(() => {
-       if (hospitalId) {
-           getEvaluationByHospital(); // Call the function here
-       }
-   }, [hospitalId]); // Added dependency to re-fetch if hospitalId changes
+  useFocusEffect(
+    useCallback(() => {
+        if (hospitalId) {
+            getEvaluationByHospital(); 
+        }
+    }, [hospitalId])
+  )
 
    const getInitials = (name: string) => {
        const names = name.split(' ');

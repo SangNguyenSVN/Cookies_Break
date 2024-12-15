@@ -108,7 +108,7 @@ const Login = () => {
                   secureTextEntry
                   style={[styles.viewInput, errors.password && styles.inputError]}
                   placeholder="Mật khẩu"
-                  editable={!loading} // Disable input when loading
+                  editable={!loading} 
                   accessibilityLabel="Mật khẩu"
                 />
                 {errors.password && <Text style={styles.errorText}>Mật khẩu không hợp lệ.</Text>}
@@ -116,11 +116,6 @@ const Login = () => {
             </View>
 
             <View>
-              {/* <View style={styles.viewIcon}>
-                <View>
-                  <Link href="/(public)/forgot">Quên mật khẩu</Link>
-                </View>
-              </View> */}
               <TouchableOpacity style={styles.btnLogin} onPress={handleLogin} disabled={loading}>
                 {loading ? <ActivityIndicator color="white" /> : <Text style={styles.txtLogin}>Đăng nhập</Text>}
               </TouchableOpacity>

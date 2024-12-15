@@ -1,5 +1,5 @@
 import axios from 'axios';
-import apiClient from './apiClient';
+import apiClient from './apiClient'; 
 
 // Định nghĩa kiểu dữ liệu cho thông tin cập nhật bác sĩ
 interface UpdateDoctorInput {
@@ -27,7 +27,7 @@ const updateDoctor = async (
 
         const formData = new FormData();
 
-        console.log('FormData:', formData); // Log FormData trước khi gửi yêu cầu
+        console.log('FormData:', formData); 
         console.log('imageUri:', imageUri);
         console.log('imageType:', imageType);
         

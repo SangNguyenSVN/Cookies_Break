@@ -23,7 +23,6 @@ apiClient.interceptors.request.use(async (config) => {
     } else {
         config.headers['Content-Type'] = 'application/json'; // Đặt Content-Type cho các loại yêu cầu khác
     }
-
     return config;
 });
 

@@ -1,6 +1,6 @@
 import { StyleSheet, View, FlatList, TouchableOpacity, ActivityIndicator, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Header from '../../shared/Header';
 import Item_List_View from '../../components/doctor/HomeScreen/Item_List_View';
 import apiService from '../../services/apiService';
@@ -12,19 +12,21 @@ const HomeScreen = () => {
   const [error, setError] = useState('');
   const navigation = useNavigation<any>();
   const { user } = useAuth();
-  useEffect(() => {
-    if (user) {
-      getAppointments();
-    }
-  }, [user]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user) {
+        getAppointments();
+      }
+    }, [user])
+  )
+
 
   const getAppointments = async () => {
     setLoading(true);
     try {
       const doctorId = user?.user?.id; // Kiểm tra nested property
-      console.log("Doctor ID:", doctorId); // Log doctorId
       const response = await apiService.getAppointmentByDoctor(doctorId);
-      console.log("Appointments response:", response.data);
       if (response.data) {
         setAppointmentData(response.data);
       } else {
@@ -57,7 +59,7 @@ const HomeScreen = () => {
           onRefresh={handleRefresh}
           renderItem={({ item, index }) => (
             <TouchableOpacity onPress={() => handlePress(item)}>
-              <Item_List_View data={item} index ={index} />
+              <Item_List_View data={item} index={index} />
             </TouchableOpacity>
           )}
         />

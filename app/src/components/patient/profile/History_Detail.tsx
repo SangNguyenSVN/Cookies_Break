@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import moment from 'moment';
 import Header from '@/app/src/shared/Header';
 import apiService from '@/app/src/services/apiService';
 import Item_List_Medicine from './Item_List_Medicine';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { useFocusEffect, useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 interface Medicine {
     _id: string;
@@ -57,13 +57,13 @@ const History_Detail = ({ route }: any) => {
         }
     };
 
-    useEffect(() => {
-        if (appointmentId) {
-            getRecordByAppointment();
-        }
-    }, [appointmentId]);
+    useFocusEffect(
+        useCallback(() => {
+            if (appointmentId) {
+                getRecordByAppointment();
+            }
+        }, [appointmentId]))
 
-    // Function to calculate total price of medicines
     const calculateMedicineTotal = () => {
         if (!medicineDetail) return 0;
 

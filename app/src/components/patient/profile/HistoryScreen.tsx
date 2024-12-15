@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     ActivityIndicator,
     FlatList,
@@ -14,7 +14,7 @@ import Header from '@/app/src/shared/Header';
 import moment from 'moment';
 import InputSearch from '@/app/src/shared/InputSearch';
 import Appointment_Tab from '../../doctor/ExploreScreen/Appointment_Tab';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const HistoryScreen = () => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -53,9 +53,11 @@ const HistoryScreen = () => {
         }
     };
 
-    useEffect(() => {
-        getData();
-    }, [idUser, roleName]);
+    useFocusEffect(
+        useCallback(() => {
+            getData();
+        }, [idUser, roleName])
+    )
 
     const refresh = () => {
         getData();
@@ -78,7 +80,7 @@ const HistoryScreen = () => {
         });
 
     const renderAppointmentItem = ({ item, index }: { item: any; index: number }) => (
-        <TouchableOpacity onPress={() =>  onChangeScreen(item,index) }>
+        <TouchableOpacity onPress={() => onChangeScreen(item, index)}>
             <View style={styles.item}>
                 <Text style={styles.itemId}>ID {index + 1}</Text>
                 <Text style={styles.itemText}>

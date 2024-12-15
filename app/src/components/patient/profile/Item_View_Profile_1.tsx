@@ -6,6 +6,7 @@ import { useUser } from '@clerk/clerk-expo';
 const Item_View_Profile_1 = ({ data }: any) => {
   const { user } = useUser();
   const [userData, setUserData] = useState<any>(user);
+  
   useEffect(() => {
     setUserData(data);
   }, [data]);
@@ -14,7 +15,6 @@ const Item_View_Profile_1 = ({ data }: any) => {
 
   const handleEditProfile = () => {
     if (userData) {
-      console.log("userData: ", userData);
       navigation.navigate('user_profile_setting_screen', { dataUser: userData });
     }
   };
@@ -51,7 +51,7 @@ const Item_View_Profile_1 = ({ data }: any) => {
         </View>
         <View style={styles.profilePicture}>
           <Image
-            source={{ uri:userData?.user?.image || user?.imageUrl }} // Use URI from userData or default avatar
+            source={{ uri:userData?.userInfo?.image || user?.imageUrl }} // Use URI from userData or default avatar
             style={styles.avatar}
           />
         </View>

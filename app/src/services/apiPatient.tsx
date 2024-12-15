@@ -1,18 +1,17 @@
 import axios from 'axios';
-import apiClient from './apiClient';
+import apiClient from './apiClient'; 
 
-// Định nghĩa kiểu dữ liệu cho thông tin cập nhật
+// Định nghĩa kiểu dữ liệu cho thông tin cập nhật bệnh nhân
 interface UpdatePatientInput {
-    username?: string;
+    fullname?: string;
     phoneNumber?: string;
     email?: string;
     gender?: string;
     dateOfBirth?: string;
-    fullname?: string;
-    address?: string;
     image?: string;
 }
 
+// Hàm để cập nhật thông tin bệnh nhân
 const updatePatient = async (
     id:string,
     updatedData: UpdatePatientInput,
@@ -20,17 +19,18 @@ const updatePatient = async (
     imageType?: string,
 ): Promise<{ message: string }> => {
     try {
-        const url = `/user/patients/${id}`;
+        const url = `/user/patients/${id}`; 
 
         console.log('URL:', url);
         console.log("Data", updatedData);
 
         const formData = new FormData();
 
-        console.log('FormData:', formData); // Log FormData trước khi gửi yêu cầu
+        console.log('FormData:', formData); 
         console.log('imageUri:', imageUri);
         console.log('imageType:', imageType);
         
+        // Nếu có hình ảnh, thêm nó vào FormData
         if (imageUri && imageType) {
             const imageName = imageUri.split('/').pop() || 'image.jpg'; // Lấy tên file từ đường dẫn
             formData.append('image', {
@@ -50,10 +50,11 @@ const updatePatient = async (
 
         const response = await apiClient.put<{ message: string }>(url, formData);
 
-        return response.data;
+        return response.data; // Trả về dữ liệu nhận được
     } catch (error) {
         console.error('Lỗi khi cập nhật bệnh nhân:', error);
 
+        // Xử lý lỗi
         if (axios.isAxiosError(error) && error.response) {
             throw new Error(error.response.data.message || 'Cập nhật bệnh nhân thất bại');
         } else {
@@ -61,9 +62,6 @@ const updatePatient = async (
         }
     }
 };
-
-
-
 
 // Xuất các hàm
 export default {

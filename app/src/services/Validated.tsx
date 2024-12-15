@@ -1,10 +1,10 @@
 export function validateName(name: string): boolean {
     if (!name.trim()) return false;
     const nameParts = name.trim().split(/\s+/);
-    const nameRegex = /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯăắặẳẵặẸẻẽếềệỄễỈịỌỏốồỗộỚờỡợỦủứừữựỲỵỷỹý]+$/; // Hỗ trợ chữ có dấu
+    const nameRegex = /^[a-zA-ZàáảãạăắằẳẵặâấầẩẫậbcdđeéẻẽẹêếềểễệfghiíìỉĩịjklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụvwxỳýỷỹệzÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỗƠỚỜỞỠỢÚÙỦŨỤÝỲỶỸỴ]+$/u;
     return (
-        nameParts.length >= 2 &&
-        nameParts.every(part => part.length >= 2 && nameRegex.test(part))
+        nameParts.length >= 2 && // Tên phải có ít nhất 2 phần
+        nameParts.every(part => part.length >= 2 && nameRegex.test(part)) // Mỗi phần phải có ít nhất 2 ký tự và hợp lệ
     );
 }
 
@@ -25,18 +25,11 @@ export function validatePhoneNumber(phoneNumber: string): boolean {
 }
 
 export function validateDate(dateString: string): boolean {
-    return !!dateString; // Trả về true nếu dateString không rỗng
-    // Nếu cần kiểm tra định dạng ngày, có thể thêm logic kiểm tra ở đây
-    // const isValidDate = (date: Date) => !isNaN(date.getTime());
-    // const date = new Date(dateString);
-    // return isValidDate(date);
+    return !!dateString; 
 }
 
 export function validateTime(timeString: string): boolean {
-    return !!timeString; // Trả về true nếu timeString không rỗng
-    // Nếu cần kiểm tra định dạng thời gian, có thể thêm logic kiểm tra ở đây
-    // const timeRegex = /^(0[1-9]|1[0-2]):[0-5][0-9]\s?(A.M|P.M)$/i;
-    // return timeRegex.test(timeString);
+    return !!timeString; 
 }
 
 export function validatePassword(password: string): boolean {
