@@ -28,7 +28,7 @@ const Item_Specialties_List_View = () => {
     };
     const fetchSpecialist = async () => {
         try {
-            const response = await axios.get(`http://192.168.1.10:3000/apis/department/departments`);
+            const response = await axios.get(`http://192.168.1.10:3001/apis/department/departments`);
            
                 setSpecialities(response.data);
                 console.log("Dữ liệu:", response.data);
@@ -49,13 +49,13 @@ const Item_Specialties_List_View = () => {
         </Pressable>
     );
     return (
-        <View>
+        <View style={[styles.containerr]}>
         <FlatList
             data={Specialities}
             renderItem={renderItem}
             keyExtractor={(item) => item._id}
             contentContainerStyle={styles.container}
-            numColumns={2} // Change this value to set the number of columns
+        horizontal={true}
         />
     </View>
 
@@ -65,15 +65,22 @@ const Item_Specialties_List_View = () => {
 export default Item_Specialties_List_View
 
 const styles = StyleSheet.create({
+    containerr:{
+width:'100%',
+alignItems:"center"
+
+    },
     container: {
-        justifyContent: "space-around",
+     
+        
         paddingHorizontal: 16,
         paddingVertical: 8,
     },
     itemContainer: {
         flexDirection: "column",
         alignItems: "center",
-        width: '45%', // Adjust this for proper spacing in a 2-column layout
+        width:50,
+        paddingHorizontal: 50,
         marginBottom: 16,
     },
     textStyle: {

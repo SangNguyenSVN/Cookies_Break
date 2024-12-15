@@ -11,37 +11,25 @@ const Item_Icon_List_View = () => {
                 <Image style={{marginTop:8,height:40}} source={require("../../../assets/icon/Doctor_Item.png")}/>
                 <Text style={[styles.ItemTest]}>Bác sĩ</Text>
             </Pressable>
-            <Pressable style={[styles.ItemStyle]}>
-                <Image style={{marginTop:8,height:40}}source={require("../../../assets/icon/Home_Item.png")}/>
-                <Text style={[styles.ItemTest]}>Phòng Khám</Text>
-            </Pressable>
-            <Pressable style={[styles.ItemStyle]}>
+   
+            <Pressable style={[styles.ItemStyle,{borderTopRightRadius:20}]}>
                 <Image style={{marginTop:8,height:40}} source={require("../../../assets/icon/Hospital_Item.png")}/>
                 <Text style={[styles.ItemTest]}>Bệnh viện</Text>
             </Pressable>
-            <Pressable style={[styles.ItemStyle,{borderTopRightRadius:20}]}>
-                <Image style={{marginTop:8,height:40}} source={require("../../../assets/icon/Vali_Item.png")}/>
-                <Text style={[styles.ItemTest]}>Gói khám</Text>
-            </Pressable>
+           
             </View>
                {/*========================================================= */}
             <View style={[styles.ContainerItemList]}>
+            
             <Pressable style={[styles.ItemStyle,{borderBottomLeftRadius:20}]}>
-                <Image style={{marginTop:8,height:40}} source={require("../../../assets/icon/QA_Item.png")}/>
-                <Text style={[styles.ItemTest]}>Hỏi đáp</Text>
-            </Pressable>
-            <Pressable style={[styles.ItemStyle]}>
                 <Image style={{marginTop:8,height:40}}source={require("../../../assets/icon/Sick_Item.png")}/>
                 <Text style={[styles.ItemTest]}>Bệnh</Text>
             </Pressable>
-            <Pressable style={[styles.ItemStyle]}>
-                <Image style={{marginTop:8,height:40}} source={require("../../../assets/icon/Medical_Item.png")}/>
-                <Text style={[styles.ItemTest]}>Bệnh viện</Text>
-            </Pressable>
             <Pressable style={[styles.ItemStyle,{borderBottomRightRadius:20}]}>
-                <Image style={{marginTop:8,height:40}} source={require("../../../assets/icon/Search_Item.png")}/>
-                <Text style={[styles.ItemTest]}>Gói khám</Text>
+                <Image style={{marginTop:8,height:40}} source={require("../../../assets/icon/Medical_Item.png")}/>
+                <Text style={[styles.ItemTest]}>Thuốc   </Text>
             </Pressable>
+         
         
             </View>
      </View>
@@ -63,7 +51,7 @@ const styles = StyleSheet.create({
         alignSelf:"center"
     },
     ItemStyle:{
-        width:"25%",
+        width:"50%",
         height:"100%",
         borderColor:"#C9C4C4",
         borderWidth:1,
