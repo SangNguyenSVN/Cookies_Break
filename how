@@ -1,0 +1,293 @@
+[33mcommit 6f5a270694a19c69cb99e5d79d54c39d73d6212a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mhuynhhoang[m[33m, [m[1;31morigin/huynhhoang[m[33m)[m
+Author: huynh <huynh060104@gmail.com>
+Date:   Tue Nov 19 20:41:35 2024 +0700
+
+    huynh commit
+
+[33mcommit 9b418821f8f55c3281a5cf9a80b6d4b4b7294ab9[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Mon Nov 18 18:05:24 2024 +0700
+
+    sang update sdk and rebuild
+
+[33mcommit e98e6a0dc403da9a0610f6889bb78ae3283b50f2[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Sun Nov 17 10:12:20 2024 +0700
+
+    sang commit before update
+
+[33mcommit 6bb00a1dd80f16da5bd93e3d0054b8406cedda86[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Mon Nov 11 22:03:20 2024 +0700
+
+    sang merge home screen
+
+[33mcommit d5769809d878a127cf8da5792a33b8bd8b230354[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Mon Nov 11 20:30:55 2024 +0700
+
+    sang commit
+
+[33mcommit e6e610a0dce2faa15f1a9eb3d907a2bdec660cff[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Sat Nov 9 19:27:02 2024 +0700
+
+    update select medicine
+
+[33mcommit e988af5050a7da62f03885a316f85f7732611483[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Sat Nov 9 16:40:33 2024 +0700
+
+    sang custom app
+
+[33mcommit 8fe5624cf81db9b4459e5c21e8816f09659a9e49[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Tue Nov 5 15:22:52 2024 +0700
+
+    sang update appointment
+
+[33mcommit f63b0fab4740036b97ae89d910372676a80e4898[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Thu Oct 31 18:54:00 2024 +0700
+
+    sang validated login register
+
+[33mcommit 94960d3e919f78f0bfcd0b415d3460598092c236[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Thu Oct 31 12:47:12 2024 +0700
+
+    sang update commit medicinseelct from nhut
+
+[33mcommit 546b885316f64001e1fdfc1f4813b48dcd471beb[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Thu Oct 31 12:23:10 2024 +0700
+
+    sang
+
+[33mcommit 166a9e7f2178669a1bab7a94ddfe4ddc4d748a9b[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Sat Oct 26 00:26:46 2024 +0700
+
+    Nhut lam viec o commit nay nha
+
+[33mcommit c50149457e688464b85748a36b18b1d267a81083[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Sat Oct 26 00:18:09 2024 +0700
+
+    'sang'
+
+[33mcommit 73bd9079f4179ad24a9b4296ef836cabc7a5d817[m
+Merge: 02e1ed4 6a59bd5
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Fri Oct 25 00:17:58 2024 +0700
+
+    'sang'
+
+[33mcommit 02e1ed43005965a6e3806768386a5d0674890164[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Fri Oct 25 00:09:29 2024 +0700
+
+    sang
+
+[33mcommit 92229b187000afe7810b9906d7ba924e7bd8c5ed[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Thu Oct 24 19:42:22 2024 +0700
+
+    update eas
+
+[33mcommit 2a8384d28f4ee8847b1e7592fcc68d628b9309f4[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 23 21:22:45 2024 +0700
+
+    'sang'
+
+[33mcommit 6a59bd5f56cdb2ec530f4dadbe686d43af448880[m
+Merge: 579f659 7d7f31c
+Author: nhut <caveking2004@gmail.com>
+Date:   Wed Oct 23 21:04:37 2024 +0700
+
+    Resolved merge conflict in package.json
+
+[33mcommit 579f659e96bb5a3a27d4fd617157eb00f1c76935[m
+Merge: f031cfe 4d909c0
+Author: nhut <caveking2004@gmail.com>
+Date:   Wed Oct 23 21:03:02 2024 +0700
+
+    nhut
+
+[33mcommit 7d7f31ca58faccf98480597caa8bdebd9b91f6c1[m
+Merge: 0975e39 f031cfe
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 23 20:57:29 2024 +0700
+
+    'sang'
+
+[33mcommit 0975e394c84c42530d14542c015c41325f61a680[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 23 20:56:59 2024 +0700
+
+    'sang'
+
+[33mcommit 4d909c0aed7a1f83a31a1f522a3720fdf1b4a2b4[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 23 20:39:47 2024 +0700
+
+    'sang'
+
+[33mcommit f031cfe18ce236131c7db6e19772888c54d204ac[m
+Merge: ad10b4e f4489b7
+Author: nhut <caveking2004@gmail.com>
+Date:   Wed Oct 23 20:39:33 2024 +0700
+
+    nhut
+
+[33mcommit ad10b4e38418afd6d3ec9588c9220ab8226fa8a3[m
+Author: nhut <caveking2004@gmail.com>
+Date:   Wed Oct 23 20:38:12 2024 +0700
+
+    Nhut
+
+[33mcommit e2bd22fb4a128fe6e0a592f96b0d75f1db758093[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Tue Oct 22 21:46:20 2024 +0700
+
+    'sang'
+
+[33mcommit 5c436b69e9558976a7cf245dbbb0b635d21ea6f5[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Tue Oct 22 16:45:41 2024 +0700
+
+    'sang'
+
+[33mcommit 9ab67d68cce68bbe15ec5b1f4913177ec442ff08[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Tue Oct 22 12:56:48 2024 +0700
+
+    'sang'
+
+[33mcommit e0c14c95a261ff898f9d0d266e2f8e275d2ad3df[m
+Author: nhut <caveking2004@gmail.com>
+Date:   Sun Oct 20 21:14:13 2024 +0700
+
+    Thêm tệp HomeScreen.tsx
+
+[33mcommit 9afdb0e74f8fffd28d13da6d3296ea9f9f61c2de[m
+Author: nhut <caveking2004@gmail.com>
+Date:   Sun Oct 20 21:04:49 2024 +0700
+
+    Add HospitalScreen
+
+[33mcommit 6992c8bba25b7767e01b40b5d242400ba26da38d[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 16 21:32:39 2024 +0700
+
+    'sang'
+
+[33mcommit b8d203a11ab69257ac86ded50e45ce948091a43f[m[33m ([m[1;32msang[m[33m)[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 16 18:00:18 2024 +0700
+
+    'sang'
+
+[33mcommit f4489b7af3607beec18bf2ba8d7c565354a2d687[m
+Merge: 8fff90e c35671f
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 16 14:04:53 2024 +0700
+
+    Merge branch 'nhut' of https://github.com/SangNguyenSVN/Cookies_Break into sang
+
+[33mcommit 8fff90eb2fce7c5e2e2b6fa52397a539a3e76e94[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Mon Oct 14 20:24:25 2024 +0700
+
+    'sang'
+
+[33mcommit 9e65f9182a155e90c0947fb9c34f9d779efe1bae[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Mon Oct 14 19:25:28 2024 +0700
+
+    'sang'
+
+[33mcommit c60b8313088b9979272b5414459060e8ebdbe99d[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Mon Oct 14 17:47:28 2024 +0700
+
+    'sang'
+
+[33mcommit 11897f251bd7dfbe533ed73498dd9815056d09fa[m[33m ([m[1;31morigin/nan0bietcode[m[33m)[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Fri Oct 11 12:45:41 2024 +0700
+
+    'sang'
+
+[33mcommit c51c231fabfdf1a7d58eb10d42438517019259d5[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 9 19:58:15 2024 +0700
+
+    'sang'
+
+[33mcommit c35671f3043528cccaeeb294fd84febac3419071[m
+Merge: d70703b 5295edf
+Author: nhut <caveking2004@gmail.com>
+Date:   Wed Oct 9 19:57:02 2024 +0700
+
+    nhut
+
+[33mcommit d70703bafe7dc6db3422a105731c81b5bc540220[m
+Author: nhut <caveking2004@gmail.com>
+Date:   Wed Oct 9 19:26:31 2024 +0700
+
+    nhut
+
+[33mcommit 5295edfc31f673ace5cf4d2f04f5d5d2e93a273d[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 9 11:46:23 2024 +0700
+
+    'sang'
+
+[33mcommit 3e7e0a978bef262e81c287d18c33b051bfbe9c71[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Wed Oct 9 11:13:53 2024 +0700
+
+    'sang'
+
+[33mcommit 52feed30d93c37308ad4519acc4c86a847fb26bd[m
+Merge: 8551c8c 0cbce3a
+Author: nhut <caveking2004@gmail.com>
+Date:   Tue Oct 8 21:35:49 2024 +0700
+
+    Merge remote-tracking branch 'origin' into nhut
+
+[33mcommit 0cbce3a4da7211b2abb32bbac44b06ada22bbbd5[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Tue Oct 8 21:05:36 2024 +0700
+
+    'sang'
+
+[33mcommit 8551c8c52dbbcfc3d8005a7c1d012bda364969cb[m
+Merge: af86b63 c67f4e7
+Author: nhut <caveking2004@gmail.com>
+Date:   Fri Oct 4 20:06:32 2024 +0700
+
+    'nhut'
+
+[33mcommit af86b63a6068f9f03e57416eb2b598f13251ac83[m
+Author: nhut <caveking2004@gmail.com>
+Date:   Fri Oct 4 20:00:49 2024 +0700
+
+    'nhut'
+
+[33mcommit 4b2ab5437354a15d13bd33112e7ce6238402b5fb[m
+Author: SangNguyenSVN <nguyenvusang1108@gmail.com>
+Date:   Fri Oct 4 19:56:42 2024 +0700
+
+    'sang'
+
+[33mcommit bb48b0bc137906631e24ca1d6358079e65edc855[m
+Author: nhut <caveking2004@gmail.com>
+Date:   Fri Oct 4 19:53:44 2024 +0700
+
+    nhut
+
+[33mcommit 0d2db4f8493c61c13f8fb121883e81d37f4aa245[m
+Author: nhut <caveking20
